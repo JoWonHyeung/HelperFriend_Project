@@ -1,7 +1,8 @@
 # 2022-WebProject
 
+
 ## Project Name
-HelperFriend
+<img src="https://github.com/JoWonHyeung/webproject/blob/main/djangoProject/project/staticfiles/img/logo.png"  width="150" height="150"/>
 
 ## Purpose
 팀원 빌딩을 위한 플랫폼 및 학습 컨텐츠를 제공하는 웹 페이지 구축
@@ -20,13 +21,13 @@ Frontend : HTML, CSS, Javascript, Bootstrap
 
 
 ## Role
-조원형(팀장):
+조원형(팀장): 백엔드
 
-홍진수:
+홍진수: 프론트
 
-박재현:
+박재현: 프론트
 
-양예담:
+양예담: 
 
 
 ## Contact
