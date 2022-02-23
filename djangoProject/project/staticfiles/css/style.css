@@ -10,7 +10,6 @@ body{
 }
 
 /* 실질적인 각 내비게이션 메뉴들의 색상 등을 결정*/
-
 #sidebar .list-group-item{
     background-color: #333333;
     color: #acacac;
@@ -92,6 +91,16 @@ body{
     .mobile{
         display: none;
     }
+}
 
+.carousel .item {
+  height: 300px;
+}
+
+.item img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    min-height: 300px;
 }
 

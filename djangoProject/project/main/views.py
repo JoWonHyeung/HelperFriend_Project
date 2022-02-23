@@ -1,12 +1,19 @@
 from django.shortcuts import render
-
+from main.crawling import crawling
 # Create your views here.
 from django.http import HttpResponse
 from django.template import loader
 import datetime
 
 def homeView(request):
-    return render(request,'home.html',None)
+    crawling_tmp = crawling()
+    context = {
+        'images': crawling_tmp[0],
+        'urls': crawling_tmp[1],
+        'status': crawling_tmp[2],
+        'n': range(len(crawling_tmp[0])),
+    }
+    return render(request, 'home.html', context)
 
 def teamView(request):
     return render(request,'team.html',None)
