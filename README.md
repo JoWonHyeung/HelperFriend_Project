@@ -4,6 +4,7 @@
 ## Project Name
 <img src="https://github.com/JoWonHyeung/webproject/blob/main/djangoProject/project/staticfiles/img/logo.png"  width="150" height="150"/>
 
+
 ## Purpose
 팀원 빌딩을 위한 플랫폼 및 학습 컨텐츠를 제공하는 웹 페이지 구축
 
