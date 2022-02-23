@@ -14,7 +14,48 @@
     </style>
 </head>
 <body>
-    {% block mycontent %}
-    {% endblock %}
+     <div class="container-fluid">
+        <div class="row d-flex d-md-block flex-nowrap wrapper">
+            <div class="col-md-3 float-left col-1 pl-0 pr-0 collapse width show " id="sidebar">
+                <div class="list-group border-0 card text-center text-md-left ">
+                    <a href="/main/home/" class="list-group-item d-inline-block collapsed" data-parent="#sidebar">
+                        <img src="/static/img/home.svg" alt="" style="width: 20px;"><span class="d-none d-md-inline">메인</span>
+                    </a>
+                     <a href="#usermenu" class="list-group-item d-inline-block collapsed" data-parent="#sidebar"
+                     data-toggle="collapse" aria-expanded="false">
+                        <img src="/static/img/user.svg" alt="" style="width: 20px;"><span class="d-none d-md-inline">회원관리</span>
+                     </a>
+                    <div class="collapse" id="usermenu">
+                        <a href="#" class="list-group-item" data-parent="#sidebar">회원가입</a>
+                        <a href="#" class="list-group-item" data-parent="#sidebar">로그인</a>
+                        <a href="#" class="list-group-item" data-parent="#sidebar">회원정보수정</a>
+                        <a href="#" class="list-group-item" data-parent="#sidebar">로그아웃</a>
+                    </div>
+                    <a href="/main/team/" class="list-group-item d-inline-block collapsed" data-parent="#sidebar">
+                        <img src="/static/img/team.png" alt="" style="width: 20px;"><span class="d-none d-md-inline">팀빌딩</span>
+                    </a>
+                    <a href="/main/qna/" class="list-group-item d-inline-block collapsed" data-parent="#sidebar">
+                        <img src="/static/img/board.svg" alt="" style="width: 20px;"><span class="d-none d-md-inline">질문게시판</span>
+                    </a>
+                    <a href="/main/guide/" class="list-group-item d-inline-block collapsed" data-parent="#sidebar">
+                        <img src="/static/img/qna.svg" alt="" style="width: 20px;"><span class="d-none d-md-inline">가이드라인</span>
+                    </a>
+                    <a href="#search" class="list-group-item d-inline-block collapsed" data-parent="#sidebar"
+                     data-toggle="collapse" aria-expanded="false">
+                        <img src="/static/img/search.svg" alt="" style="width: 20px;"><span class="d-none d-md-inline">검색</span>
+                     </a>
+                    <div class="collapse" id="search">
+                        <div class="input-group- p-2" style="background-color: #1c1c1c;">
+                            <input type="text" class="form-control" placeholder="내용을 입력하세요.">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% block mycontent %}
+
+            {% endblock %}
+        </div>
+    </div>
+
 </body>
 </html>
