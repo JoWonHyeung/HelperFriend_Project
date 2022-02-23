@@ -5,8 +5,9 @@ from django.http import HttpResponse
 from django.template import loader
 import datetime
 
+crawling_tmp = crawling()
+
 def homeView(request):
-    crawling_tmp = crawling()
     context = {
         'images': crawling_tmp[0],
         'urls': crawling_tmp[1],
@@ -20,6 +21,15 @@ def teamView(request):
 
 def joinView(request):
     return render(request,'join.html',None)
+
+def editView(request):
+    return render(request,'edit.html',None)
+
+def loginView(request):
+    return render(request,'login.html',None)
+
+def logoutView(request):
+    return render(request,'logout.html',None)
 
 def qnaView(request):
     return render(request,'qna.html',None)
