@@ -28,7 +28,7 @@ Frontend : HTML, CSS, Javascript, Bootstrap
 
 박재현: 프론트
 
-양예담: 
+양예담: 백엔드
 
 
 ## Contact
