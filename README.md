@@ -1,7 +1,6 @@
 # 2022-WebProject
 
 ## Project Name
-
 HelperFriend
 
 ## Purpose
