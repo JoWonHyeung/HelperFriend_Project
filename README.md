@@ -37,6 +37,15 @@ mesh153@naver.com
 
 
 ## Schedule
+
+- 2/23
+  1. Home화면에 들어갈 공모전/대외활동 crawling후 swiper제작  
+
+- 2/24
+  1. DB modeling 
+
+  2. 프로젝트 기본 틀 구성후 팀원들에게 GitHub으로 배포
+
 - 2/25
   1. DB modeling 및 database 구축
 
