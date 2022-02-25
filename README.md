@@ -36,7 +36,7 @@ Frontend : HTML, CSS, Javascript, Bootstrap
 mesh153@naver.com
 
 
-# Schedule
+## Schedule
 - 2/25
   1. DB modeling 및 database 구축
 
