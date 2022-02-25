@@ -40,6 +40,8 @@ mesh153@naver.com
 
 - 2/23
   1. Home화면에 들어갈 공모전/대외활동 crawling후 swiper제작  
+  
+  2. 팀원들이 Bootstrap4 기술을 습득하도록 하기위해서 추천 강좌 
 
 - 2/24
   1. DB modeling 
