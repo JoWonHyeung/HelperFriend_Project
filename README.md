@@ -34,3 +34,12 @@ Frontend : HTML, CSS, Javascript, Bootstrap
 ## Contact
 
 mesh153@naver.com
+
+
+# Schedule
+- 2/25
+  1. DB modeling 및 database 구축
+
+  2. 팀 빌딩 관련 회의
+
+  3. 설문지폼 
