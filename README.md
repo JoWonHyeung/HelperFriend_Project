@@ -24,11 +24,11 @@ Frontend : HTML, CSS, Javascript, Bootstrap
 ## Role
 조원형(팀장): 백엔드
 
-홍진수: 프론트
+홍진수: 백엔드
 
 박재현: 프론트
 
-양예담: 백엔드
+양예담: 프론트
 
 
 ## Contact
