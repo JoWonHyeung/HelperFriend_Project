@@ -34,3 +34,23 @@ Frontend : HTML, CSS, Javascript, Bootstrap
 ## Contact
 
 mesh153@naver.com
+
+
+## Schedule
+
+- 2/23
+  1. Home화면에 들어갈 공모전/대외활동 crawling후 swiper제작  
+  
+  2. 팀원들 Bootstrap4 강좌소개
+
+- 2/24
+  1. DB modeling 
+
+  2. 프로젝트 기본 틀 구성후 팀원들에게 GitHub으로 배포
+
+- 2/25
+  1. DB modeling 및 database 구축
+
+  2. 팀 빌딩 관련 회의
+
+  3. 설문지폼 
