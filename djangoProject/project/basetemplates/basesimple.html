@@ -9,60 +9,78 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.min.js" integrity="sha384-VHvPCCyXqtD5DqJeNxl2dtTyhF78xXNXdkwX1CZeRusQfRKp+tA7hAShOK/B/fQ2" crossorigin="anonymous"></script>
     <style>
+    nav#a {
+        background-color: #ffffff;
+    }
+    #header.intro_header {
+        border: none;
+        height: 80px;
+        position: absolute;
+        background: none;
+        background-image: url(/img/intro_header_back.png);
+        background-repeat: repeat-x;
+    }
+    #header {
+        position: relative;
+        width: 100%;
+        min-width: 800px;
+        height: 48px;
+        padding-top: 25px;
+        background-color: #ffffff;
+        font-weight: 700;
+        color: #3c3c3c;
+        border-bottom: 1px solid #EFEFEF;
+        transition-duration: 0.5s;
+        z-index: 10;
+    }
+    #header .logo {
+        position: absolute;
+        left: 30px;
+        top: 29px;
+        z-index: 5;
+        width: 105px;
+    }
+    div {
+        display: block;
+    }
+    nav {
+        display: block;
+    }
+    #header .profile .sinup_section {
+        display: block;
+        cursor: pointer;
+        padding-left: 30px;
+        border-left: 1px solid #ddd;
+        line-height: 20px;
+        margin-top: 3px;
+    }
     {% block mycss %}
 
     {% endblock %}
     </style>
 </head>
 <body>
-     <div class="container-fluid">
-        <div class="row d-flex d-md-block flex-nowrap wrapper">
-            <div class="col-md-3 float-left col-1 pl-0 pr-0 collapse width show " id="sidebar">
-                <div class="list-group border-0 card text-center text-md-left ">
-                    <a href="/main/home/" class="list-group-item d-inline-block collapsed" data-parent="#sidebar">
-                        <img src="/static/img/home.svg" alt="" style="width: 20px;"><span class="d-none d-md-inline">메인</span>
-                    </a>
-                     <a href="#usermenu" class="list-group-item d-inline-block collapsed" data-parent="#sidebar"
-                     data-toggle="collapse" aria-expanded="false">
-                        <img src="/static/img/user.svg" alt="" style="width: 20px;"><span class="d-none d-md-inline">회원관리</span>
-                     </a>
-                    <div class="collapse" id="usermenu">
-                        <a href="/main/join" class="list-group-item" data-parent="#sidebar">회원가입</a>
-                        <a href="/main/login" class="list-group-item" data-parent="#sidebar">로그인</a>
-                        <a href="/main/edit" class="list-group-item" data-parent="#sidebar">회원정보수정</a>
-                        <a href="/main/logout" class="list-group-item" data-parent="#sidebar">로그아웃</a>
-                    </div>
-                    <a href="/main/team/" class="list-group-item d-inline-block collapsed" data-parent="#sidebar">
-                        <img src="/static/img/team.svg" alt="" style="width: 20px;"><span class="d-none d-md-inline">팀빌딩</span>
-                    </a>
-                    <a href="/main/qna/" class="list-group-item d-inline-block collapsed" data-parent="#sidebar">
-                        <img src="/static/img/board.svg" alt="" style="width: 20px;"><span class="d-none d-md-inline">질문게시판</span>
-                    </a>
-                    <a href="/main/guide/" class="list-group-item d-inline-block collapsed" data-parent="#sidebar">
-                        <img src="/static/img/qna.svg" alt="" style="width: 20px;"><span class="d-none d-md-inline">가이드라인</span>
-                    </a>
-                    <a href="#search" class="list-group-item d-inline-block collapsed" data-parent="#sidebar"
-                     data-toggle="collapse" aria-expanded="false">
-                        <img src="/static/img/search.svg" alt="" style="width: 20px;"><span class="d-none d-md-inline">검색</span>
-                     </a>
-                    <div class="collapse" id="search">
-                        <div class="input-group- p-2" style="background-color: #1c1c1c;">
-                            <input type="text" class="form-control" placeholder="내용을 입력하세요.">
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <main id="main" class="col-md-9 float-left col px-5 pl-md-5 pt-3 main">
+<!--
+  <nav id="header" class="intro_header">
+    <span class="logo">
+      <a href="#">
+        <img src="/static/img/logo.png" style="width: 50px;">
+      </a>
+    </span>
+    <div class="profile float-right">
+      <span class="sinup_section" style="display: block;">프로필</span>
+    </div>
+  </nav>
+   -->
+    <nav class="navbar navbar-expand-lg">
+      <img src="/static/img/helperfriend.png" class="ml-3" width="50" height="50">
+    </nav>
+
+
+
             {% block mycontent %}
 
             {% endblock %}
-            <footer class="text-center my-5" style="max-width: 1080px;">
-                    <p>Copyright &copy; 2022 <b>HelperFriend Team</b> All Rights Reserved.</p>
-             </footer>
-            </main>
-
-        </div>
-    </div>
-    <script>{% block myjs %} {% endblock %} </script>
+  <script>{% block myjs %} {% endblock %} </script>
 </body>
 </html>
