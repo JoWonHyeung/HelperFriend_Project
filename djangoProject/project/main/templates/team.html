@@ -5,6 +5,138 @@
 {% endblock %}
 
 {% block mycontent %}
-    <h1>team test</h1>
+<form method="POST" action="">
+    {% csrf_token %}
+    <div select="course" class="form-group">
+      <label for="select">Team Select:</label>
+      <select class="form-control" name="course" id="select">
+        <option>빅데이터 서비스 분석 개발 6회차</option>
+        <option>AI 개발 6회차</option>
+        <option>클라우드 서비스 개발 6회차</option>
+      </select>
+    </div>
+    <button id = "btn1" type="button" class="btn btn-primary float-right" data-toggle="collapse" data-target="#demo">인원 불러오기</button>
+</form>
+<div id="demo" class=".container">
+  <section id = "block1"class="mt-4 mb-3 pt-4 pb-3 my-5" style="max-width: 1080px; display: none;">
+      <table class="table">
+          <thead>
+              <tr>
+                  <th style="width: 80px; text-align: center;">과정</th>
+                  <th class="mobile" style="width: 80px; text-align: center;">이름</th>
+              </tr>
+          </thead>
+          <tbody id = "allStudent">
+
+          </tbody>
+      </table>
+      <div class="text-center">
+          <button id="btn2" type="button" class="btn btn-primary" data-toggle="collapse" data-target="#demo2">팀 빌딩</button>
+      </div>
+  </section>
+</div>
+
+<div id="demo2">
+  <section id = "block2"class="mt-4 mb-3 pt-4 pb-3 my-5" style="max-width: 1080px; display: none;">
+    <div class="container">
+      <div id="teamBlock"class="card-columns">
+
+      </div>
+    </div>
+    <div class="text-center">
+          <button id="btn3" type="button" class="btn btn-primary my-3">저장하기</button>
+      </div>
+
+  </section>
+</div>
 {% endblock %}
 
+{% block myjs %}
+
+/* localStorage를 이용하여 reload후 select value 값이 유지되도록 해주었다.*/
+s = "option:eq("+localStorage['x']+")";
+$("#select").find(s).prop("selected",true);
+
+let all = []
+
+/* 첫 번째 button 눌렀을때 */
+$('#btn1').click(function(){
+    $('#block1').css('display','block');
+
+    course = $("select[name=course]").val()
+    let param = { 'course' : course };
+
+    $.ajax({
+        url : '{% url 'teamJson' %}',
+        type : 'POST',
+        headers: {
+            'X-CSRFTOKEN' : '{{ csrf_token }}'
+        },
+        data : JSON.stringify(param),
+        success:function(data){
+            var context = ""
+            for(var i = 0; i < data['names'].length; i++){
+                context += "<tr>"
+                context += "<td style='text-align: center;'>" + data['course'] + "</td>"
+                context += "<td style='text-align: center;'>" + data['names'][i] + "</td>"
+                context += "</tr>"
+                all.push(data['names'][i]);
+            }
+            $('[id="allStudent"]').html(context);
+        },
+        error: function(){
+            alert('no success!!');
+        },
+    });
+   $("#btn1").attr("disabled", true);
+});
+
+/* 2번째 button 눌렀을때 */
+$('#btn2').click(function(){
+    $('#block2').css('display','block');
+
+    let teamNum = all.length / 4;
+    context = "";
+
+    if(teamNum >= 1){
+        for(var i = 1; i <= Math.ceil(teamNum); i++){
+            context += "<div class='card bg-light'>"
+            context += "<h2 class='text-center my-4'>" + i + "조</h2>"
+            context += "<div class='card-body text-center'>"
+            for(var j = 0; j < 4; j++){
+                context += "<p class='card-text'>" + all[0] + "</p>"
+                all.splice(0,1);
+                if(all.length == 0) break;
+            }
+            context += "</div>"
+            context += "</div>"
+        }
+    }
+    else{
+        context += "<div class='card bg-light'>";
+        context += "<h2 class='text-center my-4'>" + 1 + "조</h2>";
+        context += "<div class='card-body text-center'>";
+        while(all.length != 0){
+            context += "<p class='card-text'>" + all[0] + "</p>"
+            all.splice(0,1);
+        }
+        context += "</div>"
+        context += "</div>";
+    }
+    $('[id="teamBlock"]').html(context);
+    $("#btn2").attr("disabled", true);
+});
+
+/* 저장하기(저장후 홈 화면으로 이동 */
+$('#btn3').click(function(){
+     location.href = '{% url "home"%}'
+});
+
+/* select값이 변경되었을때 reload */
+$('#select').on('change',function(){
+    var idx = $("#select option").index( $("#select option:selected") );
+    localStorage.setItem('x',idx);
+    location.reload();
+})
+
+{% endblock %}

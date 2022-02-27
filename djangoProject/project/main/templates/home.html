@@ -73,7 +73,6 @@
                                             <div class="col-lg-2">
                                                 <div class="movie-card m-1">
                                                     <div class="movie-img">
-
                                                         <a href="{{urls|index:forloop.counter0}}"><img src="{{ images|index:forloop.counter0 }}" class="img-fluid"></a>
                                                     </div>
                                                     <div class="movie-title">
@@ -156,7 +155,6 @@
     $('#recipeCarousel').carousel({
       interval: 10000
     })
-
     $('.carousel .carousel-item').each(function(){
         var minPerSlide = 4;
         var next = $(this).next();

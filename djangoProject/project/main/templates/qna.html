@@ -5,6 +5,75 @@
 {% endblock %}
 
 {% block mycontent %}
-    <h1>qna test</h1>
+<div class="page-header mt-3">
+    <h2>질문 게시판</h2>
+</div>
+<p class="lead">다른 회원들과 자유롭게 소통하세요.</p>
+<hr>
+
+<table class="table table-striped" style="max-width: 1080px;">
+    <thead>
+        <tr>
+            <th class="mobile" style="width: 55px; text-align: center;">번호</th>
+            <th style="text-align: center;">제목</th>
+            <th class="mobile" style="width: 80px; text-align: center;">작성자</th>
+            <th class="mobile" style="width: 120px; text-align: center;">날짜</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td class="mobile" style="text-align: center;">5</td>
+            <td><a href="#" style="color: #000000">오랜만입니다.</a></td>
+            <td class="mobile" style="text-align: center;">강종구</td>
+            <td class="mobile" style="text-align: center;">2018-01-05</td>
+        </tr>
+        <tr>
+            <td class="mobile" style="text-align: center;">4</td>
+            <td><a href="#" style="color: #000000">오랜만입니다.</a></td>
+            <td class="mobile" style="text-align: center;">강종구</td>
+            <td class="mobile" style="text-align: center;">2018-01-05</td>
+        </tr>
+       <tr>
+            <td class="mobile" style="text-align: center;">3</td>
+            <td><a href="#" style="color: #000000">오랜만입니다.</a></td>
+            <td class="mobile" style="text-align: center;">강종구</td>
+            <td class="mobile" style="text-align: center;">2018-01-05</td>
+        </tr>
+        <tr>
+            <td class="mobile" style="text-align: center;">2</td>
+            <td><a href="#" style="color: #000000">오랜만입니다.</a></td>
+            <td class="mobile" style="text-align: center;">강종구</td>
+            <td class="mobile" style="text-align: center;">2018-01-05</td>
+        </tr>
+         <tr>
+            <td class="mobile" style="text-align: center;">1</td>
+            <td><a href="#" style="color: #000000">오랜만입니다.</a></td>
+            <td class="mobile" style="text-align: center;">강종구</td>
+            <td class="mobile" style="text-align: center;">2018-01-05</td>
+        </tr>
+    </tbody>
+</table>
+<div style="max-width: 1080px">
+    <a href="/main/qnaWrite" class="btn btn-primary float-right">글쓰기</a>
+</div>
+<ul class="pagination">
+    <li class="page-item disabled">
+        <span class="page-link">&laquo;</span>
+    </li>
+    <li class="page-item active">
+        <li class="page-item"><a class="page-link mobile" href="#">1</a></li>
+        <li class="page-item active"><a class="page-link mobile" href="#">2</a></li>
+        <li class="page-item"><a class="page-link mobile" href="#">3</a></li>
+        <li class="page-item"><a class="page-link mobile" href="#">4</a></li>
+        <li class="page-item"><a class="page-link mobile" href="#">5</a></li>
+        <li class="page-item"><a class="page-link mobile" href="#">6</a></li>
+        <li class="page-item"><a class="page-link mobile" href="#">7</a></li>
+        <li class="page-item"><a class="page-link mobile" href="#">8</a></li>
+        <li class="page-item"><a class="page-link mobile" href="#">9</a></li>
+    </li>
+    <li class="page-item">
+        <span class="page-link">&raquo;</span>
+    </li>
+</ul>
 {% endblock %}
 
