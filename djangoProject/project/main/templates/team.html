@@ -5,138 +5,85 @@
 {% endblock %}
 
 {% block mycontent %}
-<form method="POST" action="">
-    {% csrf_token %}
-    <div select="course" class="form-group">
-      <label for="select">Team Select:</label>
-      <select class="form-control" name="course" id="select">
-        <option>빅데이터 서비스 분석 개발 6회차</option>
-        <option>AI 개발 6회차</option>
-        <option>클라우드 서비스 개발 6회차</option>
-      </select>
-    </div>
-    <button id = "btn1" type="button" class="btn btn-primary float-right" data-toggle="collapse" data-target="#demo">인원 불러오기</button>
-</form>
-<div id="demo" class=".container">
-  <section id = "block1"class="mt-4 mb-3 pt-4 pb-3 my-5" style="max-width: 1080px; display: none;">
-      <table class="table">
-          <thead>
-              <tr>
-                  <th style="width: 80px; text-align: center;">과정</th>
-                  <th class="mobile" style="width: 80px; text-align: center;">이름</th>
-              </tr>
-          </thead>
-          <tbody id = "allStudent">
-
-          </tbody>
-      </table>
-      <div class="text-center">
-          <button id="btn2" type="button" class="btn btn-primary" data-toggle="collapse" data-target="#demo2">팀 빌딩</button>
-      </div>
-  </section>
-</div>
-
-<div id="demo2">
-  <section id = "block2"class="mt-4 mb-3 pt-4 pb-3 my-5" style="max-width: 1080px; display: none;">
-    <div class="container">
-      <div id="teamBlock"class="card-columns">
-
-      </div>
-    </div>
-    <div class="text-center">
-          <button id="btn3" type="button" class="btn btn-primary my-3">저장하기</button>
-      </div>
-
-  </section>
-</div>
+    <main id="main" class="col-md-9 float-left col px-5 pl-md-5 pt-3 main">
+                <div class="page-header mt-3">
+                    <h2>팀빌딩</h2>
+                    <!-- <p class="lead"></p> -->
+                    <hr>
+                    <button type="button" class="btn btn-success" data-toggle="collapse" data-target="#demo">자세히 알아보기</button>
+                    <div id="demo" class="collaps my-1">
+                        프로젝트 팀원 빌딩에 있어서 좀 더 객관적인 지표로 팀원을 구성하기 위해서 프로젝트를 시작하
+                        게 되었습니다.  추가적으로, 코딩 학습에 있어서 도움이 될만한 학습 컨텐츠를 제공할 예정이고, 공모전/대외활동 정보를 실시간으로 제공할 예정이다.
+                        결론적으로, 모두에게 도움을 준다는 의미에서 Helperfriend라는 이름을 프로젝트 이름을 선정하였습니다.
+                    </div>
+                    <div class="width collapse show mt-3 my-4" aria-expanded="true">
+                        <h1 style="text-align: center;">공모전 및 대외활동</h1>
+                    </div>
+                    <div id="carousel" class="carousel slide" style="max-width: 1080px;" data-ride="carousel">
+                        <ol class="carousel-indicators">
+                            <li data-target="#carousel" data-slide-to="0" class="active"></li>
+                            <li data-target="#carousel" data-slide-to="1"></li>
+                            <li data-target="#carousel" data-slide-to="2"></li>
+                        </ol>
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <img src="/static/img/4.jpg" alt="">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="/static/img/2.jpg" alt="">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="/static/img/3.jpg" alt="">
+                            </div>
+                        </div>
+                        <a class="carousel-control-prev" href="#carousel" data-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="sr-only">이전 사진</span>
+                        </a>
+                        <a class="carousel-control-next" href="#carousel" data-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"> </span>
+                            <span class="sr-only">다음 사진</span>
+                        </a>
+                    </div>
+                    <section class="mt-4 mb-3 pt-4 pb-3" style="max-width: 1080px;">
+                        <p class="lead">공지사항</p>
+                        <hr>
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th class="mobile" style="width: 55px; text-align: center;">번호</th>
+                                    <th style="text-align: center;">제목</th>
+                                    <th class="mobile" style="width: 80px; text-align: center;">작성자</th>
+                                    <th class="mobile" style="width: 120px; text-align: center;">날짜</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="mobile" style="text-align: center;">3</td>
+                                    <td>신규 운영진을 모집합니다.</td>
+                                    <td class="mobile" style="text-align: center;">운영자</td>
+                                    <td class="mobile" style="text-align: center;">2018-01-05</td>
+                                </tr>
+                                <tr>
+                                    <td class="mobile" style="text-align: center;">2</td>
+                                    <td>커뮤니티 웹 사이트에 오신 것을 환영합니다.</td>
+                                    <td class="mobile" style="text-align: center;">운영자</td>
+                                    <td class="mobile" style="text-align: center;">2018-01-04</td>
+                                </tr>
+                                <tr>
+                                    <td class="mobile" style="text-align: center;">1</td>
+                                    <td>커뮤니티 웹 사이트가 개설되었습니다.</td>
+                                    <td class="mobile" style="text-align: center;">운영자</td>
+                                    <td class="mobile" style="text-align: center;">2018-01-03</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                </div>
+                <hr>
+                <footer class="text-center" style="max-width: 1080px;">
+                    <p>Copyright &copy; 2022 <b>HelperFriend Team</b> All Rights Reserved.</p>
+                </footer>
+        </main>
 {% endblock %}
 
-{% block myjs %}
-
-/* localStorage를 이용하여 reload후 select value 값이 유지되도록 해주었다.*/
-s = "option:eq("+localStorage['x']+")";
-$("#select").find(s).prop("selected",true);
-
-let all = []
-
-/* 첫 번째 button 눌렀을때 */
-$('#btn1').click(function(){
-    $('#block1').css('display','block');
-
-    course = $("select[name=course]").val()
-    let param = { 'course' : course };
-
-    $.ajax({
-        url : '{% url 'teamJson' %}',
-        type : 'POST',
-        headers: {
-            'X-CSRFTOKEN' : '{{ csrf_token }}'
-        },
-        data : JSON.stringify(param),
-        success:function(data){
-            var context = ""
-            for(var i = 0; i < data['names'].length; i++){
-                context += "<tr>"
-                context += "<td style='text-align: center;'>" + data['course'] + "</td>"
-                context += "<td style='text-align: center;'>" + data['names'][i] + "</td>"
-                context += "</tr>"
-                all.push(data['names'][i]);
-            }
-            $('[id="allStudent"]').html(context);
-        },
-        error: function(){
-            alert('no success!!');
-        },
-    });
-   $("#btn1").attr("disabled", true);
-});
-
-/* 2번째 button 눌렀을때 */
-$('#btn2').click(function(){
-    $('#block2').css('display','block');
-
-    let teamNum = all.length / 4;
-    context = "";
-
-    if(teamNum >= 1){
-        for(var i = 1; i <= Math.ceil(teamNum); i++){
-            context += "<div class='card bg-light'>"
-            context += "<h2 class='text-center my-4'>" + i + "조</h2>"
-            context += "<div class='card-body text-center'>"
-            for(var j = 0; j < 4; j++){
-                context += "<p class='card-text'>" + all[0] + "</p>"
-                all.splice(0,1);
-                if(all.length == 0) break;
-            }
-            context += "</div>"
-            context += "</div>"
-        }
-    }
-    else{
-        context += "<div class='card bg-light'>";
-        context += "<h2 class='text-center my-4'>" + 1 + "조</h2>";
-        context += "<div class='card-body text-center'>";
-        while(all.length != 0){
-            context += "<p class='card-text'>" + all[0] + "</p>"
-            all.splice(0,1);
-        }
-        context += "</div>"
-        context += "</div>";
-    }
-    $('[id="teamBlock"]').html(context);
-    $("#btn2").attr("disabled", true);
-});
-
-/* 저장하기(저장후 홈 화면으로 이동 */
-$('#btn3').click(function(){
-     location.href = '{% url "home"%}'
-});
-
-/* select값이 변경되었을때 reload */
-$('#select').on('change',function(){
-    var idx = $("#select option").index( $("#select option:selected") );
-    localStorage.setItem('x',idx);
-    location.reload();
-})
-
-{% endblock %}
