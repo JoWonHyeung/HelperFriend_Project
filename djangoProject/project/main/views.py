@@ -68,50 +68,78 @@ from main.logic import scoreSum
 #crawling_tmp = crawling()
 
 def homeView(request):
+    context = None
     # context = {
     #      'images': crawling_tmp[0],
     #      'urls': crawling_tmp[1],
     #      'status': crawling_tmp[2],
     #      'n': range(len(crawling_tmp[0])),
     #  }
-    return render(request, 'home.html', None)
+    return render(request, 'home.html', context)
 
 def teamView(request):
     return render(request,'team.html',None)
 
-def teamRefresh(request, idx):
-    return render(request,)
-
 def teamJson(request):
-
     # 과정명 가져오기
     jsonObject = json.loads(request.body)
     course = jsonObject.get('course')
     # 해당 과정명에 해당하는 모든 인원 뽑아오기
     objs = list(Course.objects.filter(course_name=course))
-    names = []
+    stu_dict={}
+
     for obj in objs:
         id = obj.id
         user_info = User_Info.objects.get(course_id=id)
-        names.append(user_info.user.first_name)
+        stu_dict[user_info.user.first_name] = user_info.score
 
+    stu_sorted_dict = sorted(stu_dict.items(),key = lambda item: item[1], reverse=True)
     context = {
-        'names': names,
         'course': course,
+        'student': stu_sorted_dict,
     }
     return JsonResponse(context)
 
-def teamJson2(request):
-    pass
+
 
 def joinView(request):
-    return render(request, 'join.html', None)
+    context = {}
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        name = request.POST.get('firstname')
+        password = request.POST.get('password')
+        re_password = request.POST.get('re-password')
+        course_name = request.POST.get('course')
+        score = scoreSum(request)
+        if User.objects.filter(username=username):
+            context = {'error':'이미 가입된 아이디 입니다.'}
+        elif password != re_password:
+            context['error'] = '비밀번호가 다릅니다.'
+        else:
+            user = User.objects.create_user(username=username,
+                                            first_name=name,
+                                            password=password)
+            course = Course(course_name=course_name); course.save();
+            user_info = User_Info(user=user, score=score, course=course); user_info.save();
+            auth.login(request, user)
+            return redirect("login")
+    return render(request, 'join.html', context)
 
 def editView(request):
     return render(request,'edit.html',None)
 
 def loginView(request):
-    return render(request,'login.html',None)
+    if request.method == "POST":
+        username = request.POST.get('username', None)
+        password = request.POST.get('password', None)
+        user = auth.authenticate(username=username, password=password)
+        if user is not None:
+            auth.login(request, user)
+            return redirect("home")
+        else:
+            return render(request, 'login.html', {'error': '사용자 아이디 또는 패스워드가 틀립니다.'})
+    else:
+        return render(request, 'login.html')
 
 def qnaView(request):
     return render(request,'qna.html',None)
