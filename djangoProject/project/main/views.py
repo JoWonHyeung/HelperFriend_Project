@@ -1,10 +1,5 @@
 import json
-
-from django.shortcuts import render
-from django.views.decorators.csrf import csrf_exempt
-
 from main.crawling import crawling
-# Create your views here.
 from django.shortcuts import render, redirect
 from django.http import JsonResponse, HttpResponse
 from main.models import User_Info
@@ -65,16 +60,19 @@ from main.logic import scoreSum
 # u_info7.save(); u_info8.save(); u_info9.save()
 # u_info10.save(); u_info11.save(); u_info12.save()
 
-#crawling_tmp = crawling()
+crawling_tmp = crawling()
 
 def homeView(request):
     context = None
-    # context = {
-    #      'images': crawling_tmp[0],
-    #      'urls': crawling_tmp[1],
-    #      'status': crawling_tmp[2],
-    #      'n': range(len(crawling_tmp[0])),
-    #  }
+    course_id = User_Info.objects.get(user=request.user).course_id
+    course_name = Course.objects.get(id=course_id).course_name
+    context = {
+        'images': crawling_tmp[0],
+        'urls': crawling_tmp[1],
+        'status': crawling_tmp[2],
+        'n': range(len(crawling_tmp[0])),
+        'course': course_name,
+    }
     return render(request, 'home.html', context)
 
 def teamView(request):
@@ -87,7 +85,6 @@ def teamJson(request):
     # 해당 과정명에 해당하는 모든 인원 뽑아오기
     objs = list(Course.objects.filter(course_name=course))
     stu_dict={}
-
     for obj in objs:
         id = obj.id
         user_info = User_Info.objects.get(course_id=id)
@@ -99,8 +96,6 @@ def teamJson(request):
         'student': stu_sorted_dict,
     }
     return JsonResponse(context)
-
-
 
 def joinView(request):
     context = {}
@@ -116,9 +111,7 @@ def joinView(request):
         elif password != re_password:
             context['error'] = '비밀번호가 다릅니다.'
         else:
-            user = User.objects.create_user(username=username,
-                                            first_name=name,
-                                            password=password)
+            user = User.objects.create_user(username=username, first_name=name, password=password)
             course = Course(course_name=course_name); course.save();
             user_info = User_Info(user=user, score=score, course=course); user_info.save();
             auth.login(request, user)
@@ -126,7 +119,22 @@ def joinView(request):
     return render(request, 'join.html', context)
 
 def editView(request):
-    return render(request,'edit.html',None)
+    context = {}
+    if request.method == "POST":
+        user = request.user
+        username = request.POST["username"]
+        password = request.POST["password"]
+        re_password = request.POST["re-password"]
+
+        if not User.objects.filter(username=username):
+            return render(request, 'edit.html', {"error": "등록된 아이디가 존재하지 않습니다."})
+        if password == re_password:
+            user.set_password(password)
+            user.save()
+            return redirect('login')
+        else:
+            context = {"error": "비밀번호가 다릅니다."}
+    return render(request, 'edit.html', context)
 
 def loginView(request):
     if request.method == "POST":
@@ -140,6 +148,9 @@ def loginView(request):
             return render(request, 'login.html', {'error': '사용자 아이디 또는 패스워드가 틀립니다.'})
     else:
         return render(request, 'login.html')
+
+def logoutView(request):
+    return render(request,'login.html')
 
 def qnaView(request):
     return render(request,'qna.html',None)

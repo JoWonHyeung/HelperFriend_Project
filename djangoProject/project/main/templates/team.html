@@ -42,7 +42,6 @@
               </tr>
           </thead>
           <tbody id = "allStudent">
-
           </tbody>
       </table>
       <div class="text-center">
@@ -55,7 +54,6 @@
   <section id = "block2"class="col col-sm-6 my-5" style="max-width: 1080px; display: none;">
     <div class="container">
       <div id="teamBlock"class="card-columns">
-
       </div>
     </div>
     <div class="text-center">
@@ -67,7 +65,7 @@
 
 
     <script>
-        /* localStorage를 이용하여 reload후 select value 값이 유지되도록 해주었다.*/
+/* localStorage를 이용하여 reload후 select value 값이 유지되도록 해주었다.*/
 s = "option:eq("+localStorage['x']+")";
 $("#select").find(s).prop("selected",true);
 
@@ -145,6 +143,9 @@ $('#btn2').click(function(){
 /* 저장하기(저장후 홈 화면으로 이동 */
 $('#btn3').click(function(){
      location.href = '{% url "home"%}'
+
+
+
 });
 
 /* select값이 변경되었을때 reload */
@@ -153,7 +154,6 @@ $('#select').on('change',function(){
     localStorage.setItem('x',idx);
     location.reload();
 })
-
     </script>
 </body>
 </html>
