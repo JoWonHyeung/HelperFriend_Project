@@ -87,6 +87,6 @@ mesh153@naver.com
    
 - 2/29
    1. 팀 빌딩 로직 재구현 및 Home화면에 팀원 정보를 띄울 것이고, 또한 자신이 속한 조를 DB에 team_id column에 
-  
+   저장
     
  
