@@ -1,22 +1,26 @@
 {% extends 'basesimple.html' %}
 
 {% block mycss %}
-  #a {
-    background-color: #000000;
-    border-radius: 20px;
-  }
-  body {
-    background-color: #FCFCFC;
-  }
-  div#con {
-    border-radius: 10px;
-  }
-  @media (max-width: 768px) {
+    * {
+        margin: 0px;
+        padding: 0px;
+    }
+    #a {
+        background-color: #000000;
+        border-radius: 20px;
+    }
+    body {
+        background-color: #FCFCFC;
+    }
+    div#con {
+        border-radius: 10px;
+    }
+    @media (max-width: 768px) {
         .carousel-inner .carousel-item > div {
-            display: none;
+        display: none;
         }
         .carousel-inner .carousel-item > div:first-child {
-            display: block;
+        display: block;
         }
     }
 
@@ -62,16 +66,165 @@
     label {
         font-size: large;
     }
+    label {
+        color: #656565;
+        font-weight: bold;
+    }
+
+    .card {
+        color: #656565;
+        border: 1px solid #f0f0f0;
+        box-shadow: 3px 3px 3px #f0f0f0;
+        margin: 10px 20px 10px 20px;
+        padding: 30px;
+        width: 355px;
+        display: inline-block;
+    }
+    .cardname {
+        display: flex;
+        flex-direction: row;
+    }
+
+    p#imp {
+        font-size: 18px;
+    }
+    div.card table {
+        margin-bottom: 0px;
+    }
+    div.card table span{
+        padding: 1px 10px;
+        background-color: #F5CE58;
+        border-radius: 20px;
+        color: white;
+        font-size: 14px;
+        font-weight: bold;
+    }
+    div.card table th {
+          padding: 0px 20px 0px 0px;
+    }
+    div.card table td {
+          padding: 5px 5px;
+    }
+    .hash {
+        margin-top: 20px;
+        margin-bottom: 0px;
+    }
+
 {% endblock %}
 {% block mycontent %}
-    <div class="col col-sm-9" style="background-color: #FCFCFC">
-          <div class="container my-5">
-            <div class="container p-3 my-3 border bg-white">
+
+    <div class="col col-sm-9 mt-5">
+            <div id="con" class="container p-3 my-3 border bg-white">
               <label class="mb-0">팀 정보</label>
 
+              <hr>
+              <div class="row">
+                  <div class="container card">
+                      <div class="cardname">
+                          <img src="/static/img/2.jpg" width="35" height="35" class="rounded-circle">
+                          &nbsp;&nbsp;
+                          <div style="line-height:100%">
+                              <p><strong>박재현</strong><br><small>star3175@gmail.com</small></p>
+                          </div>
+                          <div class="container"></div>
+                          <div>
+                              <img src="/static/img/star.svg" style="width: 20px;">
+                          </div>
+                      </div>
+                      <div style="line-height:120%">
+                          <p id="imp"><small><small>빅데이터 서비스 분석 6회차</small></small><br><strong>심리학, 산업디자인학</strong></p>
+                      </div>
+                      <div>
+                          <table>
+                              <tr>
+                                  <th>취미</th>
+                                  <td><span>자전거타기</span></td>
+                                  <td><span>자전거타기</span></td>
+                              </tr>
+                          </table>
+                          <table>
+                              <tr>
+                                  <th>목표</th>
+                                  <td><span>대기업 취업</span></td>
+                              </tr>
+                          </table>
+                      </div>
+                      <div class="hash">
+                          <span>
+                              <p><small>#심리학과 #심리학과</small></p>
+                          </span>
+                      </div>
+                  </div>
+                  <div class="container card">
+                      <div class="cardname">
+                          <img src="/static/img/2.jpg" width="35" height="35" class="rounded-circle">
+                          &nbsp;&nbsp;
+                          <div style="line-height:100%">
+                              <p><strong>박재현</strong><br><small>star3175@gmail.com</small></p>
+                          </div>
+                      </div>
+                      <div style="line-height:120%">
+                          <p id="imp"><small><small>빅데이터 서비스 분석 6회차</small></small><br><strong>심리학, 산업디자인학</strong></p>
+                      </div>
+                      <div>
+                          <table>
+                              <tr>
+                                  <th>취미</th>
+                                  <td><span>자전거타기</span></td>
+                                  <td><span>자전거타기</span></td>
+                              </tr>
+                          </table>
+                          <table>
+                              <tr>
+                                  <th>목표</th>
+                                  <td><span>대기업 취업</span></td>
+                              </tr>
+                          </table>
+                      </div>
+                      <div class="hash">
+                          <span>
+                              <p><small>#심리학과 #심리학과</small></p>
+                          </span>
+                      </div>
+                  </div>
+                  <div class="container card">
+                      <div class="cardname">
+                          <img src="/static/img/2.jpg" width="35" height="35" class="rounded-circle">
+                          &nbsp;&nbsp;
+                          <div style="line-height:100%">
+                              <p><strong>박재현</strong><br><small>star3175@gmail.com</small></p>
+                          </div>
+                      </div>
+                      <div style="line-height:120%">
+                          <p id="imp"><small><small>빅데이터 서비스 분석 6회차</small></small><br><strong>심리학, 산업디자인학</strong></p>
+                      </div>
+                      <div>
+                          <table>
+                              <tr>
+                                  <th>취미</th>
+                                  <td><span>자전거타기</span></td>
+                                  <td><span>자전거타기</span></td>
+                              </tr>
+                          </table>
+                          <table>
+                              <tr>
+                                  <th>목표</th>
+                                  <td><span>대기업 취업</span></td>
+                              </tr>
+                          </table>
+                      </div>
+                      <div class="hash">
+                          <span>
+                              <p><small>#심리학과 #심리학과</small></p>
+                          </span>
+                      </div>
+                  </div>
+                  </div>
             </div>
-            <div class="container p-3 my-3 border bg-white">
-              <label class="mb-3">공지사항</label>
+            <div id="con" class="container p-3 my-3 border bg-white">
+              <label class="mb-3">질문게시판</label>
+
+        
               <a href="#" class="mr-3 B float-right">
                 더 보기
                 <img src="/static/img/plus.svg" class="float-right" style="width: 22px; color: #656565;">
@@ -112,7 +265,7 @@
               </tbody>
             </table>
             </div>
-              <div class="container p-3 my-3 border bg-white">
+              <div id="con" class="container p-3 my-3 border bg-white">
               <label class="mb-0">공모전/대외활동</label>
               <hr>
                     <div class="container text-center my-5">
