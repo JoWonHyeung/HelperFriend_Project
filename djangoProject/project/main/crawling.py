@@ -98,5 +98,4 @@ def crawling():
     res.append(urls_image)
     res.append(urls)
     res.append(status)
-
     return res

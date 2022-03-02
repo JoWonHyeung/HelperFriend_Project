@@ -6,15 +6,13 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
-     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.min.js" integrity="sha384-VHvPCCyXqtD5DqJeNxl2dtTyhF78xXNXdkwX1CZeRusQfRKp+tA7hAShOK/B/fQ2" crossorigin="anonymous"></script>
 </head>
 <body>
-
 <button type="button" class="btn btn-primary float-right mx-3" onclick="location.href='{% url 'home' %}'">Home</button>
-
 <div class="container my-3">
      <div class="container" style="background-color: #FCFCFC">
         <form method="POST" action="">
@@ -30,7 +28,6 @@
         <button id = "btn1" type="button" class="btn btn-primary float-right" data-toggle="collapse" data-target="#demo">인원 불러오기</button>
         </form>
     </div>
-
 <div id="demo" class="container">
   <section id = "block1"class="col col-sm-6 my-5" style="max-width: 1080px; display: none;">
       <table class="table">
@@ -49,27 +46,26 @@
       </div>
   </section>
 </div>
-
 <div id="demo2" class="container">
   <section id = "block2"class="col col-sm-6 my-5" style="max-width: 1080px; display: none;">
     <div class="container">
       <div id="teamBlock"class="card-columns">
       </div>
     </div>
-    <div class="text-center">
+      <div class="text-center">
           <button id="btn3" type="button" class="btn btn-primary my-3">저장하기</button>
       </div>
   </section>
 </div>
 </div>
-
-
-    <script>
-/* localStorage를 이용하여 reload후 select value 값이 유지되도록 해주었다.*/
+<script>
+    /* localStorage를 이용하여 reload후 select value 값이 유지되도록 해주었다.*/
 s = "option:eq("+localStorage['x']+")";
 $("#select").find(s).prop("selected",true);
 
-let all = []
+let all = [];
+let myTeamId = 0;
+let team = [];
 
 /* 첫 번째 button 눌렀을때 */
 $('#btn1').click(function(){
@@ -77,7 +73,7 @@ $('#btn1').click(function(){
 
     course = $("select[name=course]").val()
     let param = { 'course' : course };
-    console.log(course);
+
     $.ajax({
         url : '{% url 'teamJson' %}',
         type : 'POST',
@@ -108,44 +104,66 @@ $('#btn1').click(function(){
 $('#btn2').click(function(){
     $('#block2').css('display','block');
 
-    let teamNum = all.length / 4;
-    context = "";
 
-    if(teamNum >= 1){
-        for(var i = 1; i <= Math.ceil(teamNum); i++){
-            context += "<div class='card bg-light'>"
-            context += "<h2 class='text-center my-4'>" + i + "조</h2>"
-            context += "<div class='card-body text-center'>"
-            for(var j = 0; j < 4; j++){
-                context += "<p class='card-text'>" + all[0] + "</p>"
-                all.splice(0,1);
-                if(all.length == 0) break;
+    let teamCnt = all.length / 4;
+    let context = "";
+
+    /* 인원을 담을 2차원 배열을 초기화 */
+    for(let i = 0;i < Math.ceil(teamCnt);i++){
+        team[i] =[];
+    }
+
+    /* 팀 구성 Logic */
+    let i = 0;
+    while(i < all.length){
+        for(let j = 0; j < Math.ceil(teamCnt) && all[i] != undefined; j++,i++){
+            if(all[i] === '{{ user.first_name }}'){
+                myTeamId = j + 1;
             }
-            context += "</div>"
-            context += "</div>"
+            team[j].push(all[i]);
         }
     }
-    else{
-        context += "<div class='card bg-light'>";
-        context += "<h2 class='text-center my-4'>" + 1 + "조</h2>";
+        /* 구성된 팀 정보들을 context저장후 html에 반환*/
+    for(let i = 0; i < team.length; i++){
+        context += "<div class='card bg-light'>"
+        context += "<h2 class='text-center my-4'>" + (i + 1) + "조</h2>";
+        context += "<hr>"
         context += "<div class='card-body text-center'>";
-        while(all.length != 0){
-            context += "<p class='card-text'>" + all[0] + "</p>"
-            all.splice(0,1);
+        for(var j = 0; j < team[i].length; j++){
+            context += "<p class='card-text'>" + team[i][j] + "</p>";
         }
-        context += "</div>"
+        context += "</div>";
         context += "</div>";
     }
+
+
     $('[id="teamBlock"]').html(context);
     $("#btn2").attr("disabled", true);
 });
 
-/* 저장하기(저장후 홈 화면으로 이동 */
+/* 저장하기(저장후 홈 화면으로 이동) */
 $('#btn3').click(function(){
-     location.href = '{% url "home"%}'
+    /* 자신이 속한 팀원 정보들을 ajax 통신을 활용하여 전달 */
+    let param = {
+        'myTeam' : team[myTeamId - 1],
+        'allTeam' : team,
+        };
 
-
-
+    $.ajax({
+        url : '{% url 'homeTeamJson' %}',
+        type : 'POST',
+        headers: {
+            'X-CSRFTOKEN' : '{{ csrf_token }}'
+        },
+        data : JSON.stringify(param),
+        success:function(data){
+            console.log("success");
+        },
+        error: function(){
+            alert("Error!!")
+        },
+    });
+    location.href = '{% url "home" %}'
 });
 
 /* select값이 변경되었을때 reload */
@@ -154,7 +172,8 @@ $('#select').on('change',function(){
     localStorage.setItem('x',idx);
     location.reload();
 })
-    </script>
+
+</script>
 </body>
 </html>
 

@@ -64,29 +64,31 @@
               <table class="table">
                 <thead>
                     <tr>
+                        <th style="text-align: center;">조</th>
                         <th style="text-align: center;">과정명</th>
                         <th style="text-align: center;">이름</th>
                     </tr>
                 </thead>
-                  <tbody >
-                    <tr>
-                        <td style="text-align: center;">빅데이터 서비스 분석 개발 6회차</td>
-                        <td style="text-align: center;">조원형</td>
-                    </tr>
-                    <tr>
-                        <td style="text-align: center;">빅데이터 서비스 분석 개발 6회차</td>
-                        <td style="text-align: center;">홍진수</td>
-                    </tr>
-                    <tr>
-                        <td style="text-align: center;">빅데이터 서비스 분석 개발 6회차</td>
-                        <td style="text-align: center;">박재현</td>
-                    </tr>
+                  <tbody>
+                  {% for _ in teamLength %}
+                  {% load index %}
+                      <tr>
+                          <td style="text-align: center;">{{ teamName }}</td>
+                          <td style="text-align: center;">{{ course }}</td>
+                          <td style="text-align: center;">{{ myTeam|index:forloop.counter0 }}</td>
+                      </tr>
+                  {% empty %}
+                      <tr>
+                          <td style="text-align: center;">팀</td>
+                          <td style="text-align: center;">빌딩을</td>
+                          <td style="text-align: center;">수행하세요.</td>
+                      </tr>
+                  {% endfor %}
                   </tbody>
               </table>
             </div>
-
             <div class="container p-3 my-3 border bg-white">
-              <label>질문게시판</label>
+              <label>공지사항</label>
               <a href="#" class="mr-3 float-right">더 보기</a>
               <img src="/static/img/plus.svg" class="float-right" style="width: 22px;">
               <br>
@@ -166,7 +168,6 @@
                                         </div>
                                         {% endif %}
                                     {% endfor %}
-
                                 </div>
                                 <a class="carousel-control-prev bg-dark w-auto" href="#recipeCarousel" role="button" data-slide="prev" style="transform: translateX(-35px);">
                                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -179,12 +180,13 @@
                             </div>
                         </div>
                     </div>
-
+              </div>
               </div>
         </div>
 {% endblock %}
 
 {% block myjs %}
+
   $('#recipeCarousel').carousel({
       interval: 10000
     })
@@ -208,4 +210,3 @@
     });
 
 {% endblock %}
-

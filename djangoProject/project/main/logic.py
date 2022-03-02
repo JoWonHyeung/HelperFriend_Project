@@ -68,6 +68,3 @@ def scoreSum(request):
         elif award == "1":
             score += float(award)
     return score
-
-def separateTeam(request): #총인원수 / 4 -> 총 팀의 수
-    pass

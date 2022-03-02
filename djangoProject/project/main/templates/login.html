@@ -50,15 +50,17 @@
             .explain {
                 text-align: right;
             }
-            a.link {
+            #pwd {
                 font-weight: bold;
                 text-decoration: underline;
                 color: #656565;
             }
-            span.loginbutton {
+            #join {
                 font-weight: bold;
-                color: #ffffff;
+                text-decoration: underline;
+                color: #656565;
             }
+
         </style>
     </head>
     <body>
@@ -69,26 +71,26 @@
                   <img src="/static/img/info.svg">
                 </a>
             </div>
-                          <!-- The Modal -->
-                          <div class="modal fade" id="guide">
-                            <div class="modal-dialog modal-lg">
-                              <div class="modal-content">
-                                <!-- Modal Header -->
-                                <div class="modal-header">
-                                  <h4 class="modal-title">HelperFriend는 어떤 사이트인가?</h4>
-                                  <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                </div>
-                                <!-- Modal body -->
-                                <div class="modal-body">
-                                  HelperFriend는 멀티캠퍼스 학생들을 위한 학습 커뮤니티 공간입니다. 또한, 팀원 빌딩에 있어 좀 더 객관적인 지표로 팀을 구성하도록 도와주는 사이트입니다.
-                                </div>
-                                <!-- Modal footer -->
-                                <div class="modal-footer">
-                                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
+              <!-- The Modal -->
+              <div class="modal fade" id="guide">
+                <div class="modal-dialog modal-lg">
+                  <div class="modal-content">
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                      <h4 class="modal-title">HelperFriend는 어떤 사이트인가?</h4>
+                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                      HelperFriend는 멀티캠퍼스 학생들을 위한 학습 커뮤니티 공간입니다. 또한, 팀원 빌딩에 있어 좀 더 객관적인 지표로 팀을 구성하도록 도와주는 사이트입니다.
+                    </div>
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
             <div class="container" style="text-align: center;">
               <img src="/static/img/logo.png" class="logo">
             </div>
@@ -118,58 +120,19 @@
               </div>
               <br>
               <a href="#">
-                  <button class="btn btn-secondary btn-block btn-lg" style="background-color: #707070"><span class="loginbutton">로그인</span></button>
+                  <button class="btn btn-secondary btn-block btn-lg" style="background-color: #707070" class="loginBtn">로그인</button>
               </a>
           </form>
           <div class="textbottom">
               <div>
-                  <p><a data-target="#pwdChange" data-toggle="modal" class="MainNavText link" href="#pwdChange">아이디/비밀번호 찾기</a></p>
+                  <p><a href="{% url 'edit' %}" id="pwd">비밀번호를 잊으셨나요?</a></p>
                       <span>
                           <label class="no">헬퍼프렌드는 처음이신가요?</label>
-                          <a class="link" href="{% url 'join' %}">회원가입</a>
+                          <a class="link" href="{% url 'join' %}" id="join">회원가입</a>
                       </span>
               </div>
           </div>
-          <div class="modal fade" id="pwdChange">
-                        <div class="modal-dialog modal-lg">
-                          <div class="modal-content">
-                            <!-- Modal Header -->
-                            <div class="modal-header">
-                              <h4 class="modal-title">비밀번호 변경</h4>
-                              <button type="button" class="close" data-dismiss="modal"></button>
-                            </div>
-                            <!-- Modal body -->
-                            <div class="modal-body">
-                                <form method="POST" class="pt-3" style="max-width: 720px;" action="{% url 'edit' %}">
-                                    {% csrf_token %}
-                                    {% if error %}
-                                    <div class="row">
-                                        <div class="col-12 text-center">
-                                            <p style="color: red;">{{error}}</p>
-                                        </div>
-                                    </div>
-                                    {% endif %}
-                                  <div class="form-group">
-                                      <label>아이디</label>
-                                      <input type="text" class="form-control" placeholder=" 아이디를 입력하세요." name="username" required>
-                                  </div>
-                                  <div class="form-group">
-                                      <label>비밀번호를 입력하세요.</label>
-                                      <input type="password" class="form-control" placeholder=" 비밀번호를 입력하세요." name="password" required>
-                                  </div>
-                                    <div class="form-group">
-                                      <label>비밀번호를 다시 입력하세요.</label>
-                                      <input type="password" class="form-control" placeholder=" 비밀번호를 입력하세요." name="password" required>
-                                  </div>
-                              </form>
-                            </div>
-                            <!-- Modal footer -->
-                            <div class="modal-footer">
-                              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+
         </div>
     </body>
 </html>
