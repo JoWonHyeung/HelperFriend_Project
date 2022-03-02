@@ -9,9 +9,11 @@ from main.models import Course
 from django.contrib.auth.models import User
 from django.contrib import auth
 from main.logic import scoreSum
+from django.contrib.auth.decorators import login_required
 
-crawling_tmp = crawling()
+#crawling_tmp = crawling()
 
+@login_required(login_url='/main/login/')
 def homeView(request):
     context = None
     myTeam = []
@@ -27,10 +29,10 @@ def homeView(request):
                 myTeam.append(User.objects.get(id=i.user_id).first_name)
 
     context = {
-        'images': crawling_tmp[0],
-        'urls': crawling_tmp[1],
-        'status': crawling_tmp[2],
-        'n': range(len(crawling_tmp[0])),
+        #'images': crawling_tmp[0],
+        #'urls': crawling_tmp[1],
+        #'status': crawling_tmp[2],
+        #'n': range(len(crawling_tmp[0])),
         'course': course_name,
         'myTeam': myTeam,
         'teamName': team_id,
@@ -135,8 +137,7 @@ def uploadView(request):
 
     context = {"course": course_name}
     if request.method == "POST":
-        print(request.user.id)
-        upload = UploadFile(upload_id=request.user.id,title=request.POST['title'], file=request.FILES['file'])
+        upload = UploadFile(upload_id=request.user.id,title=request.POST.get('title'), file=request.FILES.get('file'))
         upload.save()
         context['success'] = "파일이 성공적으로 업로드 되었습니다."
 

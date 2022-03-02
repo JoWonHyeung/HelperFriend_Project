@@ -15,6 +15,7 @@
                         <th style="text-align: center;">파일명</th>
                         <th style="text-align: center;">제출날짜</th>
                         <th style="text-align: center;">다운로드</th>
+                        <th style="text-align: center;">삭제</th>
                     </tr>
                 </thead>
                   <tbody>
@@ -25,7 +26,8 @@
                             <td style="text-align: center;">{{ titles|index:forloop.counter0 }}</td>
                             <td style="text-align: center;">{{ files|index:forloop.counter0 }}</td>
                             <td style="text-align: center;">{{ date|index:forloop.counter0 }}</td>
-                            <td style="text-align: center;">test</td>
+                            <td style="text-align: center;"><a href=""><img src="/static/img/download.png"></a></td>
+                            <td style="text-align: center;"><a href=""><img src="/static/img/delete.png" alt="삭제"></a></td>
                          </tr>
                         {% endfor %}
                   </tbody>
