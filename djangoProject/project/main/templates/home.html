@@ -54,20 +54,30 @@
     .movie-title {
         height: 40px; width:150px;background-color: black;overflow: hidden;
     }
+
+    a.B {
+        color: #656565;
+    }
+
+    label {
+        font-size: large;
+    }
 {% endblock %}
 
 {% block mycontent %}
     <div class="col col-sm-9" style="background-color: #FCFCFC">
           <div class="container my-5">
             <div class="container p-3 my-3 border bg-white">
-              <label>팀 정보</label>
+              <label class="mb-0">팀 정보</label>
               <hr>
               <p>팀을 생성해주세요.</p>
             </div>
             <div class="container p-3 my-3 border bg-white">
-              <label>질문게시판</label>
-              <a href="#" class="mr-3 float-right">더 보기</a>
-              <img src="/static/img/plus.svg" class="float-right" style="width: 22px;">
+              <label class="mb-3">질문게시판</label>
+              <a href="#" class="mr-3 B float-right">
+                더 보기
+                <img src="/static/img/plus.svg" class="float-right" style="width: 22px; color: #656565;">
+              </a>
               <br>
               <table class="table">
               <thead>
@@ -105,7 +115,7 @@
             </table>
             </div>
               <div class="container p-3 my-3 border bg-white">
-              <label>공모전/대외활동</label>
+              <label class="mb-0">공모전/대외활동</label>
               <hr>
                     <div class="container text-center my-5">
                         <div class="col mx-auto my-auto justify-content-center">
@@ -187,4 +197,3 @@
     });
 
 {% endblock %}
-

@@ -44,6 +44,8 @@
         display: block;
     }
     nav {
+        background: #ffffff;
+        margin-bottom: 10px;
         display: block;
     }
     #header .profile .sinup_section {
@@ -54,6 +56,10 @@
         line-height: 20px;
         margin-top: 3px;
     }
+    img.logo {
+        height: 30px;
+        margin-left: 20px;
+    }
 
     {% block mycss %}
 
@@ -61,15 +67,19 @@
     </style>
 </head>
 <body>
-    <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-warning">
-    <a class="navbar-brand" href="#">Logo</a>
+    <nav class="navbar fixed-top navbar-expand-lg navbar-light">
+    <a class="navbar-brand" href="#">
+        <img src="/static/img/helperfriendname.png" class="logo">
+    </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav w-100">
             <li class="nav-item dropdown ml-auto">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <img src="/static/img/2.jpg" width="30" height="30" class="rounded-circle">
+                </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
                     <a class="dropdown-item" href="#"></a>
                     <a class="dropdown-item" href="{% url 'edit' %}">정보수정</a>
@@ -84,7 +94,7 @@
       <div class="row justify-content-md-center">
         <div class="col col-sm-3" style="background-color: #FCFCFC">
           <div class="text-center">
-              <img src="/static/img/logo.png" alt="프로필" width="220" class="rounded-circle mt-5 mb-1 img-center">
+              <img src="/static/img/2.jpg" alt="프로필" width="220" height="220" class="rounded-circle mt-5 mb-1 img-center">
           </div>
           <p class="mt-1 mb-0">박재현</p>
           <p>빅데이터 6차시<p>
