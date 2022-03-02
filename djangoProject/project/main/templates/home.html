@@ -68,31 +68,7 @@
           <div class="container my-5">
             <div class="container p-3 my-3 border bg-white">
               <label class="mb-0">팀 정보</label>
-              <table class="table">
-                  <thead>
-                    <tr>
-                        <th style="text-align: center;">조</th>
-                        <th style="text-align: center;">과정명</th>
-                        <th style="text-align: center;">이름</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                  {% for _ in teamLength %}
-                  {% load index %}
-                      <tr>
-                          <td style="text-align: center;">{{ teamName }}</td>
-                          <td style="text-align: center;">{{ course }}</td>
-                          <td style="text-align: center;">{{ myTeam|index:forloop.counter0 }}</td>
-                      </tr>
-                  {% empty %}
-                      <tr>
-                          <td style="text-align: center;">팀</td>
-                          <td style="text-align: center;">빌딩을</td>
-                          <td style="text-align: center;">수행하세요.</td>
-                      </tr>
-                  {% endfor %}
-                  </tbody>
-              </table>
+
             </div>
             <div class="container p-3 my-3 border bg-white">
               <label class="mb-3">공지사항</label>
