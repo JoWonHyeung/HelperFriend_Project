@@ -1,6 +1,6 @@
 import json
 import os.path
-
+import smtplib
 from main.crawling import crawling
 from django.shortcuts import render, redirect
 from django.http import JsonResponse, HttpResponse
@@ -9,9 +9,18 @@ from main.models import Course
 from django.contrib.auth.models import User
 from django.contrib import auth
 from main.logic import scoreSum
+from django.contrib.auth.decorators import login_required
+from email.mime.text import MIMEText
+from email import encoders
+from email.mime.base import MIMEBase
+from email.mime.multipart import MIMEMultipart
+from email.mime.application import MIMEApplication
+from django.core.mail import EmailMultiAlternatives
+import smtplib, ssl
 
-crawling_tmp = crawling()
+#crawling_tmp = crawling()
 
+@login_required(login_url='/main/login/')
 def homeView(request):
     context = None
     myTeam = []
@@ -27,10 +36,10 @@ def homeView(request):
                 myTeam.append(User.objects.get(id=i.user_id).first_name)
 
     context = {
-        'images': crawling_tmp[0],
-        'urls': crawling_tmp[1],
-        'status': crawling_tmp[2],
-        'n': range(len(crawling_tmp[0])),
+        #'images': crawling_tmp[0],
+        #'urls': crawling_tmp[1],
+        #'status': crawling_tmp[2],
+        #'n': range(len(crawling_tmp[0])),
         'course': course_name,
         'myTeam': myTeam,
         'teamName': team_id,
@@ -132,14 +141,11 @@ def uploadView(request):
     user_Info = User_Info.objects.get(user=request.user)
     course_id = user_Info.course_id
     course_name = Course.objects.get(id=course_id).course_name
-
     context = {"course": course_name}
     if request.method == "POST":
-        print(request.user.id)
-        upload = UploadFile(upload_id=request.user.id,title=request.POST['title'], file=request.FILES['file'])
+        upload = UploadFile(upload_id=request.user.id,title=request.POST.get('title'), file=request.FILES.get('file'))
         upload.save()
         context['success'] = "파일이 성공적으로 업로드 되었습니다."
-
     return render(request, 'upload.html', context)
 
 def uploadListView(request):
@@ -153,7 +159,7 @@ def uploadListView(request):
     for i in files:
         titles.append(i.title)
         file_names.append(os.path.basename(i.file.name).split("/")[0])
-        date.append(i.upload_time.strftime("%Y/%m/%d %H:%M:%S"))
+        date.append(i.upload_time.strftime("%Y/%m/%d"))
     context = {
         "course": course_name,
         "titles": titles,
@@ -162,6 +168,51 @@ def uploadListView(request):
         "n": range(len(titles)),
     }
     return render(request, 'uploadList.html',context)
+
+def uploadDeleteView(request, id):
+    return render(request,'uploadList.html')
+
+from email.utils import formataddr
+from email.header import Header
+def emailView(request):
+    user_Info = User_Info.objects.get(user=request.user)
+    course_id = user_Info.course_id
+    course_name = Course.objects.get(id=course_id).course_name
+
+    if request.method == 'POST':
+        port = 587  # For starttls
+        smtp_server = "smtp.gmail.com"
+        sender_email = formataddr((str(Header('Someone Somewhere', 'utf-8')), 'wonhyeongjo60@gmail.com'))
+        receiver_email = request.POST.get('email')
+        password = "bhghvqcwzoiswuff"
+        title = request.POST.get('title')
+        message = request.POST.get('text')
+        file = request.FILES.get('file')
+
+        extense = file.name.split('.')[1]
+
+        msg = MIMEMultipart()
+        msg['Subject'] = title
+        msg.attach(MIMEText(message, 'plain'))
+
+        if extense == "jpg" or extense == 'png':
+            part = MIMEBase('application', 'octet-stream')
+            part.set_payload(file.file.read())
+            encoders.encode_base64(part)
+            part.add_header('Content-Disposition', "attachment; filename= " + file.name)
+            msg.attach(part)
+        else:
+            msg.attach(MIMEApplication(file.file.read(),Name=file.name))
+
+        context = ssl.create_default_context()
+        with smtplib.SMTP(smtp_server, port) as server:
+            server.starttls(context=context)
+            server.login(sender_email, password)
+            server.sendmail(sender_email, receiver_email, msg.as_string())
+        return redirect('home')
+    else:
+        return render(request,'email.html',{"course": course_name})
+
 
 def qnaView(request):
     return render(request,'qna.html',None)

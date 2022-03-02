@@ -73,7 +73,6 @@
                 </div>
             </div>
             <hr>
-
         {% if error %}
         <div class="row">
             <div class="col-12 text-center">
@@ -86,7 +85,7 @@
                     {% csrf_token %}
                     <div class="form-group">
                         <label>아이디</label>
-                        <input type="text" class="form-control"  placeholder="ex) helper@friend.com" name="username" required>
+                        <input type="text" class="form-control"  placeholder="ex) helper" name="username" required>
                     </div>
                     <div class="form-group">
                         <label>이름</label>
@@ -94,11 +93,11 @@
                     </div>
                     <div class="form-group">
                         <label>비밀번호</label>
-                        <input type="password" class="form-control" placeholder="비밀번호(문자, 숫자조합 8자 이상)" name="password" required>
+                        <input type="password" class="form-control" placeholder="비밀번호" name="password" required>
                     </div>
                     <div class="form-group">
                         <label>비밀번호 확인</label>
-                        <input type="password" class="form-control" placeholder="비밀번호" name="re-password" required>
+                        <input type="password" class="form-control" placeholder="비밀번호 확인" name="re-password" required>
                     </div>
                     <label for="select">커리큘럼명</label>
                     <select class="form-control" name="course" id="select">
@@ -265,7 +264,7 @@
 
         <div class="textbottom">
             <span>이미 가입하셨다면?</span>&nbsp;
-            <a class="link" href="{% url 'login' %}">로그인</a>
+            <a class="link" href="{% url 'login' %}">로그인으로 가기</a>
         </div>
      </div>
 <script>

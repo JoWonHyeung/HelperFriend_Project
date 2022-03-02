@@ -111,12 +111,12 @@
     }
 
 {% endblock %}
-
 {% block mycontent %}
 
     <div class="col col-sm-9 mt-5">
             <div id="con" class="container p-3 my-3 border bg-white">
               <label class="mb-0">팀 정보</label>
+
               <hr>
               <div class="row">
                   <div class="container card">
@@ -223,6 +223,8 @@
             </div>
             <div id="con" class="container p-3 my-3 border bg-white">
               <label class="mb-3">질문게시판</label>
+
+        
               <a href="#" class="mr-3 B float-right">
                 더 보기
                 <img src="/static/img/plus.svg" class="float-right" style="width: 22px; color: #656565;">
@@ -304,7 +306,6 @@
                                         </div>
                                         {% endif %}
                                     {% endfor %}
-
                                 </div>
                                 <a class="carousel-control-prev bg-dark w-auto" href="#recipeCarousel" role="button" data-slide="prev" style="transform: translateX(-35px);">
                                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>

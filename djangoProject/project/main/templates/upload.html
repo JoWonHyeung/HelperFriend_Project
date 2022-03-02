@@ -10,24 +10,29 @@
         <h1>파일 업로드</h1>
         <hr>
         {% if success %}
-            <div class="row">
-                <div class="col-12 text-center">
-                    <p style="color: blue;">{{success}}</p>
+        <div class="row">
+            <div class="col-12 text-center">
+                <p style="color: blue;">{{success}}</p>
+            </div>
+        </div>
+        {% endif %}
+        <form method="POST" class="my-auto" style="max-width: 720px;" action="{% url 'upload' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="title">제목</label>
+                <input type="text" class="form-control" id="title" placeholder="제목을 입력하세요." name="title">
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">Upload</span>
+                </div>
+                <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="inputGroupFile01" name="file">
+                    <label class="custom-file-label" for="inputGroupFile01" ></label>
                 </div>
             </div>
-        {% endif %}
-      <form method="POST" class="my-auto" style="max-width: 720px;" action="{% url 'upload' %}" enctype="multipart/form-data">
-              {% csrf_token %}
-              <div class="form-group">
-                  <label>제목</label>
-                  <input type="text" name = "title" placeholder="제목을 입력하세요">
-              </div>
-              <div class="form-group">
-                  <label>업로드할 파일 선택</label>
-                  <input type="file" name="file">
-              </div>
-              <br>
-              <button class="btn btn-secondary btn-block btn-lg" style="background-color: #707070">파일 제출</button>
+            <br>
+            <button class="btn btn-secondary" style="background-color: #707070">파일 제출</button>
           </form>
         </div>
     </div>
