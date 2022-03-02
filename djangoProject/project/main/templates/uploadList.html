@@ -27,7 +27,7 @@
                             <td style="text-align: center;">{{ files|index:forloop.counter0 }}</td>
                             <td style="text-align: center;">{{ date|index:forloop.counter0 }}</td>
                             <td style="text-align: center;"><a href=""><img src="/static/img/download.png"></a></td>
-                            <td style="text-align: center;"><a href=""><img src="/static/img/delete.png" alt="삭제"></a></td>
+                            <td style="text-align: center;"><a href="{% url 'uploadDelete' user.id %}"><img src="/static/img/delete.png" alt="삭제"></a></td>
                          </tr>
                         {% endfor %}
                   </tbody>
