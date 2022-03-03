@@ -80,7 +80,6 @@
         height: 30px;
         margin-left: 20px;
     }
-
     th {
     font-size: 14px;
     color: #656565;
@@ -89,7 +88,6 @@
     font-size: 14px;
     color: #656565;
     }
-
     {% block mycss %}
     {% endblock %}
     </style>
@@ -123,14 +121,11 @@
     <div class="container">
       <div class="row justify-content-md-center">
         <div class="col col-sm-3" style="background-color: #FCFCFC">
-          <div class="text-center">
+            <div class="text-center">
               <img src="/static/img/2.jpg" alt="프로필" width="220" height="220" class="rounded-circle mt-5 mb-1 img-center">
-          </div>
-          <p class="mt-1 mb-0"><p style="font-weight: bold;">이름</p> {{user.first_name}}</p>
-            <hr>
-            <p class="mt-1 mb-0"><p style="font-weight: bold;">아이디</p> {{user.username}}</p>
-            <hr>
-            <p class="mt-1 mb-0"><p style="font-weight: bold;">과정명</p> {{ course }}<p>
+            </div>
+            <div id="userInfo">
+            </div>
             <button class="btn btn-secondary btn-block btn-sm my-3" onclick="location.href='{% url 'team' %}'">팀 빌딩 하러가기</button>
         </div>
           {% block mycontent %}
@@ -141,6 +136,32 @@
         </div>
       </div>
     </div>
-    <script>{% block myjs %} {% endblock %} </script>
+    <script>
+    let param = {'id': {{ user.id }} }
+    var context = ""
+
+    $.ajax({
+        url : '{% url 'homeInfoJson'%}',
+        type : 'POST',
+        headers: {
+            'X-CSRFTOKEN' : '{{ csrf_token }}'
+        },
+        data : JSON.stringify(param),
+        success:function(data){
+            context += "<p class='mt-1 mb-0'><p style='font-weight: bold;'>이름</p>"+ data['name'] +"</p>"
+            context += "<hr>"
+            context += "<p class='mt-1 mb-0'><p style='font-weight: bold;'>아이디</p>"+ data['id'] +"</p>"
+            context += "<hr>"
+            context += "<p class='mt-1 mb-0'><p style='font-weight: bold;'>과정명</p>"+ data['course'] +"</p>"
+            $('[id="userInfo"]').html(context);
+        },
+        error: function(){
+            alert('no success!!');
+        },
+    });
+
+    {% block myjs %}
+    {% endblock %}
+    </script>
 </body>
 </html>

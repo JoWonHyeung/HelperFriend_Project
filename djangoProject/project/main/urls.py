@@ -5,7 +5,7 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('home/',views.homeView,name='home'),
-    path('homeTeamJson/',views.homeTeamJson,name='homeTeamJson'),
+    path('home/homeInfoJson/', views.homeInfoJson, name='homeInfoJson'),
     path('join/',views.joinView,name='join'),
     path('login/',views.loginView,name='login'),
     path('logout/',views.logoutView,name='logout'),
@@ -17,7 +17,8 @@ urlpatterns = [
     path('edit/',views.editView,name='edit'),
     path('qna/',views.qnaView,name='qna'),
     path('team/',views.teamView,name='team'),
-    path('teamJson/',views.teamJson,name='teamJson'),
+    path('team/teamJson/',views.teamJson,name='teamJson'),
+    path('team/homeTeamJson/',views.homeTeamJson,name='homeTeamJson'),
     path('guide/',views.guideView,name='guide'),
     path('qnaWrite/',views.qnaWriteView,name='qnaWrite'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

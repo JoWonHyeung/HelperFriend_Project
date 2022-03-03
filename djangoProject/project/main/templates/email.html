@@ -32,7 +32,7 @@ label.email {
                       <div class="input-group mb-3">
                           <div class="custom-file">
                             <input type="file" class="custom-file-input" id="inputGroupFile01" name="file">
-                            <label class="custom-file-label email" for="inputGroupFile01">파일 선택(모든 파일은 압축해서 업로드합니다.)</label>
+                            <label class="custom-file-label email" for="inputGroupFile01">파일 선택( 모든 파일은 압축해서 업로드합니다. )</label>
                           </div>
                       </div>
                     <br>
@@ -44,4 +44,15 @@ label.email {
         </div>
     </div>
 {% endblock %}
+
+{% block myjs %}
+$('#inputGroupFile01').on('change',function(){
+                //get the file name
+                var fileName = $(this).val();
+                console.log(fileName)
+                //replace the "Choose a file" label
+                $(this).next('.custom-file-label').html(fileName);
+})
+{% endblock %}
+
 

@@ -8,19 +8,16 @@ from main.models import User_Info, UploadFile
 from main.models import Course
 from django.contrib.auth.models import User
 from django.contrib import auth
-from main.logic import scoreSum
+from main.logic import scoreSum, emailSend
 from django.contrib.auth.decorators import login_required
-from email.mime.text import MIMEText
-from email import encoders
-from email.mime.base import MIMEBase
-from email.mime.multipart import MIMEMultipart
-from email.mime.application import MIMEApplication
 from django.http import FileResponse
 from django.core.files.storage import FileSystemStorage
+from django.contrib.auth.models import User
+from django.contrib import auth
 import urllib
 
 
-crawling_tmp = crawling()
+#crawling_tmp = crawling()
 
 @login_required(login_url='/main/login/')
 def homeView(request):
@@ -39,10 +36,10 @@ def homeView(request):
                 name.append(User.objects.get(id=i.user_id).first_name)
                 myId.append(User.objects.get(id=i.user_id).username)
     context = {
-        'images': crawling_tmp[0],
-        'urls': crawling_tmp[1],
-        'status': crawling_tmp[2],
-        'n': range(len(crawling_tmp[0])),
+        # 'images': crawling_tmp[0],
+        # 'urls': crawling_tmp[1],
+        # 'status': crawling_tmp[2],
+        # 'n': range(len(crawling_tmp[0])),
         'course': course_name,
         'name': name,
         'habit': habit,
@@ -60,16 +57,13 @@ def teamView(request):
 
 def teamJson(request):
     # 과정명 가져오기
-    jsonObject = json.loads(request.body)
-    course = jsonObject.get('course')
+    course = json.loads(request.body).get('course')
     # 해당 과정 명에 해당 하는 모든 인원 뽑아오기
-    objs = list(Course.objects.filter(course_name=course))
-    stu_dict={}
-    for obj in objs:
-        id = obj.id
-        user_info = User_Info.objects.get(course_id=id)
+    students = list(Course.objects.filter(course_name=course))
+    stu_dict = {}
+    for student in students:
+        user_info = User_Info.objects.get(course_id=student.id)
         stu_dict[user_info.user.first_name] = user_info.score
-
     stu_sorted_dict = sorted(stu_dict.items(), key=lambda item: item[1], reverse=True)
     context = {
         'course': course,
@@ -78,7 +72,6 @@ def teamJson(request):
     return JsonResponse(context)
 
 def homeTeamJson(request):
-    context={}
     jsonObject = json.loads(request.body)
     myTeam = jsonObject.get('myTeam')
     allTeam = jsonObject.get('allTeam')
@@ -88,6 +81,16 @@ def homeTeamJson(request):
             user_info = User_Info.objects.get(user_id=User.objects.get(first_name=each).id)
             user_info.team_id = i
             user_info.save()
+    return JsonResponse({})
+
+def homeInfoJson(request):
+    user_Id = json.loads(request.body).get('id')
+    user_Info = User_Info.objects.get(user_id=user_Id)
+    context={
+        'id': user_Info.user.username,
+        'name': user_Info.user.first_name,
+        'course': Course.objects.get(id=user_Info.course_id).course_name,
+    }
     return JsonResponse(context)
 
 def joinView(request):
@@ -136,9 +139,7 @@ def editView(request):
 
 def loginView(request):
     if request.method == "POST":
-        username = request.POST.get('username', None)
-        password = request.POST.get('password', None)
-        user = auth.authenticate(username=username, password=password)
+        user = auth.authenticate(username=request.POST.get('username', None), password=request.POST.get('password', None))
         if user is not None:
             auth.login(request, user)
             return redirect("home")
@@ -151,10 +152,7 @@ def logoutView(request):
     return render(request,'login.html')
 
 def uploadView(request):
-    user_Info = User_Info.objects.get(user=request.user)
-    course_id = user_Info.course_id
-    course_name = Course.objects.get(id=course_id).course_name
-    context = {"course": course_name}
+    context = {}
     if request.method == "POST":
         upload = UploadFile(upload_id=request.user.id,title=request.POST.get('title'), file=request.FILES.get('file'))
         upload.save()
@@ -162,9 +160,6 @@ def uploadView(request):
     return render(request, 'upload.html', context)
 
 def uploadListView(request):
-    user_Info = User_Info.objects.get(user=request.user)
-    course_id = user_Info.course_id
-    course_name = Course.objects.get(id=course_id).course_name
     files = UploadFile.objects.filter(upload=request.user.id)
     file_titles = []; file_names = []; file_ids = []; file_date = []
     for i in files:
@@ -173,14 +168,13 @@ def uploadListView(request):
         file_names.append(os.path.basename(i.file.name).split("/")[0])
         file_date.append(i.upload_time.strftime("%Y/%m/%d"))
     context = {
-        "course": course_name,
         "titles": file_titles,
         "names": file_names,
         "date": file_date,
         "ids": file_ids,
         "n": range(len(file_titles)),
     }
-    return render(request, 'uploadList.html',context)
+    return render(request, 'uploadList.html', context)
 
 def uploadListDelete(request,id):
     #삭제
@@ -211,55 +205,16 @@ def uploadListDownload(request, id):
     file = UploadFile.objects.get(id=id).file
     file_path = os.path.join(os.getcwd() + "\\media\\")
     file_name = file.name.replace('/','\\').split('\\')
-    #print(mimetypes.MimeTypes().guess_type(file.file.name)[0])
-    print(file_name)
-    print(file_path)
-    fs = FileSystemStorage(file_path + file_name[0])
-    response = FileResponse(fs.open(file_name[1],'rb'), content_type='application/force-download')
-    print(file_name[1])
-    print(f'attachment; filename="{ file_name[1] }"')
-
+    response = FileResponse(FileSystemStorage(file_path + file_name[0]).open(file_name[1],'rb'), content_type='application/force-download')
     response['Content-Disposition'] = 'attachment; filename*=UTF-8\'\'%s' % urllib.parse.quote(file_name[1].encode('utf-8'))
-    #*=UTF-8\’\’%s’ % urllib.quote(filename.encode(‘utf-8’))
     return response
 
 def emailView(request):
-    user_Info = User_Info.objects.get(user=request.user)
-    course_id = user_Info.course_id
-    course_name = Course.objects.get(id=course_id).course_name
     if request.method == 'POST':
-        port = 587  # For starttls
-        smtp_server = "smtp.gmail.com"
-        sender_email = 'wonhyeongjo60@gmail.com'
-        receiver_email = request.POST.get('email')
-        password = "bhghvqcwzoiswuff"
-        title = request.POST.get('title')
-        message = request.POST.get('text')
-        file = request.FILES.get('file')
-
-        extense = file.name.split('.')[1]
-
-        msg = MIMEMultipart()
-        msg['Subject'] = title
-        msg.attach(MIMEText(message, 'plain'))
-
-        if extense == "jpg" or extense == 'png':
-            part = MIMEBase('application', 'octet-stream')
-            part.set_payload(file.file.read())
-            encoders.encode_base64(part)
-            part.add_header('Content-Disposition', "attachment; filename= " + file.name)
-            msg.attach(part)
-        else:
-            msg.attach(MIMEApplication(file.file.read(),Name=file.name))
-
-        context = ssl.create_default_context()
-        with smtplib.SMTP(smtp_server, port) as server:
-            server.starttls(context=context)
-            server.login(sender_email, password)
-            server.sendmail(sender_email, receiver_email, msg.as_string())
+        emailSend(request)
         return redirect('home')
     else:
-        return render(request,'email.html',{"course": course_name})
+        return render(request, 'email.html')
 
 def qnaView(request):
     return render(request,'qna.html',None)
@@ -269,4 +224,5 @@ def qnaWriteView(request):
 
 def guideView(request):
     return render(request,'guide.html',None)
+
 

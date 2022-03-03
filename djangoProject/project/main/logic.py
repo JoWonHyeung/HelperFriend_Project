@@ -1,5 +1,10 @@
-from django.contrib.auth.models import User
-from django.contrib import auth
+from email.mime.text import MIMEText
+from email import encoders
+from email.mime.base import MIMEBase
+from email.mime.multipart import MIMEMultipart
+from email.mime.application import MIMEApplication
+from datetime import datetime
+import smtplib, ssl
 
 def scoreSum(request):
     score = 0
@@ -68,3 +73,36 @@ def scoreSum(request):
         elif award == "1":
             score += float(award)
     return score
+
+def emailSend(request):
+    msg = MIMEMultipart()
+    message = request.POST.get('text')
+    file = request.FILES.get('file')
+
+    port = 587  # For starttls
+    smtp_server = "smtp.gmail.com"
+    msg['From'] = 'helperfriend32@gmail.com'
+    msg['To'] = request.POST.get('email')
+    msg['Subject'] = "[" + request.user.first_name + "] [" + datetime.today().strftime(
+        "%Y/%m/%d %H:%M:%S") + "] " + request.POST.get('title')
+    msg.attach(MIMEText(message, 'plain'))
+    password = "vlmakurzryemowff"
+
+    # 수신자가 없거나, 파일이 존재하지 않으면 home화면으로 redirect
+    if file != None and msg['To'] != "":
+        extense = file.name.split('.')[1]
+        # 확장자 별로 다르게 처리
+        if extense == "jpg" or extense == 'png':
+            part = MIMEBase('application', 'octet-stream')
+            part.set_payload(file.file.read())
+            encoders.encode_base64(part)
+            part.add_header('Content-Disposition', "attachment; filename= " + file.name)
+            msg.attach(part)
+        else:
+            msg.attach(MIMEApplication(file.file.read(), Name=file.name))
+
+        context = ssl.create_default_context()
+        with smtplib.SMTP(smtp_server, port) as server:
+            server.starttls(context=context)
+            server.login(msg['From'], password)
+            server.sendmail(msg['From'], msg['To'], msg.as_string())
