@@ -28,6 +28,7 @@
             }
             h2 {
                 color: #656565;
+                text-align: center;
             }
             label {
                 color: #656565;
@@ -63,41 +64,38 @@
     </head>
     <body>
           <div id="a" class="container mt-5 pt-1 pb-5 pl-5 pr-5" style="width: 500px;">
-                 <div class="page-header mt-3">
-                    <div class="container" style="text-align: center;">
-                      <img src="/static/img/logo.png" style="width: 300px;">
-                    </div>
-                      <h2>비밀번호 변경</h2>
-                  </div>
-                  <hr>
-                  <form method="POST" class="pt-3" style="max-width: 720px;" action="{% url 'edit' %}">
-                      {% csrf_token %}
-                        {% if error %}
-                        <div class="row">
-                            <div class="col-12 text-center">
-                                <p style="color: red;">{{error}}</p>
-                            </div>
+              <div class="page-header mt-3">
+                  <h2>비밀번호 변경</h2>
+              </div>
+              <hr>
+              <form method="POST" class="pt-3" style="max-width: 720px;" action="{% url 'edit' %}">
+                  {% csrf_token %}
+                    {% if error %}
+                    <div class="row">
+                        <div class="col-12 text-center">
+                            <p style="color: red;">{{error}}</p>
                         </div>
-                        {% endif %}
-                      <div class="form-group">
-                          <label>아이디 입력</label>
-                          <input type="text" class="form-control" placeholder=" 아이디를 입력하세요." name="username" required>
-                      </div>
-                      <div class="form-group">
-                          <label>비밀번호 입력</label>
-                          <input type="password" class="form-control" placeholder=" 비밀번호를 입력하세요." name="password" required>
-                      </div>
-                      <div class="form-group">
-                          <label>비밀번호 재입력</label>
-                          <input type="password" class="form-control" placeholder=" 비밀번호를 다시 입력하세요." name="re-password" required>
-                      </div>
-                      <br>
-                          <button class="btn btn-secondary btn-block btn-lg">변경하기</button>
-                  </form>
-                  <div>
-                      <a href="{% url 'login' %}">되돌아가기</a>
+                    </div>
+                    {% endif %}
+                  <div class="form-group">
+                      <label>아이디 입력</label>
+                      <input type="text" class="form-control" placeholder=" 아이디를 입력하세요." name="username" required>
                   </div>
-                </div>
+                  <div class="form-group">
+                      <label>비밀번호 입력</label>
+                      <input type="password" class="form-control" placeholder=" 비밀번호를 입력하세요." name="password" required>
+                  </div>
+                  <div class="form-group">
+                      <label>비밀번호 재입력</label>
+                      <input type="password" class="form-control" placeholder=" 비밀번호를 다시 입력하세요." name="re-password" required>
+                  </div>
+                  <br>
+                      <button class="btn btn-secondary btn-block btn-lg">변경하기</button>
+              </form>
+              <div>
+                  <a href="{% url 'login' %}">되돌아가기</a>
+              </div>
+          </div>
         </div>
     </body>
 </html>
