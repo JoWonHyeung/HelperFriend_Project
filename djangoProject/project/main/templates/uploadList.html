@@ -6,8 +6,9 @@
 
 {% block mycontent %}
     <div class="col col-sm-9 my-5">
-        <div class="container p-3 my-3 border bg-white">
-            <h1>파일 목록</h1>
+        <div class="container con p-3 my-3 border bg-white">
+            <label class="mb-0">파일 목록</label>
+            <hr>
             <table class="table">
                 <thead>
                     <tr>
@@ -15,6 +16,7 @@
                         <th style="text-align: center;">파일명</th>
                         <th style="text-align: center;">제출날짜</th>
                         <th style="text-align: center;">다운로드</th>
+                        <th style="text-align: center;">삭제</th>
                     </tr>
                 </thead>
                   <tbody>
@@ -25,7 +27,8 @@
                             <td style="text-align: center;">{{ titles|index:forloop.counter0 }}</td>
                             <td style="text-align: center;">{{ files|index:forloop.counter0 }}</td>
                             <td style="text-align: center;">{{ date|index:forloop.counter0 }}</td>
-                            <td style="text-align: center;">test</td>
+                            <td style="text-align: center;"><a href=""><img src="/static/img/download.png"></a></td>
+                            <td style="text-align: center;"><a href="{% url 'uploadDelete' user.id %}"><img src="/static/img/delete.png" alt="삭제"></a></td>
                          </tr>
                         {% endfor %}
                   </tbody>
