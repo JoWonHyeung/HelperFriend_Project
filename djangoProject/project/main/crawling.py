@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 
 def crawling():
     # 1
-    query_txt = "데이터"
+    query_txt = "AI"
     res = []
     status = []
     # 2
