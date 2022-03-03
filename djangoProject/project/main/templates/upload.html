@@ -1,13 +1,17 @@
 {% extends 'basesimple.html' %}
 
 {% block mycss %}
-
+label.upload {
+    font-size: 14px;
+    font-weight: normal;
+    margin-left: 10px;
+}
 {% endblock %}
 
 {% block mycontent %}
    <div class="col col-sm-9 my-5">
-    <div class="container p-3 my-3 border bg-white">
-        <h1>파일 업로드</h1>
+    <div class="container con p-3 my-3 border bg-white">
+        <label class="mb-o">파일 업로드</label>
         <hr>
         {% if success %}
         <div class="row">
@@ -19,7 +23,7 @@
         <form method="POST" class="my-auto" style="max-width: 720px;" action="{% url 'upload' %}" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="form-group">
-                <label for="title">제목</label>
+                <label class="upload" for="title">제목</label>
                 <input type="text" class="form-control" id="title" placeholder="제목을 입력하세요." name="title">
             </div>
             <div class="input-group mb-3">
@@ -32,7 +36,7 @@
                 </div>
             </div>
             <br>
-            <button class="btn btn-secondary" style="background-color: #707070">파일 제출</button>
+            <button class="btn btn-secondary" style="background-color: #707070 color: white; float: right;">파일 제출</button>
           </form>
         </div>
     </div>
