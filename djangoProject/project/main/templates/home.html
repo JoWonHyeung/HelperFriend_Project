@@ -1,11 +1,20 @@
 {% extends 'basesimple.html' %}
 
 {% block mycss %}
+    * {
+        margin: 0px;
+        padding: 0px;
+    }
     #a {
         background-color: #000000;
         border-radius: 20px;
     }
-
+    body {
+        background-color: #FCFCFC;
+    }
+    div#con {
+        border-radius: 10px;
+    }
     @media (max-width: 768px) {
         .carousel-inner .carousel-item > div {
         display: none;
@@ -54,6 +63,13 @@
         color: #656565;
     }
 
+    label {
+        font-size: large;
+    }
+    label {
+        color: #656565;
+        font-weight: bold;
+    }
 
     .card {
         color: #656565;
@@ -67,12 +83,6 @@
     .cardname {
         display: flex;
         flex-direction: row;
-    }
-<!-- 실행안됨 -->
-    @madia ( max-width: 700px ) {
-        .card {
-            width: auto;
-        }
     }
 
     p#imp {
@@ -90,24 +100,28 @@
         font-weight: bold;
     }
     div.card table th {
-        padding: 0px 20px 0px 0px;
+          padding: 0px 20px 0px 0px;
     }
     div.card table td {
-        padding: 5px 5px;
+          padding: 5px 5px;
     }
-    #card:hover{
-        background-color: #FEFCF5;
-    }
-
     .hash {
         margin-top: 20px;
         margin-bottom: 0px;
     }
-
-
+    #card:hover{
+        background-color: #FEFCF5;
+    }
+    .posterImg:hover {
+        transform: scale(1.5);
+        transition: all 0.2s ease-in-out;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    }
+    .festival {
+        padding: 30px;
+    }
 {% endblock %}
 {% block mycontent %}
-
     <div class="col col-sm-9 mt-5">
             <div class="container con p-3 my-3 border bg-white">
               <label class="mb-0">팀 정보</label>
@@ -115,16 +129,14 @@
               <div class="row">
                   {% for _ in teamLen %}
                   {% load index %}
-                  <div class="card">
+                  <div class="container card" id="card">
                       <div class="cardname">
                           <img src="/static/img/2.jpg" width="35" height="35" class="rounded-circle">
-                          &nbsp;&nbsp;
-                          <div style="line-height:100%">
+                          <div class="container"style="line-height:100%">
                               <p><strong>{{ name|index:forloop.counter0 }}</strong><br><small>{{ Id|index:forloop.counter0 }}</small></p>
                           </div>
-                          <div class="container"></div>
                           <div>
-                              <img src="/static/img/star.svg" style="width: 20px;">
+                            <img src="/static/img/star.svg" style="width: 20px;">
                           </div>
                       </div>
                       <div style="line-height:120%">
@@ -198,7 +210,6 @@
                 </tr>
               </tbody>
             </table>
-
             </div>
             <div class="container con p-3 my-3 border bg-white">
             <label class="mb-0 con">공모전/대외활동</label>
@@ -208,39 +219,39 @@
                         <div id="recipeCarousel" class="carousel slide" data-ride="carousel">
                             <div class="carousel-inner" role="listbox">
                                 {% for _ in n %}
-                                {% load index %}
-                                    {% if forloop.first %}
-                                    <div class="carousel-item active">
-                                        <div class="col-lg-4">
-                                            <div class="movie-card m-4">
-                                                <div class="movie-img">
-                                                    <a href="{{urls|index:forloop.counter0}}"><img src="{{ images|index:forloop.counter0 }}" class="img-fluid"></a>
-                                                </div>
-                                                <div class="movie-title">
-                                                    <a href="#">
-                                                        <p class="text-white text-sm-center font-small flex-center">{{ status|index:forloop.counter0 }}</p>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    {% else %}
-                                    <div class="carousel-item">
-                                        <div class="col-lg-4">
-                                            <div class="movie-card m-4">
-                                                <div class="movie-img">
-                                                    <a href="{{urls|index:forloop.counter0}}"><img src="{{ images|index:forloop.counter0 }}" class="img-fluid"></a>
-                                                </div>
-                                                <div class="movie-title">
-                                                    <a href="#">
-                                                        <p class="text-white text-sm-center font-small flex-center">{{ status|index:forloop.counter0 }}</p>
-                                                    </a>
+                                    {% load index %}
+                                        {% if forloop.first %}
+                                        <div class="carousel-item active">
+                                            <div class="festival">
+                                                <div class="posterImg movie-card m-4">
+                                                    <div class="movie-img">
+                                                        <a href="{{urls|index:forloop.counter0}}"><img src="{{ images|index:forloop.counter0 }}" class="img-fluid"></a>
+                                                    </div>
+                                                    <div class="movie-title">
+                                                        <a href="#">
+                                                            <p class="text-white text-sm-center font-small flex-center">{{ status|index:forloop.counter0 }}</p>
+                                                        </a>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    {% endif %}
-                                {% endfor %}
+                                        {% else %}
+                                        <div class="carousel-item">
+                                            <div class="festival">
+                                                <div class="posterImg movie-card m-4">
+                                                    <div class="movie-img">
+                                                        <a href="{{urls|index:forloop.counter0}}"><img src="{{ images|index:forloop.counter0 }}" class="img-fluid"></a>
+                                                    </div>
+                                                    <div class="movie-title">
+                                                        <a href="#">
+                                                            <p class="text-white text-sm-center font-small flex-center">{{ status|index:forloop.counter0 }}</p>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% endif %}
+                                    {% endfor %}
                             </div>
                             <a class="carousel-control-prev bg-dark w-auto" href="#recipeCarousel" role="button" data-slide="prev" style="transform: translateX(-35px);">
                                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -256,7 +267,6 @@
             </div>
         </div>
 {% endblock %}
-
 {% block myjs %}
   $('#recipeCarousel').carousel({
       interval: 10000

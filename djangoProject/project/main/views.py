@@ -15,6 +15,10 @@ from email import encoders
 from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
 from email.mime.application import MIMEApplication
+from django.http import FileResponse
+from django.core.files.storage import FileSystemStorage
+import urllib
+
 
 crawling_tmp = crawling()
 
@@ -34,7 +38,6 @@ def homeView(request):
                 habit.append(i.habit); target.append(i.target); mbti.append(i.mbti); major.append(i.major)
                 name.append(User.objects.get(id=i.user_id).first_name)
                 myId.append(User.objects.get(id=i.user_id).username)
-
     context = {
         'images': crawling_tmp[0],
         'urls': crawling_tmp[1],
@@ -203,13 +206,6 @@ def uploadListDelete(request,id):
         "n": range(len(file_titles)),
     }
     return render(request, 'uploadList.html', context)
-
-from django.views.generic.detail import SingleObjectMixin
-from django.http import FileResponse
-from django.core.files.storage import FileSystemStorage
-import magic
-import mimetypes
-import urllib
 
 def uploadListDownload(request, id):
     file = UploadFile.objects.get(id=id).file
