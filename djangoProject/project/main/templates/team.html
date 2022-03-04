@@ -88,7 +88,7 @@ $('#btn1').click(function(){
                 context += "<td style='text-align: center;'>" + data['student'][i][0] + "</td>"
                 context += "<td style='text-align: center;'>" + data['student'][i][1] + "</td>"
                 context += "</tr>"
-                all.push(data['student'][i][0]);
+                all.push([data['student'][i][0],data['student'][i][2]]);
             }
             $('[id="allStudent"]').html(context);
         },
@@ -111,16 +111,17 @@ $('#btn2').click(function(){
         team[i] =[];
     }
 
-    /* 팀 구성 Logic */
+        /* 팀 구성 Logic */
     let i = 0;
     while(i < all.length){
         for(let j = 0; j < Math.ceil(teamCnt) && all[i] != undefined; j++,i++){
-            if(all[i] === '{{ user.first_name }}'){
+            if(all[i][0] === '{{ user.first_name }}'){
                 myTeamId = j + 1;
             }
-            team[j].push(all[i]);
+            team[j].push([all[i][0],all[i][1]]);
         }
     }
+
         /* 구성된 팀 정보들을 context저장후 html에 반환 */
     for(let i = 0; i < team.length; i++){
         context += "<div class='card bg-light'>"
@@ -128,7 +129,7 @@ $('#btn2').click(function(){
         context += "<hr>"
         context += "<div class='card-body text-center'>";
         for(var j = 0; j < team[i].length; j++){
-            context += "<p class='card-text'>" + team[i][j] + "</p>";
+            context += "<p class='card-text'>" + team[i][j][0] + "</p>";
         }
         context += "</div>";
         context += "</div>";
@@ -144,6 +145,7 @@ $('#btn3').click(function(){
         'myTeam' : team[myTeamId - 1],
         'allTeam' : team,
         };
+
     $.ajax({
         url : '{% url 'homeTeamJson' %}',
         type : 'POST',
@@ -158,7 +160,8 @@ $('#btn3').click(function(){
             alert("Error!!")
         },
     });
-    location.href = '{% url "home" %}'
+    alert("팀 빌딩이 완료");
+    location.href = '{% url "team" %}'
 });
 
 /* select값이 변경되었을때 reload */

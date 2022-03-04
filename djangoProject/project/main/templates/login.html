@@ -50,7 +50,7 @@
             .explain {
                 text-align: right;
             }
-            #pwd {
+            #pwd, #id {
                 font-weight: bold;
                 text-decoration: underline;
                 color: #656565;
@@ -125,7 +125,8 @@
           </form>
           <div class="textbottom">
               <div>
-                  <p><a href="{% url 'edit' %}" id="pwd">비밀번호를 잊으셨나요?</a></p>
+                  <p><a href="{% url 'idedit' %}" id="id">아이디를 잊으셨나요?</a></p>
+                  <p><a href="{% url 'pwdedit' %}" id="pwd">비밀번호를 잊으셨나요?</a></p>
                       <span>
                           <label class="no">헬퍼프렌드는 처음이신가요?</label>
                           <a class="link" href="{% url 'join' %}" id="join">회원가입</a>

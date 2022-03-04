@@ -8,6 +8,7 @@ from django.http import FileResponse
 from django.core.files.storage import FileSystemStorage
 from django.contrib.auth.models import User
 from django.contrib import auth
+from django.core.exceptions import MultipleObjectsReturned
 import urllib
 import json
 import os.path
@@ -74,10 +75,13 @@ class authentication:
     def logoutView(request):
         return render(request, 'login.html')
 
-    def editView(request):
-        return render(request, 'edit.html', {})
+    def pwdeditView(request):
+        return render(request, 'pwdedit.html')
 
-    def editJson(request):
+    def ideditView(request):
+        return render(request, 'idedit.html')
+
+    def pwdEditJson(request):
         context = {}
         if json.loads(request.body).get('username'):
             user_username = json.loads(request.body).get('username')
@@ -98,7 +102,6 @@ class authentication:
                 verificationMailSend(user_email, user_username)
             else:
                 context = {'emailMsg': '이메일이 존재하지 않습니다.'}
-
         elif json.loads(request.body).get('creditNum'):
             user_credit = json.loads(request.body).get('creditNum')
             user_username = json.loads(request.body).get('creditusername')
@@ -113,6 +116,13 @@ class authentication:
             user = User.objects.get(username=user_username)
             user.set_password(change_pwd)
             user.save()
+        return JsonResponse(context)
+
+    def idEditJson(request):
+        context = {}
+        user_email = json.loads(request.body).get('email')
+
+        #모든 email을 비교해서 해당되는 것이 있으면 return
         return JsonResponse(context)
 
     def joinView(request):
@@ -133,7 +143,7 @@ class authentication:
             if User.objects.filter(username=username):
                 context = {'error': '이미 가입된 아이디 입니다.'}
             elif password != re_password:
-                context['error'] = '비밀번호가 다릅니다.'
+                context = {'error': '비밀번호가 다릅니다.'}
             else:
                 user = User.objects.create_user(username=username, first_name=name, password=password)
                 course = Course(course_name=course_name);
@@ -146,6 +156,7 @@ class authentication:
         return render(request, 'join.html', context)
 
 
+
 class team:
     def teamView(request):
         return render(request, 'team.html', None)
@@ -155,11 +166,16 @@ class team:
         course = json.loads(request.body).get('course')
         # 해당 과정 명에 해당 하는 모든 인원 뽑아오기
         students = list(Course.objects.filter(course_name=course))
-        stu_dict = {}
+        stu_list = []
+
+        #동명이인 처리!!!!! => dict 중복 불가!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
         for student in students:
             user_info = User_Info.objects.get(course_id=student.id)
-            stu_dict[user_info.user.first_name] = user_info.score
-        stu_sorted_dict = sorted(stu_dict.items(), key=lambda item: item[1], reverse=True)
+            stu_list.append((user_info.user.first_name, user_info.score, user_info.user_id))
+
+        stu_sorted_dict = sorted(stu_list, key=lambda item: item[1], reverse=True)
+
         context = {
             'course': course,
             'student': stu_sorted_dict,
@@ -170,10 +186,11 @@ class team:
         jsonObject = json.loads(request.body)
         myTeam = jsonObject.get('myTeam')
         allTeam = jsonObject.get('allTeam')
+
         # User_info의 team_id('조'명)를 할당한다.
         for i, team in enumerate(allTeam, start=1):
             for each in team:
-                user_info = User_Info.objects.get(user_id=User.objects.get(first_name=each).id)
+                user_info = User_Info.objects.get(user_id=User.objects.get(id=each[1]))
                 user_info.team_id = i
                 user_info.save()
         return JsonResponse({})
@@ -192,10 +209,7 @@ class upload:
 class uploadList():
     def uploadListView(request):
         files = UploadFile.objects.filter(upload=request.user.id)
-        file_titles = [];
-        file_names = [];
-        file_ids = [];
-        file_date = []
+        file_titles = []; file_names = []; file_ids = []; file_date = []
         for i in files:
             file_titles.append(i.title)
             file_ids.append(i.id)
@@ -219,10 +233,7 @@ class uploadList():
         course_id = user_Info.course_id
         course_name = Course.objects.get(id=course_id).course_name
         files = UploadFile.objects.filter(upload=request.user.id)
-        file_titles = [];
-        file_names = [];
-        file_ids = [];
-        file_date = []
+        file_titles = []; file_names = []; file_ids = []; file_date = []
         for i in files:
             file_titles.append(i.title)
             file_ids.append(i.id)
@@ -244,8 +255,7 @@ class uploadList():
         file_name = file.name.replace('/', '\\').split('\\')
         response = FileResponse(FileSystemStorage(file_path + file_name[0]).open(file_name[1], 'rb'),
                                 content_type='application/force-download')
-        response['Content-Disposition'] = 'attachment; filename*=UTF-8\'\'%s' % urllib.parse.quote(
-            file_name[1].encode('utf-8'))
+        response['Content-Disposition'] = 'attachment; filename*=UTF-8\'\'%s' % urllib.parse.quote(file_name[1].encode('utf-8'))
         return response
 
 class email:
