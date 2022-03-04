@@ -10,7 +10,7 @@ label.upload {
 
 {% block mycontent %}
    <div class="col col-sm-9 my-5">
-    <div class="container con p-3 my-3 border bg-white">
+    <div class="container con">
         <label class="mb-o">파일 업로드</label>
         <hr>
         {% if success %}
@@ -20,23 +20,24 @@ label.upload {
             </div>
         </div>
         {% endif %}
-        <form method="POST" class="my-auto" style="max-width: 720px;" action="{% url 'upload' %}" enctype="multipart/form-data">
+        <form method="POST" class="my-auto" style="max-width: 760px;" action="{% url 'upload' %}" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="form-group">
                 <label class="upload" for="title">제목</label>
                 <input type="text" class="form-control" id="title" placeholder="제목을 입력하세요." name="title">
             </div>
             <div class="input-group mb-3">
-                <div class="input-group-prepend">
+                <div>
                     <span class="input-group-text">Upload</span>
                 </div>
                 <div class="custom-file">
                     <input type="file" class="custom-file-input" id="inputGroupFile01" name="file">
-                    <label class="custom-file-label" for="inputGroupFile01" >파일 선택( 모든 파일은 압축해서 업로드합니다. )</label>
+                    <label class="custom-file-label upload" for="inputGroupFile01" >파일 선택( 모든 파일은 압축해서 업로드합니다. )</label>
                 </div>
             </div>
             <br>
             <button class="btn btn-secondary" style="background-color: #707070 color: white; float: right;">파일 제출</button>
+            <div style="margin-bottom: 40px;"></div>
           </form>
         </div>
     </div>
