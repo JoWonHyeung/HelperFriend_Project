@@ -96,3 +96,5 @@ mesh153@naver.com
  
  - 3/4
    1. 비밀번호 이메일 인증 구현 
+   
+   2. 파일 업로드, 파일 목록 page rebuilding 
