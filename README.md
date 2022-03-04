@@ -28,9 +28,6 @@ Frontend : HTML, CSS, Javascript, Bootstrap
 
 박재현: 프론트
 
-양예담: 프론트
-
-
 ## Contact
 
 mesh153@naver.com
