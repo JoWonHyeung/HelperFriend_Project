@@ -4,7 +4,12 @@ from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
 from email.mime.application import MIMEApplication
 from datetime import datetime
+from django.contrib.auth.models import User
+from main.models import User_Info
 import smtplib, ssl
+import random
+
+
 
 def scoreSum(request):
     score = 0
@@ -106,3 +111,27 @@ def emailSend(request):
             server.starttls(context=context)
             server.login(msg['From'], password)
             server.sendmail(msg['From'], msg['To'], msg.as_string())
+
+def verificationMailSend(email, username):
+    msg = MIMEMultipart()
+    port = 587  # For starttls
+    smtp_server = "smtp.gmail.com"
+    msg['From'] = 'helperfriend32@gmail.com'
+    msg['To'] = email
+    msg['Subject'] = "[HelperFriend] 비밀번호 인증 메일입니다."
+    msg['password'] = "vlmakurzryemowff"
+    randomNum = str(random.randint(1000,9999))
+    message = "인증번호: " + "[" + randomNum + "]"
+    msg.attach(MIMEText(message, 'plain'))
+
+    #인증번호 DB에 저장
+    user_Info = User_Info.objects.get(user=User.objects.get(username=username))
+    user_Info.creditNum = randomNum;
+    user_Info.save()
+
+    #전송
+    context = ssl.create_default_context()
+    with smtplib.SMTP(smtp_server, port) as server:
+        server.starttls(context=context)
+        server.login(msg['From'], msg['password'])
+        server.sendmail(msg['From'], msg['To'], msg.as_string())

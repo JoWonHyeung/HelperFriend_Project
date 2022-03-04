@@ -1,14 +1,11 @@
 import json
 import os.path
-import smtplib, ssl
 from main.crawling import crawling
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from main.models import User_Info, UploadFile
 from main.models import Course
-from django.contrib.auth.models import User
-from django.contrib import auth
-from main.logic import scoreSum, emailSend
+from main.logic import scoreSum, emailSend, verificationMailSend
 from django.contrib.auth.decorators import login_required
 from django.http import FileResponse
 from django.core.files.storage import FileSystemStorage
@@ -17,7 +14,7 @@ from django.contrib import auth
 import urllib
 
 
-#crawling_tmp = crawling()
+crawling_tmp = crawling()
 
 @login_required(login_url='/main/login/')
 def homeView(request):
@@ -36,10 +33,10 @@ def homeView(request):
                 name.append(User.objects.get(id=i.user_id).first_name)
                 myId.append(User.objects.get(id=i.user_id).username)
     context = {
-        # 'images': crawling_tmp[0],
-        # 'urls': crawling_tmp[1],
-        # 'status': crawling_tmp[2],
-        # 'n': range(len(crawling_tmp[0])),
+        'images': crawling_tmp[0],
+        'urls': crawling_tmp[1],
+        'status': crawling_tmp[2],
+        'n': range(len(crawling_tmp[0])),
         'course': course_name,
         'name': name,
         'habit': habit,
@@ -120,22 +117,37 @@ def joinView(request):
     return render(request, 'join.html', context)
 
 def editView(request):
-    context = {}
-    if request.method == "POST":
-        user = request.user
-        username = request.POST["username"]
-        password = request.POST["password"]
-        re_password = request.POST["re-password"]
+    return render(request, 'edit.html', {})
 
-        if not User.objects.filter(username=username):
-            return render(request, 'edit.html', {"error": "등록된 아이디가 존재하지 않습니다."})
-        if password == re_password:
-            user.set_password(password)
-            user.save()
-            return redirect('login')
+def editJson(request):
+    context = {}
+    if json.loads(request.body).get('username'):
+        user_username = json.loads(request.body).get('username')
+        try:
+            User.objects.get(username=user_username)
+            context = {'idMsg':'아이디 인증완료'}
+        except User.DoesNotExist:
+            context = {'idMsg':'아이디가 존재하지 않습니다.'}
+    elif json.loads(request.body).get('email'):
+        user_email = json.loads(request.body).get('email')
+        user_username = json.loads(request.body).get('emailusername')
+        #인증번호 메일 전송 및 DB에 인증번호 저장
+        verificationMailSend(user_email, user_username)
+    elif json.loads(request.body).get('creditNum'):
+        user_credit = json.loads(request.body).get('creditNum')
+        user_username = json.loads(request.body).get('creditusername')
+        if user_credit == User_Info.objects.get(user=User.objects.get(username=user_username)).creditNum:
+            context = {'creditMsg':'확인 완료'}
         else:
-            context = {"error": "비밀번호가 다릅니다."}
-    return render(request, 'edit.html', context)
+            context = {'creditMsg':'인증번호가 다릅니다.'}
+    elif json.loads(request.body).get('pwd'):
+        change_pwd = json.loads(request.body).get('pwd')
+        user_username = json.loads(request.body).get('pwdusername')
+
+        user = User.objects.get(username=user_username)
+        user.set_password(change_pwd)
+        user.save()
+    return JsonResponse(context)
 
 def loginView(request):
     if request.method == "POST":

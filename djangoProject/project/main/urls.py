@@ -15,6 +15,7 @@ urlpatterns = [
     path('uploadList/uploadDownload/<id>',views.uploadListDownload,name='uploadDownload'),
     path('email/', views.emailView, name='email'),
     path('edit/',views.editView,name='edit'),
+    path('edit/editJson',views.editJson,name='editJson'),
     path('qna/',views.qnaView,name='qna'),
     path('team/',views.teamView,name='team'),
     path('team/teamJson/',views.teamJson,name='teamJson'),

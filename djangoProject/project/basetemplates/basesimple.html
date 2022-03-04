@@ -139,7 +139,6 @@
     <script>
     let param = {'id': {{ user.id }} }
     var context = ""
-
     $.ajax({
         url : '{% url 'homeInfoJson'%}',
         type : 'POST',
@@ -159,7 +158,6 @@
             alert('no success!!');
         },
     });
-
     {% block myjs %}
     {% endblock %}
     </script>
