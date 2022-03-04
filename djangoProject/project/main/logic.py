@@ -201,7 +201,6 @@ def crawling():
     from urllib.parse import quote
 
     bmp_map = dict.fromkeys(range(0x10000, sys.maxunicode + 1), 0xfffd)
-    count = 0
     file_no = 1
 
     for num in range(0,6):
