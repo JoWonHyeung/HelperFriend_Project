@@ -1,20 +1,18 @@
-import json
-import os.path
-from main.crawling import crawling
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from main.models import User_Info, UploadFile
 from main.models import Course
-from main.logic import scoreSum, emailSend, verificationMailSend
+from main.logic import scoreSum, emailSend, verificationMailSend,crawling
 from django.contrib.auth.decorators import login_required
 from django.http import FileResponse
 from django.core.files.storage import FileSystemStorage
 from django.contrib.auth.models import User
 from django.contrib import auth
 import urllib
+import json
+import os.path
 
-
-crawling_tmp = crawling()
+#crawling = crawling()
 
 @login_required(login_url='/main/login/')
 def homeView(request):
@@ -33,10 +31,10 @@ def homeView(request):
                 name.append(User.objects.get(id=i.user_id).first_name)
                 myId.append(User.objects.get(id=i.user_id).username)
     context = {
-        'images': crawling_tmp[0],
-        'urls': crawling_tmp[1],
-        'status': crawling_tmp[2],
-        'n': range(len(crawling_tmp[0])),
+        #'images': crawling[0],
+        #'urls': crawling[1],
+        #'status': crawling[2],
+        #'n': range(len(crawling[0])),
         'course': course_name,
         'name': name,
         'habit': habit,
@@ -95,6 +93,7 @@ def joinView(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         name = request.POST.get('firstname')
+        email = request.POST.get('joinemail')
         password = request.POST.get('password')
         re_password = request.POST.get('re-password')
         course_name = request.POST.get('course')
@@ -102,8 +101,8 @@ def joinView(request):
         major = request.POST.get('univ')
         mbti = request.POST.get('mbti')
         target = request.POST.get('target')
-
         score = scoreSum(request)
+
         if User.objects.filter(username=username):
             context = {'error':'이미 가입된 아이디 입니다.'}
         elif password != re_password:
@@ -111,7 +110,7 @@ def joinView(request):
         else:
             user = User.objects.create_user(username=username, first_name=name, password=password)
             course = Course(course_name=course_name); course.save();
-            user_info = User_Info(user=user, score=score, course=course,habit=habit,major=major,mbti=mbti,target=target); user_info.save();
+            user_info = User_Info(user=user, score=score, course=course,habit=habit,major=major,mbti=mbti,target=target, email=email); user_info.save();
             auth.login(request, user)
             return redirect("login")
     return render(request, 'join.html', context)
@@ -129,10 +128,18 @@ def editJson(request):
         except User.DoesNotExist:
             context = {'idMsg':'아이디가 존재하지 않습니다.'}
     elif json.loads(request.body).get('email'):
-        user_email = json.loads(request.body).get('email')
+        input_email = json.loads(request.body).get('email')
         user_username = json.loads(request.body).get('emailusername')
-        #인증번호 메일 전송 및 DB에 인증번호 저장
-        verificationMailSend(user_email, user_username)
+
+        user_email = User_Info.objects.get(user=User.objects.get(username = user_username)).email
+
+        if user_email == input_email:
+            context = {'emailMsg': '이메일 인증완료'}
+            # 인증번호 메일 전송 및 DB에 인증번호 저장
+            verificationMailSend(user_email, user_username)
+        else:
+            context = {'emailMsg': '이메일이 존재하지 않습니다.'}
+
     elif json.loads(request.body).get('creditNum'):
         user_credit = json.loads(request.body).get('creditNum')
         user_username = json.loads(request.body).get('creditusername')

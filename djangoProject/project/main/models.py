@@ -11,13 +11,15 @@ class User_Info(models.Model):
     score = models.IntegerField(null=True)
     team_id = models.IntegerField(null=True)
     course = models.ForeignKey(Course,on_delete=models.CASCADE)
+    email = models.CharField(max_length=150,null=True)
     habit = models.CharField(max_length=45,null=True)
     target = models.CharField(max_length=45,null=True)
     mbti = models.CharField(max_length=45,null=True)
     major = models.CharField(max_length=45,null=True)
     creditNum = models.CharField(max_length=45,null=True)
     def __str__(self):
-        return f"user={self.user}, score={self.score},team_id={self.team_id},course_id={self.course},habit={self.habit},target={self.target},mbti={self.mbti},major={self.major}, creditNum={self.creditNum}"
+        return f"user={self.user}, score={self.score},team_id={self.team_id}," \
+               f"course_id={self.course},habit={self.habit},target={self.target},mbti={self.mbti},major={self.major}, creditNum={self.creditNum}, email={self.email}"
 
 class Question(models.Model):
     title = models.CharField(max_length=45)

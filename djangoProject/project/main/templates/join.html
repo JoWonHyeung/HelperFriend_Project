@@ -80,7 +80,6 @@
             </div>
         </div>
         {% endif %}
-
                 <form method="POST" action="{% url 'join' %}">
                     {% csrf_token %}
                     <div class="form-group">
@@ -90,6 +89,10 @@
                     <div class="form-group">
                         <label>이름</label>
                         <input type="text" class="form-control"  placeholder="ex) 홍길동" name="firstname" required>
+                    </div>
+                    <div class="form-group">
+                        <label>이메일</label>
+                        <input type="text" class="form-control"  placeholder="ex) helperfriend@naver.com" name="joinemail" required>
                     </div>
                     <div class="form-group">
                         <label>비밀번호</label>
@@ -271,20 +274,18 @@
                                                         </div>
                                                 </div>
                                             </div>
-                        <button type="submit" class="btn btn-secondary btn-block btn-lg" style="background-color: #707070">
+                        <button type="submit" class="btn btn-secondary btn-block btn-lg" style="background-color: #707070" id="completeBtn">
                             <span class="loginbutton">계정 만들기</span>
                         </button>
                     </form>
-
         </div>
-
         <div class="textbottom">
             <span>이미 가입하셨다면?</span>&nbsp;
             <a class="link" href="{% url 'login' %}">로그인으로 가기</a>
         </div>
      </div>
 <script>
- $('#radio1').on({
+    $('#radio1').on({
         click: function(){
             /*2-1~2-2 init*/
             $("input:radio[name='lesson']").prop("checked", false);
@@ -320,7 +321,7 @@
         }
     });
 
-      $('#radio3').on({
+    $('#radio3').on({
         click: function(){
             /*1-1~1-3문항 init*/
             $("input:radio[name='project']").prop("checked", false);
