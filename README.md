@@ -39,8 +39,6 @@ mesh153@naver.com
 
 - 게시판 구현
 
-- 각종 코딩 사이트 가이드라인 제시
-
 - 팀 구성후 팀원 삭제 기능 있으면 좋을 것 같다.
 
 ## Schedule
@@ -94,3 +92,7 @@ mesh153@naver.com
    
    2. 홈페이지 rebuilding 
  
+ - 3/4
+   1. 비밀번호 이메일 인증 구현 
+   
+   2. 파일 업로드, 파일 목록 page rebuilding 
