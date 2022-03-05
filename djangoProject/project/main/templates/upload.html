@@ -13,10 +13,10 @@ label.upload {
     <div class="container con">
         <label class="mb-o">파일 업로드</label>
         <hr>
-        {% if success %}
+        {% if fileMsg %}
         <div class="row">
             <div class="col-12 text-center">
-                <p style="color: blue;">{{success}}</p>
+                <p style="color: {{ color }};">{{fileMsg}}</p>
             </div>
         </div>
         {% endif %}

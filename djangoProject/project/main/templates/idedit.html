@@ -70,9 +70,9 @@
               <hr>
                   <div class="my-3" id="emailBlock">
                       <label>이메일 입력</label>
-                      <input type="text" class="form-control" placeholder="인증가능한 이메일을 입력하세요." id="email" name="email" required>
+                      <input type="text" class="form-control" placeholder="회원가입시 작성한 이메일을 입력하세요." id="email" name="email" required>
                       <span style="color:blue;" id="emailMsg"></span>
-                      <small>이메일 발송 시간이 조금 걸릴 수 있습니다</small>
+                      <small id="smallMsg"style="display: block;">이메일 발송 시간이 조금 걸릴 수 있습니다</small>
                       <button class="btn btn-secondary btn-sm float-right" id="emailBtn">이메일 인증하기</button>
                   </div>
                   <div class="my-4" style="display: none;" id="numberBlock">
@@ -81,8 +81,8 @@
                       <span style="color:blue;" id="creditMsg"></span>
                       <button class="btn btn-secondary btn-sm float-right" id="creditBtn">인증번호 확인하기</button>
                   </div>
-                  <div class="my-3" style="display: none;" id="idCheckBox">
-
+                  <div class="my-3" style="display: none;" id="idBox">
+                      <p>확인된 아이디는 <span id="idCheck" style="font-weight: bold; text-decoration: underline;"></span>입니다.</p>
                   </div>
                   <br>
               <div>
@@ -91,10 +91,13 @@
           </div>
         </div>
           <script>
+
+          user_id = "";
+
 $('#emailBtn').click(function(){
         email = $("#email").val()
 
-        if(email === ""){
+        if(email === "") {
             alert("이메일 입력하세요.");
         }
         else{
@@ -106,17 +109,60 @@ $('#emailBtn').click(function(){
                     },
                     data : JSON.stringify({ 'email': email }),
                     success:function(data){
-
+                        if(data['emailMsg'] === '이메일이 존재하지 않습니다.'){
+                            alert(data['emailMsg']);
+                            location.reload();
+                        }
+                        $('[id="emailMsg"]').html(data['emailMsg']);
+                        $('#smallMsg').css('display','none');
+                        user_id = data['userId'];
                     },
                     error: function(){
                         alert('no success!!');
                     },
                 });
-                $('#username').attr('disabled',true);
-                $('#emailBlock').css('display','block');
+                $('#emailBtn').attr('disabled',true);
+                $("#email").attr("disabled", true); //설정
+                $('#numberBlock').css('display','block');
         }
-
     });
+
+    /* 인증번호 확인하기 */
+    $('#creditBtn').click(function(){
+        creditNum = $("#creditNum").val()
+        username = "";
+        if(creditNum === "") {
+            alert("인증번호를 입력하세요.");
+        }
+        else{
+            $.ajax({
+                    url : '{% url 'idEditJson' %}',
+                    type : 'POST',
+                    headers: {
+                        'X-CSRFTOKEN' : '{{ csrf_token }}'
+                    },
+                    data : JSON.stringify({
+                        'creditNum': creditNum,
+                        'userId' : user_id
+                    }),
+                    success:function(data){
+                        if(data['creditMsg'] === "인증번호가 일치하지 않습니다."){
+                            alert(data['creditMsg']);
+                            location.reload();
+                        }
+                        $('[id="creditMsg"]').html(data['creditMsg']);
+                        $('[id="idCheck"]').html(data['username']);
+                    },
+                    error: function(){
+                        alert('no success!!');
+                    },
+                });
+                $("#creditBtn").attr("disabled", true);
+                $("#creditNum").attr("disabled", true); //설정
+                $('#idBox').css('display','block');
+        }
+    });
+
         </script>
     </body>
 </html>

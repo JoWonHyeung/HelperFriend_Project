@@ -8,7 +8,6 @@ from django.http import FileResponse
 from django.core.files.storage import FileSystemStorage
 from django.contrib.auth.models import User
 from django.contrib import auth
-from django.core.exceptions import MultipleObjectsReturned
 import urllib
 import json
 import os.path
@@ -99,7 +98,7 @@ class authentication:
             if user_email == input_email:
                 context = {'emailMsg': '이메일 인증완료'}
                 # 인증번호 메일 전송 및 DB에 인증번호 저장
-                verificationMailSend(user_email, user_username)
+                verificationMailSend(user_email, user_username, "[HelperFriend] 비밀번호 인증 메일입니다.")
             else:
                 context = {'emailMsg': '이메일이 존재하지 않습니다.'}
         elif json.loads(request.body).get('creditNum'):
@@ -119,10 +118,32 @@ class authentication:
         return JsonResponse(context)
 
     def idEditJson(request):
-        context = {}
-        user_email = json.loads(request.body).get('email')
+        context={}
+        if json.loads(request.body).get('email'):
+            user_email = json.loads(request.body).get('email')
+            try:
+                user_info = User_Info.objects.get(email=user_email)
+                user_username = user_info.user.username
+                context = {
+                    'emailMsg': '이메일 인증완료',
+                    'username': user_username,
+                    'userId': user_info.user_id
+                }
+                verificationMailSend(user_email, user_username, "[HelperFriend] 아이디 인증 메일입니다.")
+            except User_Info.DoesNotExist:
+                context = {'emailMsg': '이메일이 존재하지 않습니다.'}
+        elif json.loads(request.body).get('creditNum'):
+            creditNum = json.loads(request.body).get('creditNum')
+            user_id = json.loads(request.body).get('userId')
+            user = User.objects.get(id=user_id)
+            if creditNum == User_Info.objects.get(user=user).creditNum:
+                context = {
+                    'username': user.username,
+                    'creditMsg': "인증번호가 일치합니다."
+                }
+            else:
+                context = {'creditMsg': "인증번호가 일치하지 않습니다."}
 
-        #모든 email을 비교해서 해당되는 것이 있으면 return
         return JsonResponse(context)
 
     def joinView(request):
@@ -155,8 +176,6 @@ class authentication:
                 return redirect("login")
         return render(request, 'join.html', context)
 
-
-
 class team:
     def teamView(request):
         return render(request, 'team.html', None)
@@ -168,8 +187,7 @@ class team:
         students = list(Course.objects.filter(course_name=course))
         stu_list = []
 
-        #동명이인 처리!!!!! => dict 중복 불가!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
+        #동명이인 처리!!!!! => dict 중복 불가!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         for student in students:
             user_info = User_Info.objects.get(course_id=student.id)
             stu_list.append((user_info.user.first_name, user_info.score, user_info.user_id))
@@ -199,10 +217,19 @@ class upload:
     def uploadView(request):
         context = {}
         if request.method == "POST":
-            upload = UploadFile(upload_id=request.user.id, title=request.POST.get('title'),
-                                file=request.FILES.get('file'))
-            upload.save()
-            context['success'] = "파일이 성공적으로 업로드 되었습니다."
+            if not request.FILES.get('file'):
+                context = {
+                    'fileMsg': '파일을 업로드 해주세요',
+                    'color': 'red'
+                }
+            else:
+                upload = UploadFile(upload_id=request.user.id, title=request.POST.get('title'),
+                                    file=request.FILES.get('file'))
+                upload.save()
+                context = {
+                    'fileMsg': '파일을 성공적으로 업로드 하였습니다.',
+                    'color': 'blue'
+                }
         return render(request, 'upload.html', context)
 
 

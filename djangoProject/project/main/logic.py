@@ -90,8 +90,7 @@ def emailSend(request):
     smtp_server = "smtp.gmail.com"
     msg['From'] = 'helperfriend32@gmail.com'
     msg['To'] = request.POST.get('email')
-    msg['Subject'] = "[" + request.user.first_name + "] [" + datetime.today().strftime(
-        "%Y/%m/%d %H:%M:%S") + "] " + request.POST.get('title')
+    msg['Subject'] = "[HelperFriend]" + "[" + request.user.first_name + "]" + "[" + datetime.today().strftime("%Y/%m/%d %H:%M:%S") + "] " + request.POST.get('title')
     msg.attach(MIMEText(message, 'plain'))
     password = "vlmakurzryemowff"
 
@@ -114,13 +113,13 @@ def emailSend(request):
             server.login(msg['From'], password)
             server.sendmail(msg['From'], msg['To'], msg.as_string())
 
-def verificationMailSend(email, username):
+def verificationMailSend(email, username, title):
     msg = MIMEMultipart()
     port = 587  # For starttls
     smtp_server = "smtp.gmail.com"
     msg['From'] = 'helperfriend32@gmail.com'
     msg['To'] = email
-    msg['Subject'] = "[HelperFriend] 비밀번호 인증 메일입니다."
+    msg['Subject'] = title
     msg['password'] = "vlmakurzryemowff"
     randomNum = str(random.randint(1000,9999))
     message = "인증번호: " + "[" + randomNum + "]"
