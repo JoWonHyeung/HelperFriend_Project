@@ -12,7 +12,7 @@ import urllib
 import json
 import os.path
 
-#crawling = crawling()
+crawling = crawling()
 
 class home:
     @login_required(login_url='/main/login/')
@@ -32,10 +32,10 @@ class home:
                     name.append(User.objects.get(id=i.user_id).first_name)
                     myId.append(User.objects.get(id=i.user_id).username)
         context = {
-            # 'images': crawling[0],
-            # 'urls': crawling[1],
-            # 'status': crawling[2],
-            # 'n': range(len(crawling[0])),
+            'images': crawling[0],
+            'urls': crawling[1],
+            'status': crawling[2],
+            'n': range(len(crawling[0])),
             'course': course_name,
             'name': name,
             'habit': habit,
