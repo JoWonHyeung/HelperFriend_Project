@@ -5,21 +5,29 @@
 {% endblock %}
 
 {% block mycontent %}
-<div class="page-header mt-3">
-    <h2>글 쓰기</h2>
+<div class="col col-sm-9 my-5">
+    <div class="container con">
+        <div class="page-header mt-3">
+         <h2>글 쓰기</h2>
+        </div>
+        <hr>
+        <form method="POST" class="pt-3" style="max-width: 920px;" action="{% url 'qnaWrite' %}">
+            {% csrf_token %}
+            <div class="form-group">
+                <label>제목</label>
+                <input type="text" class="form-control" placeholder="제목을 입력하세요." name="title" required>
+            </div>
+            <div class="form-group">
+                <label>내용</label>
+                <textarea type="password" class="form-control"
+                          style="height: 320px; resize: none;"
+                          placeholder="내용을 입력하세요." {% if not user.is_authenticated %} disabled {% endif %} name="context"></textarea>
+            </div>
+            <a class="btn btn-primary" href="{% url 'qnaList' %}">돌아가기</a>
+            <button type="submit" class="btn btn-primary float-right">저장하기</button>
+        </form>
+    </div>
 </div>
-<p class="lead">게시글을 작성합니다.</p>
-<hr>
-<form class="pt-3" style="max-width: 920px;" action="">
-    <div class="form-group">
-        <label>제목</label>
-        <input type="text" class="form-control" placeholder="제목을 입력하세요.">
-    </div>
-    <div class="form-group">
-        <label>내용</label>
-        <textarea type="password" class="form-control" style="height: 320px;" placeholder="내용을 입력하세요."></textarea>
-    </div>
-    <button type="submit" class="btn btn-primary">글쓰기</button>
-</form>
+
 {% endblock %}
 

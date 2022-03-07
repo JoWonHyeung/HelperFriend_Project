@@ -1,18 +1,18 @@
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
-from main.models import User_Info, UploadFile
-from main.models import Course
-from main.logic import scoreSum, emailSend, verificationMailSend,crawling
+from main.models import User_Info, UploadFile, Question, Course
+from main.logic import scoreSum, emailSend, verificationMailSend, crawling
 from django.contrib.auth.decorators import login_required
 from django.http import FileResponse
 from django.core.files.storage import FileSystemStorage
 from django.contrib.auth.models import User
 from django.contrib import auth
+from django.core.paginator import Paginator
 import urllib
 import json
 import os.path
 
-crawling = crawling()
+#crawling = crawling()
 
 class home:
     @login_required(login_url='/main/login/')
@@ -32,10 +32,10 @@ class home:
                     name.append(User.objects.get(id=i.user_id).first_name)
                     myId.append(User.objects.get(id=i.user_id).username)
         context = {
-            'images': crawling[0],
-            'urls': crawling[1],
-            'status': crawling[2],
-            'n': range(len(crawling[0])),
+            # 'images': crawling[0],
+            # 'urls': crawling[1],
+            # 'status': crawling[2],
+            # 'n': range(len(crawling[0])),
             'course': course_name,
             'name': name,
             'habit': habit,
@@ -294,11 +294,36 @@ class email:
             return render(request, 'email.html')
 
 class qna:
-    def qnaView(request):
-        return render(request,'qna.html',None)
+    @login_required(login_url='/main/login/')
+    def qnaListView(request):
+        page = request.GET.get('page',1)
+        vlist = Question.objects.all()
+        paginator = Paginator(vlist,3)
+        vlistpage = paginator.get_page(page)
 
+        context = {
+            "vlist": vlistpage,
+            'pages': range(1, vlistpage.paginator.num_pages + 1)
+        }
+        return render(request,'qnaList.html',context)
+
+    @login_required(login_url='/main/login/')
     def qnaWriteView(request):
-        return render(request,'qnaWrite.html',None)
+        if request.method == 'POST':
+            user = request.user #작성자: 현재 로그인 되어 있는 사람
+            title = request.POST.get('title')
+            content = request.POST.get('context')
+            vdata = Question(questionuser=user, content=content, title=title, question_username=request.user.username)
+            vdata.save()
+            return redirect('qnaList')
+        else:
+            return render(request, 'qnaWrite.html', None)
+
+    @login_required(login_url='/main/login/')
+    def qnaReadView(request, qnaId):
+        qna = Question.objects.get(id=qnaId)
+        context = {'data': qna}
+        return render(request, 'qnaRead.html', context)
 
 def guideView(request):
     return render(request,'guide.html',None)

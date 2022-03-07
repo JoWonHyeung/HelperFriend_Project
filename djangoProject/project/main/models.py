@@ -26,8 +26,9 @@ class Question(models.Model):
     question_time = models.DateTimeField(auto_now_add=True)
     content = models.TextField(null=True)
     questionuser = models.ForeignKey(User,on_delete=models.CASCADE)
+    question_username = models.CharField(max_length=45)
     def __str__(self):
-        return f"id={self.id}, title={self.title}, question_time={self.question_time}, questionuser={self.questionuser_id}"
+        return f"id={self.id}, title={self.title}, question_time={self.question_time}, questionuser={self.questionuser_id}, question_username={self.question_username}"
 
 class Reply(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)

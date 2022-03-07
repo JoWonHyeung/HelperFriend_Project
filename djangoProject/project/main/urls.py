@@ -22,8 +22,11 @@ urlpatterns = [
     path('uploadList/uploadDelete/<id>', uploadList.uploadListDelete, name='uploadDelete'),
     path('uploadList/uploadDownload/<id>', views.uploadList.uploadListDownload, name='uploadDownload'),
     path('email/', email.emailView, name='email'),
-    path('qna/', qna.qnaView,name='qna'),
-    path('qnaWrite/', qna.qnaWriteView,name='qnaWrite'),
+    path('qna/qnaList/', qna.qnaListView,name='qnaList'),
+    path('qna/qnaWrite/', qna.qnaWriteView,name='qnaWrite'),
+    path('qna/qnaRead/<qnaId>',qna.qnaReadView,name='qnaRead'),
+
+
     path('guide/', views.guideView,name='guide'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
