@@ -5,6 +5,248 @@
 {% endblock %}
 
 {% block mycontent %}
-    <h1>team test</h1>
+<div class="col col-sm-9 mt-5">
+    <div class="container con">
+          <div class="row">
+            <div class="container" style="background-color: #FCFCFC">
+                <form method="POST" action="">
+                    {% csrf_token %}
+                    <div select="course" class="form-group">
+                      <label for="select">Team Select:</label>
+                      <select class="form-control" name="course" id="select">
+                        <option>빅데이터 서비스 분석 개발 6회차</option>
+                        <option>AI 개발 6회차</option>
+                        <option>클라우드 서비스 개발 6회차</option>
+                      </select>
+                    </div>
+                    <button id = "btn1" type="button" class="btn btn-primary float-right" data-toggle="collapse" data-target="#demo">인원 불러오기</button>
+                </form>
+                <div id="demo" class="container">
+                      <section id = "block1"class="col col-sm-3 my-5" style="max-width: 1080px; display: none;">
+                          <table class="table">
+                              <thead>
+                                  <tr>
+                                      <th style="width: 80px; text-align: center;">과정</th>
+                                      <th class="mobile" style="width: 80px; text-align: center;">이름</th>
+                                      <th class="mobile" style="width: 80px; text-align: center;">점수</th>
+                                  </tr>
+                              </thead>
+                              <tbody id = "allStudent">
+                              </tbody>
+                          </table>
+                          <div class="text-center">
+                              <button id="btn2" type="button" class="btn btn-primary" data-toggle="collapse" data-target="#demo2">팀 빌딩</button>
+                          </div>
+                      </section>
+                </div>
+                <div id="demo2" class="container">
+                      <section id = "block2"class="col col-sm-3 my-5" style="max-width: 1080px; display: none;">
+                            <div class="container">
+                              <div id="teamBlock"class="card-columns">
+                              </div>
+                            </div>
+                              <div class="text-center">
+                                  <button id="btn3" type="button" class="btn btn-primary my-3">저장하기</button>
+                              </div>
+                      </section>
+                </div>
+            </div>
+          </div>
+          <div id="sum_chart_div">
+          </div>
+          <div id="minmax_chart_div">
+          </div>
+    </div>
+</div>
+
 {% endblock %}
+
+{% block myjs %}
+    /* localStorage를 이용하여 reload후 select value 값이 유지되도록 해주었다.*/
+s = "option:eq("+localStorage['x']+")";
+$("#select").find(s).prop("selected",true);
+
+let all = [];
+let team = [];
+let allScore = [];
+let teamScore = [];
+let score = [];
+let minmax = [];
+let onlyScore = [];
+let myTeamId = 0;
+
+score.push(["항목","총 점수"]);
+minmax.push(["항목","max-min"]);
+
+/* 첫 번째 button 눌렀을때 */
+$('#btn1').click(function(){
+    $('#block1').css('display','block');
+
+    course = $("select[name=course]").val()
+    let param = { 'course' : course };
+
+    $.ajax({
+        url : '{% url 'teamJson' %}',
+        type : 'POST',
+        headers: {
+            'X-CSRFTOKEN' : '{{ csrf_token }}'
+        },
+        data : JSON.stringify(param),
+        success:function(data){
+            var context = ""
+            for(var i = 0; i < data['student'].length; i++){
+                context += "<tr>"
+                context += "<td style='text-align: center;'>" + data['course'] + "</td>"
+                context += "<td style='text-align: center;'>" + data['student'][i][0] + "</td>"
+                context += "<td style='text-align: center;'>" + data['student'][i][1] + "</td>"
+                context += "</tr>"
+                all.push([data['student'][i][0],data['student'][i][2],data['student'][i][1]]);
+                allScore.push([data['student'][i][0],data['student'][i][1]]);
+            }
+            $('[id="allStudent"]').html(context);
+        },
+        error: function(){
+            alert('no success!!');
+        },
+    });
+    $("#btn1").attr("disabled", true);
+});
+
+/* 2번째 button 눌렀을때 */
+$('#btn2').click(function(){
+    $('#block2').css('display','block');
+
+    let teamCnt = all.length / 4;
+    let context = "";
+
+    /* 인원을 담을 2차원 배열을 초기화 */
+
+    for(let i = 0;i < Math.ceil(teamCnt);i++){
+        team[i]=[];
+        teamScore[i]=[]
+        onlyScore[i]=[]
+    }
+
+    /* 팀 구성 Logic */
+    let i = 0;
+    while(i < all.length){
+        for(let j = 0; j < Math.ceil(teamCnt) && all[i] != undefined; j++,i++){
+            if(all[i][1] === '{{ user.id }}'){
+                myTeamId = j + 1;
+            }
+            team[j].push([all[i][0],all[i][1],all[i][2]]);
+            teamScore[j].push(allScore[i]);
+            onlyScore[j].push(allScore[i][1]);
+        }
+    }
+
+    /* max - min */
+    for(let i = 1; i <= onlyScore.length;i++){
+        minmax.push([String(i) + "조", Math.max.apply(Math, onlyScore[i - 1]) -  Math.min.apply(Math, onlyScore[i - 1])]);
+    }
+
+    /* 구성된 팀 정보들을 context저장후 html에 반환 */
+    for(let i = 0; i < team.length; i++){
+        sum = 0
+        context += "<div class='card bg-light'>"
+        context += "<h2 class='text-center my-4'>" + (i + 1) + "조</h2>";
+        context += "<hr>"
+        context += "<div class='card-body text-center'>";
+        for(var j = 0; j < team[i].length; j++){
+            context += "<p class='card-text'>" + team[i][j][0] + "</p>";
+            sum += teamScore[i][j][1]
+        }
+        score.push([String(i+1) + "조",sum]);
+        context += "</div>";
+        context += "</div>";
+    }
+
+    $('[id="teamBlock"]').html(context);
+    $("#btn2").attr("disabled", true);
+    google.charts.setOnLoadCallback(drawChart(score,"각 조의 총 점수",'sum_chart_div',50));
+    google.charts.setOnLoadCallback(drawChart(minmax,"최대 점수 - 최소 점수",'minmax_chart_div',15));
+});
+
+/* 저장하기(저장후 홈 화면으로 이동) */
+$('#btn3').click(function(){
+    /* 자신이 속한 팀원 정보들을 ajax 통신을 활용하여 전달 */
+    let param = {
+        'myTeam' : team[myTeamId - 1],
+        'allTeam' : team,
+        };
+
+    $.ajax({
+        url : '{% url 'homeTeamJson' %}',
+        type : 'POST',
+        headers: {
+            'X-CSRFTOKEN' : '{{ csrf_token }}'
+        },
+        data : JSON.stringify(param),
+        success:function(data){
+            console.log("success");
+        },
+        error: function(){
+            alert("Error!!")
+        },
+    });
+    alert("팀 빌딩이 완료");
+    location.href = '{% url "team" %}'
+});
+
+/* select값이 변경되었을때 reload */
+$('#select').on('change',function(){
+    var idx = $("#select option").index( $("#select option:selected") );
+    localStorage.setItem('x',idx);
+    location.reload();
+})
+
+function drawChart(element,title, div, yVal) {
+        // 차트 데이터 설정
+        var data = google.visualization.arrayToDataTable(element);
+
+        // 그래프 옵션
+        var options = {
+            title : title, // 제목
+            width : 800, // 가로 px
+            height : 400, // 세로 px
+            bar : {
+                groupWidth : '80%' // 그래프 너비 설정 %
+            },
+            legend : {
+                position : 'none' // 항목 표시 여부 (현재 설정은 안함)
+            },
+            vAxis: {
+                viewWindow: {
+                    max: yVal
+                }
+            },
+            colors : ['blue']
+        };
+        var chart = new google.visualization.ColumnChart(document.getElementById(div));
+        chart.draw(data, options);
+    }
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

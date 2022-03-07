@@ -1,0 +1,58 @@
+{% extends 'basesimple.html' %}
+
+{% block mycss %}
+label.email {
+    font-size: 14px;
+    font-weight: normal;
+    margin-left: 10px;
+}
+{% endblock %}
+
+{% block mycontent %}
+    <div class="col col-sm-9 my-5">
+        <div class="container con p-3 my-3 border bg-white">
+            <label class="mb-0">메일 쓰기</label>
+            <hr>
+            <div class="container pb-5">
+                <form class="my-auto" style="max-width: 760px;" action="" method="POST" enctype="multipart/form-data">
+                      {% csrf_token %}
+                      <div class="form-group">
+                        <label class="email" for="title">제목</label>
+                        <input type="text" class="form-control" id="title" placeholder="제목을 입력하세요." name="title">
+                      </div>
+                      <div class="form-group">
+                        <label class="email" for="sender">수신자</label>
+                        <input type="email" class="form-control" id="sender" aria-describedby="emailHelp" placeholder="수신자 이메일을 입력하세요." name="email">
+                      </div>
+                      <div class="form-group">
+                          <label class="email" for="exampleFormControlTextarea1">내용</label>
+                          <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="내용을 입력하세요." style="resize: none;" name="text"></textarea>
+                      </div>
+                      <label class="email" for="exampleFormControlTextarea1">파일 첨부</label>
+                      <div class="input-group mb-3">
+                          <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="inputGroupFile01" name="file">
+                            <label class="custom-file-label email" for="inputGroupFile01">파일 선택( 모든 파일은 압축해서 업로드합니다. )</label>
+                          </div>
+                      </div>
+                    <br>
+                    <div class="container">
+                        <button type="submit" class="btn" style="background-color: #707070; color: white; float: right;">보내기</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block myjs %}
+$('#inputGroupFile01').on('change',function(){
+                //get the file name
+                var fileName = $(this).val();
+                console.log(fileName)
+                //replace the "Choose a file" label
+                $(this).next('.custom-file-label').html(fileName);
+})
+{% endblock %}
+
+
