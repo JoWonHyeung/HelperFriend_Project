@@ -149,7 +149,7 @@
     google.charts.load('current', {packages:['corechart']});
 
     let param = {'id': {{ user.id }} }
-    var context = ""
+    let context = ""
     $.ajax({
         url : '{% url 'homeInfoJson'%}',
         type : 'POST',
