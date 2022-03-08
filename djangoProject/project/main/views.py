@@ -1,18 +1,18 @@
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
-from main.models import User_Info, UploadFile
-from main.models import Course
-from main.logic import scoreSum, emailSend, verificationMailSend,crawling
+from main.models import User_Info, UploadFile, Question, Course, Reply
+from main.logic import scoreSum, emailSend, verificationMailSend, crawling
 from django.contrib.auth.decorators import login_required
 from django.http import FileResponse
 from django.core.files.storage import FileSystemStorage
 from django.contrib.auth.models import User
 from django.contrib import auth
+from django.core.paginator import Paginator
 import urllib
 import json
 import os.path
 
-crawling = crawling()
+#crawling = crawling()
 
 class home:
     @login_required(login_url='/main/login/')
@@ -32,10 +32,10 @@ class home:
                     name.append(User.objects.get(id=i.user_id).first_name)
                     myId.append(User.objects.get(id=i.user_id).username)
         context = {
-            'images': crawling[0],
-            'urls': crawling[1],
-            'status': crawling[2],
-            'n': range(len(crawling[0])),
+            # 'images': crawling[0],
+            # 'urls': crawling[1],
+            # 'status': crawling[2],
+            # 'n': range(len(crawling[0])),
             'course': course_name,
             'name': name,
             'habit': habit,
@@ -294,11 +294,58 @@ class email:
             return render(request, 'email.html')
 
 class qna:
-    def qnaView(request):
-        return render(request,'qna.html',None)
+    @login_required(login_url='/main/login/')
+    def qnaListView(request):
+        page = request.GET.get('page',1)
+        vlist = Question.objects.all().order_by('-question_time')
+        paginator = Paginator(vlist,10)
+        vlistpage = paginator.get_page(page)
+        context = {
+            "vlist": vlistpage,
+            'pages': range(1, vlistpage.paginator.num_pages + 1)
+        }
+        return render(request,'qnaList.html',context)
 
+    @login_required(login_url='/main/login/')
     def qnaWriteView(request):
-        return render(request,'qnaWrite.html',None)
+        if request.method == 'POST':
+            user = request.user # 작성자: 현재 로그인 되어 있는 사람
+            title = request.POST.get('title')
+            content = request.POST.get('context')
+            Question(questionuser=user, content=content, title=title, question_username=request.user.username).save()
+            return redirect('qnaList')
+        else:
+            return render(request, 'qnaWrite.html', None)
+
+    @login_required(login_url='/main/login/')
+    def qnaReadAndReplyView(request, qnaId):
+        if request.method == "POST": #reply 저장할때
+            content = request.POST.get('replyContent')
+            Reply(question_id=qnaId, replyuser_id=request.user.id, comment=content).save()
+        if request.GET.get('pk'):
+            try:
+                Reply.objects.get(id=request.GET.get('pk')).delete()
+            except Reply.DoesNotExist:
+                pass
+
+        qna = Question.objects.get(id=qnaId)
+        context = {'data': qna}
+        return render(request, 'qnaRead.html', context)
+
+    def qnaReplyJson(request,qnaId): #해당 게시물에 대한 모든 댓글들 다 끌어오기
+        replys = Reply.objects.filter(question_id=qnaId)
+        username = []; content = []; id = [];
+        for reply in replys:
+            username.append(reply.replyuser.username)
+            content.append(reply.comment)
+            id.append(reply.id)
+        context = {
+            'username': username,
+            'content': content,
+            'replyId': id,
+        }
+        return JsonResponse(context)
+
 
 def guideView(request):
     return render(request,'guide.html',None)
