@@ -16,21 +16,21 @@
                 <tr>
                     <th style="text-align: center;">제목</th>
                     <th class="mobile" style="width: 100px; text-align: center;">작성자</th>
-                    <th class="mobile" style="width: 120px; text-align: center;">날짜</th>
+                    <th class="mobile" style="width: 200px; text-align: center;">날짜</th>
                 </tr>
             </thead>
             <tbody>
                 {% for vdata in vlist %}
                 <tr>
-                    <td class="mobile" style="text-align:center;"><a href="{% url 'qnaReadAndReply' vdata.id %}">{{ vdata.title }}</a></td>
-                    <td>{{vdata.question_username}}</td>
+                    <td class="mobile" style="text-align:center;"><a href="{% url 'qnaReadAndReply' vdata.id %}" style="color: #656565; font-weight: 500;">{{ vdata.title }}</a></td>
+                    <td style="text-align: center;">{{vdata.question_username}}</td>
                     <td class="mobile" style="text-align: center;">{{ vdata.question_time }} </td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
         <div style="max-width: 1080px">
-            <a href="{% url 'qnaWrite' %}" class="btn btn-primary float-right">글쓰기</a>
+            <a href="{% url 'qnaWrite' %}" class="btn btn-secondary float-right">글쓰기</a>
         </div>
         <ul class="pagination">
             {% if vlist.has_previous %}
