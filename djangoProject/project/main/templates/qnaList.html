@@ -22,8 +22,8 @@
             <tbody>
                 {% for vdata in vlist %}
                 <tr>
-                    <td class="mobile" style="text-align:center; color: #656565; font-weight: 500;"><a href="{% url 'qnaReadAndReply' vdata.id %}">{{ vdata.title }}</a></td>
-                    <td>{{vdata.question_username}}</td>
+                    <td class="mobile" style="text-align:center;"><a href="{% url 'qnaReadAndReply' vdata.id %}" style="color: #656565; font-weight: 500;">{{ vdata.title }}</a></td>
+                    <td style="text-align: center;">{{vdata.question_username}}</td>
                     <td class="mobile" style="text-align: center;">{{ vdata.question_time }} </td>
                 </tr>
                 {% endfor %}
