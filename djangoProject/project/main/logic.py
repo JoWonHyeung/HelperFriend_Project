@@ -140,7 +140,7 @@ def verificationMailSend(email, username, title):
 def crawling():
     # 1
     query_txt = "AI"
-    res = []
+
     status = []
     # 2
     chrome_path = "c://tmp//chromedriver.exe"
@@ -176,7 +176,7 @@ def crawling():
     # 5. url수집
     urls = []
     default_dir = "https://thinkyou.co.kr"
-    count = 0
+    res = {}
 
     html = driver.page_source
     soup = BeautifulSoup(html, 'html.parser')
@@ -227,8 +227,6 @@ def crawling():
             urls_image.append(full_image)
             file_no += 1
         time.sleep(1)
-
-    res.append(urls_image)
-    res.append(urls)
-    res.append(status)
+    for i in range(0,6):
+        res[str(i)] = [urls_image[i], urls[i], status[i]]
     return res
