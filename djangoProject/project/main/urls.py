@@ -24,9 +24,8 @@ urlpatterns = [
     path('email/', email.emailView, name='email'),
     path('qna/qnaList/', qna.qnaListView,name='qnaList'),
     path('qna/qnaWrite/', qna.qnaWriteView,name='qnaWrite'),
-    path('qna/qnaRead/<qnaId>',qna.qnaReadView,name='qnaRead'),
-
-
+    path('qna/qnaReadAndReply/<qnaId>/', qna.qnaReadAndReplyView, name='qnaReadAndReply'),
+    path('qna/qnaReplyJson/<qnaId>/', qna.qnaReplyJson, name='qnaReplyJson'),
     path('guide/', views.guideView,name='guide'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
