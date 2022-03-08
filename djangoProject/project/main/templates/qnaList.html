@@ -1,0 +1,63 @@
+{% extends 'basesimple.html' %}
+
+{% block mycss %}
+
+{% endblock %}
+
+{% block mycontent %}
+<div class="col col-sm-9 my-5">
+    <div class="container con">
+        <label class="mb-o">질문 게시판</label>
+        <hr>
+        <div class="page-header mt-3">
+    </div>
+        <table class="table table-striped" style="max-width: 1080px;">
+            <thead>
+                <tr>
+                    <th style="text-align: center;">제목</th>
+                    <th class="mobile" style="width: 100px; text-align: center;">작성자</th>
+                    <th class="mobile" style="width: 120px; text-align: center;">날짜</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for vdata in vlist %}
+                <tr>
+                    <td class="mobile" style="text-align:center;"><a href="{% url 'qnaReadAndReply' vdata.id %}">{{ vdata.title }}</a></td>
+                    <td>{{vdata.question_username}}</td>
+                    <td class="mobile" style="text-align: center;">{{ vdata.question_time }} </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div style="max-width: 1080px">
+            <a href="{% url 'qnaWrite' %}" class="btn btn-primary float-right">글쓰기</a>
+        </div>
+        <ul class="pagination">
+            {% if vlist.has_previous %}
+            <li class="page-item">
+                <a href='?page={{ vlist.number|add:-1 }}' class="page-link">&laquo;</a>
+            </li>
+            {% endif %}
+            <li class="page-item">
+            {% for page in pages%}
+                {% if vlist.number == page %}
+                      <li class="page-item active"><a class="page-link mobile" href="{% url 'qnaList' %}?page={{ page }}">{{ page }}</a></li>
+                {% else %}
+                      <li class="page-item"><a class="page-link mobile" href="{% url 'qnaList' %}?page={{ page }}">{{ page }}</a></li>
+                {% endif %}
+            {% endfor %}
+            </li>
+            {% if vlist.has_next %}
+            <li class="page-item">
+                <a href='?page={{ vlist.number|add:+1 }}' class="page-link">&raquo;</a>
+            </li>
+            {% endif %}
+        </ul>
+    </div>
+</div>
+{% endblock %}
+
+{% block myjs %}
+
+
+{% endblock %}
