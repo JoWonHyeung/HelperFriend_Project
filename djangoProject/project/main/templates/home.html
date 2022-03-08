@@ -84,6 +84,9 @@
         display: flex;
         flex-direction: row;
     }
+    strong.major {
+        font-size: 16px;
+    }
 
     p#imp {
         font-size: 18px;
@@ -140,7 +143,7 @@
                           </div>
                       </div>
                       <div style="line-height:120%">
-                          <p id="imp"><small><small>{{ course }}</small></small><br><strong>{{ major|index:forloop.counter0 }}</strong></p>
+                          <p id="imp"><small><small>{{ course }}</small></small><br><strong class="major">{{ major|index:forloop.counter0 }}</strong></p>
                       </div>
                       <div>
                           <table>
