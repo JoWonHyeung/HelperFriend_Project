@@ -8,8 +8,6 @@ from django.core.files.storage import FileSystemStorage
 from django.contrib.auth.models import User
 from django.contrib import auth
 from django.core.paginator import Paginator
-import json
-from django.core.serializers.json import DjangoJSONEncoder
 import urllib
 import json
 import os.path
@@ -21,37 +19,19 @@ class home:
     def homeView(request):
         context = None
         user_Info = User_Info.objects.get(user=request.user)
-        user_dict = {}
+        home_user = {}; crawling_info = {}
         course_name = Course.objects.get(id=user_Info.course_id).course_name
-        habit = []; target = []; mbti = []; major = []; name = []; myId = []
-
         #홈 화면에 나타나는 팀 정보들을 띄워주기 위해서 팀원 정보들을 뽑아낸다.
         if user_Info.team_id != None:
             infos = User_Info.objects.filter(team_id=user_Info.team_id)
             for i in infos: # 같은 조들 전부다 filter, 단 다른 과정의 조들과 충돌할 수 있으므로 제외시켜야된다.
                 if Course.objects.get(id=i.course_id).course_name == course_name:
-                    # User_info에 접근해서 같은 팀원들의 정보들을 뽑아온다.
-                    habit.append(i.habit); target.append(i.target); mbti.append(i.mbti); major.append(i.major)
-                    name.append(User.objects.get(id=i.user_id).first_name)
-                    myId.append(User.objects.get(id=i.user_id).username)
-                    #refactoring중
-                    user_dict[User.objects.get(id=i.user_id).username] = [i.habit, i.target, i.mbti, i.major, User.objects.get(id=i.user_id).username]
-
-        print(user_dict)
+                    home_user[User.objects.get(id=i.user_id).username] = [User.objects.get(id=i.user_id).first_name,
+                                                                          i.habit, i.target, i.mbti, i.major, User.objects.get(id=i.user_id).username,
+                                                                          course_name]
         context = {
-            # 'images': crawling[0],
-            # 'urls': crawling[1],
-            # 'status': crawling[2],
-            # 'n': range(len(crawling[0])),
-            'course': course_name,
-            'name': name,
-            'habit': habit,
-            'target': target,
-            'mbti': mbti,
-            'major': major,
-            'Id': myId,
-            'teamName': user_Info.team_id,
-            'teamLen': range(len(name)),
+            #'crawling': crawling,
+            'home_user': home_user,
         }
         return render(request, 'home.html', context)
 
