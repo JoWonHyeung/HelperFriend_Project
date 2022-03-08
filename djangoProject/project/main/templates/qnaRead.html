@@ -1,0 +1,115 @@
+{% extends 'basesimple.html' %}
+
+{% block mycss %}
+textarea {
+    width: 80%;
+    height:50px;
+    border: none;
+    resize: none;
+  }
+{% endblock %}
+
+{% block mycontent %}
+
+<div class="col col-sm-9 my-5">
+    <div class="container con">
+            <div class="container">
+                     <div class="page-header mt-3">
+                    <h2>글 읽기</h2>
+                    </div>
+                    <hr>
+                    <form method="POST" class="pt-3" style="max-width: 920px;" action="{% url 'qnaWrite' %}">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label>제목</label>
+                                <input type="text" class="form-control" placeholder="{{data.title}}" name="title" disabled>
+                            </div>
+                            <div class="form-row">
+                                <div class="col">
+                                    <label>글쓴이</label>
+                                    <input type="text" class="form-control" placeholder="{{data.question_username}}" name="title" disabled>
+                                </div>
+                                <div class="col">
+                                    <label>작성 일자</label>
+                                    <input type="text" class="form-control" placeholder="{{data.question_time}}" name="title" disabled>
+                                </div>
+                            </div>
+                            <div class="form-group my-3">
+                                <label>내용</label>
+                                <textarea type="password" class="form-control"
+                                          style="height: 320px; resize: none;"
+                                          name="context" disabled>{{data.content}}</textarea>
+                            </div>
+                            <a class="btn btn-primary" href="{% url 'qnaList' %}">돌아가기</a>
+                      </form>
+                             {% if user.id == data.questionuser_id%}
+                                <button class="btn btn-primary float-right" onclick="board_delete({{ data.id }})">삭제</button>
+                                <button class="btn btn-primary float-right mx-2">수정</button>
+                            {% endif %}
+            </div>
+        <br>
+        <h2 class="border-bottom border-gray pb-2 mb-0 my-3">댓글</h2>
+        <div class="p-3 bg-white rounded box-shadow" id="replyReadBox">
+        </div>
+        <h2 class="border-bottom border-gray pb-2 mb-0 my-3">댓글 등록</h2>
+        <div class="container">
+            <form method="post" class="form-inline"action="{% url 'qnaReadAndReply' data.pk %}">
+                 {% csrf_token %}
+                <textarea class="form-control w-75" rows="5" id="comment" name="replyContent"></textarea>
+                <button type="submit" class="btn btn-primary btn-lg float-right">등록</button>
+            </form>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}
+
+{% block myjs %}
+
+<!-- 댓글 관련 ajax -->
+$.ajax({
+    url : '{% url 'qnaReplyJson' data.id %}',
+    type : 'POST',
+    headers: {
+        'X-CSRFTOKEN' : '{{ csrf_token }}'
+    },
+    data : JSON.stringify(),
+    success:function(data){
+        let context = "";
+        for(let i = 0; i < data['username'].length; i++){
+            context += '<div class="media text-muted pt-3">'
+            context += '<img src="/static/img/2.jpg" width="35" height="35" class="rounded-circle">'
+            context += '<p class="media-body pb-3 mb-0 lh-125 border-bottom border-gray mx-3">'
+            context += '<strong class="d-block text-gray-dark">' + data['username'][i] + '</strong>'
+            context +=  data['content'][i]
+            context += '</p>'
+            if(data['username'][i] == "{{ user.username }}"){ <!-- 댓글 아이디 == 현재 로그인 아이디 -->
+                context += "<img src='/static/img/clear.png' width='35' height='35' class='rounded-circle float-right p-1' onclick='reply_delete(" + data['replyId'][i] + ")'>"
+            }
+            context += '</div>'
+        }
+        $('[id="replyReadBox"]').html(context);
+    },
+    error: function(){
+        alert('no success!!');
+    },
+});
+
+function reply_delete(pk) {
+    let result = confirm("댓글을 삭제하겠습니까?");
+    if(result)
+        location.href = "{% url 'qnaReadAndReply' data.id %}?replypk="+pk;
+}
+
+function board_delete(pk){
+    let result = confirm("게시물을 삭제하겠습니까?");
+    if(result)
+        location.href = "{% url 'qnaReadAndReply' data.id %}?boardpk="+pk;
+
+}
+
+{% endblock %}
+
+
+
