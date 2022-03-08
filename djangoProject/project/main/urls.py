@@ -7,6 +7,7 @@ from main.views import uploadList, upload, home, authentication, team, email, qn
 urlpatterns = [
     path('home/', home.homeView,name='home'),
     path('home/homeInfoJson/', home.homeInfoJson, name='homeInfoJson'),
+    path('home/homeBoardJson/', home.homeBoardJson, name='homeBoardJson'),
     path('login/', authentication.loginView, name='login'),
     path('logout/', authentication.logoutView,name='logout'),
     path('join/', authentication.joinView, name='join'),

@@ -8,6 +8,8 @@ from django.core.files.storage import FileSystemStorage
 from django.contrib.auth.models import User
 from django.contrib import auth
 from django.core.paginator import Paginator
+import json
+from django.core.serializers.json import DjangoJSONEncoder
 import urllib
 import json
 import os.path
@@ -19,6 +21,7 @@ class home:
     def homeView(request):
         context = None
         user_Info = User_Info.objects.get(user=request.user)
+        user_dict = {}
         course_name = Course.objects.get(id=user_Info.course_id).course_name
         habit = []; target = []; mbti = []; major = []; name = []; myId = []
 
@@ -31,6 +34,10 @@ class home:
                     habit.append(i.habit); target.append(i.target); mbti.append(i.mbti); major.append(i.major)
                     name.append(User.objects.get(id=i.user_id).first_name)
                     myId.append(User.objects.get(id=i.user_id).username)
+                    #refactoring중
+                    user_dict[User.objects.get(id=i.user_id).username] = [i.habit, i.target, i.mbti, i.major, User.objects.get(id=i.user_id).username]
+
+        print(user_dict)
         context = {
             # 'images': crawling[0],
             # 'urls': crawling[1],
@@ -57,6 +64,9 @@ class home:
             'course': Course.objects.get(id=user_Info.course_id).course_name,
         }
         return JsonResponse(context)
+
+    def homeBoardJson(request):
+        return JsonResponse({'home_board': list(Question.objects.all().order_by('-question_time')[:3].values())})
 
 class authentication:
     def loginView(request):
