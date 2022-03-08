@@ -35,6 +35,7 @@ class home:
         }
         return render(request, 'home.html', context)
 
+    #홈 화면 개인정보 가져오기
     def homeInfoJson(request):
         user_Id = json.loads(request.body).get('id')
         user_Info = User_Info.objects.get(user_id=user_Id)
@@ -45,6 +46,7 @@ class home:
         }
         return JsonResponse(context)
 
+    #홈 화면 게시판 글 3개 가져오기
     def homeBoardJson(request):
         return JsonResponse({'home_board': list(Question.objects.all().order_by('-question_time')[:3].values())})
 
@@ -133,7 +135,6 @@ class authentication:
                 }
             else:
                 context = {'creditMsg': "인증번호가 일치하지 않습니다."}
-
         return JsonResponse(context)
 
     def joinView(request):
@@ -245,7 +246,7 @@ class uploadList():
         # 삭제
         upload_file = UploadFile.objects.get(id=id)
         upload_file.delete()
-        # update
+        # 삭제 후 update
         user_Info = User_Info.objects.get(user=request.user)
         course_id = user_Info.course_id
         course_name = Course.objects.get(id=course_id).course_name

@@ -94,8 +94,8 @@ def emailSend(request):
     msg.attach(MIMEText(message, 'plain'))
     password = "vlmakurzryemowff"
 
-    # 수신자가 없거나, 파일이 존재하지 않으면 home화면으로 redirect
-    if file != None and msg['To'] != "":
+    # 파일이 존재하지 않으면 건너뛴다.
+    if file != None:
         extense = file.name.split('.')[1]
         # 확장자 별로 다르게 처리
         if extense == "jpg" or extense == 'png':
@@ -107,11 +107,11 @@ def emailSend(request):
         else:
             msg.attach(MIMEApplication(file.file.read(), Name=file.name))
 
-        context = ssl.create_default_context()
-        with smtplib.SMTP(smtp_server, port) as server:
-            server.starttls(context=context)
-            server.login(msg['From'], password)
-            server.sendmail(msg['From'], msg['To'], msg.as_string())
+    context = ssl.create_default_context()
+    with smtplib.SMTP(smtp_server, port) as server:
+        server.starttls(context=context)
+        server.login(msg['From'], password)
+        server.sendmail(msg['From'], msg['To'], msg.as_string())
 
 def verificationMailSend(email, username, title):
     msg = MIMEMultipart()

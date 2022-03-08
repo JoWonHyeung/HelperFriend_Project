@@ -138,9 +138,11 @@
                           <div class="container"style="line-height:100%">
                               <p><strong>{{ values|index:0 }}</strong><br><small>{{ key }}</small></p>
                           </div>
+                          {% if forloop.first %}
                           <div>
                             <img src="/static/img/star.svg" style="width: 20px;">
                           </div>
+                          {% endif %}
                       </div>
                       <div style="line-height:120%">
                           <p id="imp"><small><small>{{ values|index:6 }}</small></small><br><strong class="major">{{ values|index:4 }}</strong></p>
@@ -188,6 +190,7 @@
                 </tr>
               </thead>
               <tbody id="board">
+
               </tbody>
             </table>
             </div>
@@ -281,7 +284,7 @@
             let context = ""
             for(let i = 0; i < data['home_board'].length ;i++) {
                 context += '<tr>'
-                context += '<td class="mobile" style="text-align: center;">' + data['home_board'][i]['title'] + '</td>'
+                context += "<td class='mobile' style='text-align: center;'><a style='color: #656565; font-weight: 500;' href='/main/qna/qnaReadAndReply/" + data['home_board'][i]['id'] + "'>" + data['home_board'][i]['title'] + "</a></td>"
                 context += '<td class="mobile" style="text-align: center;">' + data['home_board'][i]['question_username'] + '</td>'
                 context += '<td class="mobile" style="text-align: center;">' + data['home_board'][i]['question_time'].split('T')[0] + '</td>'
                 context += '</tr>'

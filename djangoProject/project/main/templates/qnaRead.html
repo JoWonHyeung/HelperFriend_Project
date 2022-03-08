@@ -1,3 +1,4 @@
+
 {% extends 'basesimple.html' %}
 
 {% block mycss %}
@@ -59,11 +60,11 @@ input {
                             {{data.content}}
                         </div>
                         <a class="btn btn-secondary" href="{% url 'qnaList' %}">돌아가기</a>
-                        {% if user.id == data.questionuser_id%}
+                </form>
+                 {% if user.id == data.questionuser_id%}
                             <button class="btn btn-link float-right" onclick="board_delete({{ data.id }})" style="background-color: red; color: white;">삭제</button>
                             <button class="btn btn-secondary float-right mx-2">수정</button>
-                        {% endif %}
-                </form>
+                {% endif %}
             </div>
         <br>
         <div class="replys">

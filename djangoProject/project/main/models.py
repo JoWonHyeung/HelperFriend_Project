@@ -22,7 +22,7 @@ class User_Info(models.Model):
                f"course_id={self.course},habit={self.habit},target={self.target},mbti={self.mbti},major={self.major}, creditNum={self.creditNum}, email={self.email}"
 
 class Question(models.Model):
-    title = models.CharField(max_length=45)
+    title = models.CharField(max_length=45,null=True)
     question_time = models.DateTimeField(auto_now_add=True)
     content = models.TextField(null=True)
     questionuser = models.ForeignKey(User,on_delete=models.CASCADE)
