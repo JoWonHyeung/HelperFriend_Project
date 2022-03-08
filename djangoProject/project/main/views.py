@@ -319,15 +319,22 @@ class qna:
 
     @login_required(login_url='/main/login/')
     def qnaReadAndReplyView(request, qnaId):
-        if request.method == "POST": #reply 저장할때
+        context = {}
+        if request.method == "POST": #reply 저장
             content = request.POST.get('replyContent')
             Reply(question_id=qnaId, replyuser_id=request.user.id, comment=content).save()
-        if request.GET.get('pk'):
+        elif request.GET.get('replypk'): #댓글 삭제
             try:
-                Reply.objects.get(id=request.GET.get('pk')).delete()
+                Reply.objects.get(id=request.GET.get('replypk')).delete()
             except Reply.DoesNotExist:
                 pass
-
+        elif request.GET.get('boardpk'): #게시판 삭제
+            try:
+                boardpk = request.GET.get('boardpk')
+                Question.objects.get(id=boardpk).delete()
+                return redirect('home')
+            except Question.DoesNotExist:
+                pass
         qna = Question.objects.get(id=qnaId)
         context = {'data': qna}
         return render(request, 'qnaRead.html', context)
