@@ -23,8 +23,8 @@
                           style="height: 320px; resize: none;"
                           placeholder="내용을 입력하세요." {% if not user.is_authenticated %} disabled {% endif %} name="context"></textarea>
             </div>
-            <a class="btn btn-primary" href="{% url 'qnaList' %}">돌아가기</a>
-            <button type="submit" class="btn btn-primary float-right">저장하기</button>
+            <a class="btn btn-secondary" href="{% url 'qnaList' %}">돌아가기</a>
+            <button type="submit" class="btn btn-secondary float-right">저장하기</button>
         </form>
     </div>
 </div>
