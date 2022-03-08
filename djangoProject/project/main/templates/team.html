@@ -93,8 +93,8 @@ $('#btn1').click(function(){
         },
         data : JSON.stringify(param),
         success:function(data){
-            var context = ""
-            for(var i = 0; i < data['student'].length; i++){
+            let context = ""
+            for(let i = 0; i < data['student'].length; i++){
                 context += "<tr>"
                 context += "<td style='text-align: center;'>" + data['course'] + "</td>"
                 context += "<td style='text-align: center;'>" + data['student'][i][0] + "</td>"

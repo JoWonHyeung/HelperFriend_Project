@@ -130,38 +130,38 @@
               <label class="mb-0">팀 정보</label>
               <hr>
               <div class="row">
-                  {% for _ in teamLen %}
+                  {% for key, values in home_user.items %}
                   {% load index %}
                   <div class="container card" id="card">
                       <div class="cardname">
                           <img src="/static/img/2.jpg" width="35" height="35" class="rounded-circle">
                           <div class="container"style="line-height:100%">
-                              <p><strong>{{ name|index:forloop.counter0 }}</strong><br><small>{{ Id|index:forloop.counter0 }}</small></p>
+                              <p><strong>{{ values|index:0 }}</strong><br><small>{{ key }}</small></p>
                           </div>
                           <div>
                             <img src="/static/img/star.svg" style="width: 20px;">
                           </div>
                       </div>
                       <div style="line-height:120%">
-                          <p id="imp"><small><small>{{ course }}</small></small><br><strong class="major">{{ major|index:forloop.counter0 }}</strong></p>
+                          <p id="imp"><small><small>{{ values|index:6 }}</small></small><br><strong class="major">{{ values|index:4 }}</strong></p>
                       </div>
                       <div>
                           <table>
                               <tr>
                                   <th>취미</th>
-                                  <td><span>{{ habit|index:forloop.counter0 }}</span></td>
+                                  <td><span>{{values|index:1}}</span></td>
                               </tr>
                           </table>
                           <table>
                               <tr>
                                   <th>목표</th>
-                                  <td><span>{{ target|index:forloop.counter0 }}</span></td>
+                                  <td><span>{{values|index:2}}</span></td>
                               </tr>
                           </table>
                       </div>
                       <div class="hash">
                           <span>
-                              <p><small>#{{ mbti|index:forloop.counter0 }}</small></p>
+                              <p><small>#{{ values|index:3 }}</small></p>
                           </span>
                       </div>
                   </div>
@@ -184,33 +184,10 @@
                 <tr>
                   <th style="text-align: center;">제목</th>
                   <th class="mobile" style="width: 80px; text-align: center;">작성자</th>
-                  <th class="mobile" style="width: 120px; text-align: center;">댓글</th>
-                  <th class="mobile" style="width: 120px; text-align: center;">좋아요</th>
                   <th class="mobile" style="width: 120px; text-align: center;">작성일</th>
                 </tr>
               </thead>
-              <tbody>
-                <tr>
-                  <td>신규 운영진을 모집합니다.</td>
-                  <td class="mobile" style="text-align: center;">운영자</td>
-                  <td class="mobile" style="text-align: center;">2</td>
-                  <td class="mobile" style="text-align: center;">10</td>
-                  <td class="mobile" style="text-align: center;">2022-02-25</td>
-                </tr>
-                <tr>
-                  <td>커뮤니티 웹 사이트에 오신 것을 환영합니다.</td>
-                  <td class="mobile" style="text-align: center;">운영자</td>
-                  <td class="mobile" style="text-align: center;">2</td>
-                  <td class="mobile" style="text-align: center;">10</td>
-                  <td class="mobile" style="text-align: center;">2022-02-25</td>
-                </tr>
-                <tr>
-                  <td>커뮤니티 웹 사이트가 개설되었습니다.</td>
-                  <td class="mobile" style="text-align: center;">운영자</td>
-                  <td class="mobile" style="text-align: center;">2</td>
-                  <td class="mobile" style="text-align: center;">10</td>
-                  <td class="mobile" style="text-align: center;">2022-02-25</td>
-                </tr>
+              <tbody id="board">
               </tbody>
             </table>
             </div>
@@ -221,18 +198,18 @@
                     <div class="col mx-auto my-auto justify-content-center">
                         <div id="recipeCarousel" class="carousel slide" data-ride="carousel">
                             <div class="carousel-inner" role="listbox">
-                                {% for _ in n %}
+                                {% for key, value in  crawling.items %}
                                     {% load index %}
                                         {% if forloop.first %}
                                         <div class="carousel-item active">
                                             <div class="festival">
                                                 <div class="posterImg movie-card m-4">
                                                     <div class="movie-img">
-                                                        <a href="{{urls|index:forloop.counter0}}"><img src="{{ images|index:forloop.counter0 }}" class="img-fluid"></a>
+                                                        <a href="{{ value|index:1 }}"><img src="{{ value|index:0 }}" class="img-fluid"></a>
                                                     </div>
                                                     <div class="movie-title">
                                                         <a href="#">
-                                                            <p class="text-white text-sm-center font-small flex-center">{{ status|index:forloop.counter0 }}</p>
+                                                            <p class="text-white text-sm-center font-small flex-center">{{ value|index:2 }}</p>
                                                         </a>
                                                     </div>
                                                 </div>
@@ -243,11 +220,11 @@
                                             <div class="festival">
                                                 <div class="posterImg movie-card m-4">
                                                     <div class="movie-img">
-                                                        <a href="{{urls|index:forloop.counter0}}"><img src="{{ images|index:forloop.counter0 }}" class="img-fluid"></a>
+                                                        <a href="{{ value|index:1 }}"><img src="{{ value|index:0 }}" class="img-fluid"></a>
                                                     </div>
                                                     <div class="movie-title">
                                                         <a href="#">
-                                                            <p class="text-white text-sm-center font-small flex-center">{{ status|index:forloop.counter0 }}</p>
+                                                            <p class="text-white text-sm-center font-small flex-center">{{ value|index:2 }}</p>
                                                         </a>
                                                     </div>
                                                 </div>
@@ -292,4 +269,28 @@
             next.children(':first-child').clone().appendTo($(this));
           }
     });
+    <!-- 질문게시판 상위 3개 업데이트 -->
+    $.ajax({
+        url : '{% url 'homeBoardJson' %}',
+        type : 'POST',
+        headers: {
+            'X-CSRFTOKEN' : '{{ csrf_token }}'
+        },
+        data : JSON.stringify(),
+        success:function(data){
+            let context = ""
+            for(let i = 0; i < data['home_board'].length ;i++) {
+                context += '<tr>'
+                context += '<td class="mobile" style="text-align: center;">' + data['home_board'][i]['title'] + '</td>'
+                context += '<td class="mobile" style="text-align: center;">' + data['home_board'][i]['question_username'] + '</td>'
+                context += '<td class="mobile" style="text-align: center;">' + data['home_board'][i]['question_time'].split('T')[0] + '</td>'
+                context += '</tr>'
+            }
+            $('[id="board"]').html(context);
+        },
+        error: function(){
+            alert("Error!!")
+        },
+    });
+
 {% endblock %}
