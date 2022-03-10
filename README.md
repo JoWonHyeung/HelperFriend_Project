@@ -23,7 +23,7 @@ Frontend : HTML, CSS, Javascript, Bootstrap
 
 ## Period
 
-2/23 ~ 3/14
+2/10 ~ 3/14
 
 ## Role
 조원형(팀장): 백엔드
