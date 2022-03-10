@@ -41,9 +41,14 @@ mesh153@naver.com
 - 팀 구성후 팀원 삭제 기능 있으면 좋을 것 같다.
 
 ## Schedule
+- 2/10 ~ 2/22
+  
+  1. 아이디어 회의 및 공모전/대외활동 crawling을 위해 학습 및 구현
+
 
 - 2/23
-  1. Home화면에 들어갈 공모전/대외활동 crawling후 swiper제작  
+
+  1. Home화면에 들어갈 공모전/대외활동 swiper제작  
   
   2. 팀원들 Bootstrap4 강좌소개
 
