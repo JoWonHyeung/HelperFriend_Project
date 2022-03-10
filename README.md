@@ -119,7 +119,7 @@ mesh153@naver.com
 
   2. 메일 전송 오류 처리 구현
 
-  3. rebuilding
+  3. 전체 페이지에서 필요한 부분 rebuilding
 
 - 3/10
   1. 게시판 수정 구현
