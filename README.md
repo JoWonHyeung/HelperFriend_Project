@@ -21,7 +21,7 @@ Backend : Django, Ajax, jQuery
 Frontend : HTML, CSS, Javascript, Bootstrap
 
 
-### Period
+## Period
 
 2/23 ~ 3/14
 
