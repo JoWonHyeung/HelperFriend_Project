@@ -42,6 +42,7 @@ mesh153@naver.com
 
 - 이메일 중복 여부 판단 로직 구현
 
+- 관리자 페이지 만들어 볼 것
 - PPT 발표 
 
 ## Schedule
