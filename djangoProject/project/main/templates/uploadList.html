@@ -23,14 +23,14 @@ table img {
                 </thead>
                   <tbody>
                     <tr>
-                        {% for _ in n %}
+                        {% for file in fileList %}
                         {% load index %}
                         <tr>
-                            <td style="text-align: center;">{{ titles|index:forloop.counter0 }}</td>
-                            <td style="text-align: center;">{{ names|index:forloop.counter0 }}</td>
-                            <td style="text-align: center;">{{ date|index:forloop.counter0 }}</td>
-                            <td style="text-align: center;"><a href="/main/uploadList/uploadDownload/{{ ids|index:forloop.counter0 }}"><img src="/static/img/download.svg" alt="다운로드"></a></td>
-                            <td style="text-align: center;"><a href="/main/uploadList/uploadDelete/{{ ids|index:forloop.counter0 }}"><img src="/static/img/delete.svg" alt="삭제"></a></td>
+                            <td style="text-align: center;">{{ file|index:1 }}</td>
+                            <td style="text-align: center;">{{ file|index:2 }}</td>
+                            <td style="text-align: center;">{{ file|index:3 }}</td>
+                            <td style="text-align: center;"><a href="/main/uploadList/uploadDownload/{{ file|index:0 }}"><img src="/static/img/download.svg" alt="다운로드"></a></td>
+                            <td style="text-align: center;"><a href="/main/uploadList/uploadDelete/{{ file|index:0 }}"><img src="/static/img/delete.svg" alt="삭제"></a></td>
                         </tr>
                         {% endfor %}
                   </tbody>
@@ -40,6 +40,4 @@ table img {
 {% endblock %}
 
 {% block myjs %}
-
-
 {% endblock %}

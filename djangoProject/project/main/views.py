@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from main.models import User_Info, UploadFile, Question, Course, Reply
-from main.logic import scoreSum, emailSend, verificationMailSend, crawling
+from main.logic import scoreSum, emailSend, verificationMailSend, crawling, uploadListUpdate
 from django.contrib.auth.decorators import login_required
 from django.http import FileResponse
 from django.core.files.storage import FileSystemStorage
@@ -11,6 +11,8 @@ from django.core.paginator import Paginator
 import urllib
 import json
 import os.path
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 
 #crawling = crawling()
 
@@ -178,7 +180,7 @@ class team:
         students = list(Course.objects.filter(course_name=course))
         stu_list = []
 
-        #동명이인 처리!!!!! => dict 중복 불가!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        #동명이인 처리 => dict 중복 불가!
         for student in students:
             user_info = User_Info.objects.get(course_id=student.id)
             stu_list.append((user_info.user.first_name, user_info.score, user_info.user_id))
@@ -226,20 +228,7 @@ class upload:
 
 class uploadList():
     def uploadListView(request):
-        files = UploadFile.objects.filter(upload=request.user.id)
-        file_titles = []; file_names = []; file_ids = []; file_date = []
-        for i in files:
-            file_titles.append(i.title)
-            file_ids.append(i.id)
-            file_names.append(os.path.basename(i.file.name).split("/")[0])
-            file_date.append(i.upload_time.strftime("%Y/%m/%d"))
-        context = {
-            "titles": file_titles,
-            "names": file_names,
-            "date": file_date,
-            "ids": file_ids,
-            "n": range(len(file_titles)),
-        }
+        context = uploadListUpdate(request)
         return render(request, 'uploadList.html', context)
 
     def uploadListDelete(request, id):
@@ -247,24 +236,7 @@ class uploadList():
         upload_file = UploadFile.objects.get(id=id)
         upload_file.delete()
         # 삭제 후 update
-        user_Info = User_Info.objects.get(user=request.user)
-        course_id = user_Info.course_id
-        course_name = Course.objects.get(id=course_id).course_name
-        files = UploadFile.objects.filter(upload=request.user.id)
-        file_titles = []; file_names = []; file_ids = []; file_date = []
-        for i in files:
-            file_titles.append(i.title)
-            file_ids.append(i.id)
-            file_names.append(os.path.basename(i.file.name).split("/")[0])
-            file_date.append(i.upload_time.strftime("%Y/%m/%d"))
-        context = {
-            "course": course_name,
-            "titles": file_titles,
-            "names": file_names,
-            "date": file_date,
-            "ids": file_ids,
-            "n": range(len(file_titles)),
-        }
+        context = uploadListUpdate(request)
         return render(request, 'uploadList.html', context)
 
     def uploadListDownload(request, id):
@@ -323,12 +295,33 @@ class qna:
             try:
                 boardpk = request.GET.get('boardpk')
                 Question.objects.get(id=boardpk).delete()
-                return redirect('home')
+                return redirect('qnaList')
             except Question.DoesNotExist:
                 pass
         qna = Question.objects.get(id=qnaId)
         context = {'data': qna}
         return render(request, 'qnaRead.html', context)
+
+    def qnaEditView(request):
+        qnaId = request.GET.get('boardpk',None)
+        qna = Question.objects.get(id=qnaId)
+        title = ""; content = ""
+        context = {}
+        if request.method == "POST": #저장하기
+            qna.title = request.POST.get("title")
+            qna.content = request.POST.get("text")
+            qna.save()
+            return HttpResponseRedirect('/main/qna/qnaReadAndReply/' + qnaId)
+        else: #보여주기
+            title = qna.title
+            content = qna.content
+            context = {
+                'id': qnaId,
+                'title': title,
+                'content': content,
+            }
+        return render(request, 'qnaEdit.html',context)
+
 
     def qnaReplyJson(request,qnaId): #해당 게시물에 대한 모든 댓글들 다 끌어오기
         replys = Reply.objects.filter(question_id=qnaId)
@@ -343,9 +336,4 @@ class qna:
             'replyId': id,
         }
         return JsonResponse(context)
-
-
-def guideView(request):
-    return render(request,'guide.html',None)
-
 

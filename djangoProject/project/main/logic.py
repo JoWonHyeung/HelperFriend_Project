@@ -10,8 +10,10 @@ from selenium import webdriver
 import time
 from selenium.webdriver.common.action_chains import ActionChains
 from bs4 import BeautifulSoup
+from main.models import UploadFile
 import smtplib, ssl
 import random
+import os
 
 def scoreSum(request):
     score = 0
@@ -227,6 +229,18 @@ def crawling():
             urls_image.append(full_image)
             file_no += 1
         time.sleep(1)
+
     for i in range(0,6):
         res[str(i)] = [urls_image[i], urls[i], status[i]]
+
     return res
+
+def uploadListUpdate(request):
+    fileList = []
+    files = UploadFile.objects.filter(upload=request.user.id)
+    for i in files:
+        fileList.append([i.id, i.title, os.path.basename(i.file.name).split("/")[0], i.upload_time.strftime("%Y/%m/%d")])
+    context = {
+        "fileList": fileList
+    }
+    return context
