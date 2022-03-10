@@ -134,4 +134,6 @@ mesh153@naver.com
 
   1. 댓글 수정 
 
+  2. 관리자 페이지 
+
 ## Result
