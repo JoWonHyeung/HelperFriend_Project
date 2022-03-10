@@ -116,3 +116,6 @@ mesh153@naver.com
   2. 메일 전송 오류 처리
 
   3. rebuilding
+
+- 3/9
+  1. 게시판 수정 구현
