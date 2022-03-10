@@ -117,5 +117,5 @@ mesh153@naver.com
 
   3. rebuilding
 
-- 3/9
+- 3/10
   1. 게시판 수정 구현
