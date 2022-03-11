@@ -36,7 +36,7 @@ Frontend : HTML, CSS, Javascript, Bootstrap
 
 mesh153@naver.com
 
-## 앞으로 할 일
+## Plan
 
 - 이메일 중복 여부 판단 로직 구현
 
