@@ -40,6 +40,8 @@ mesh153@naver.com
 
 - 이메일 중복 여부 판단 로직 구현
 
+- 질문 게시판 검색 기능
+
 - PPT 발표 
 
 ## Schedule
