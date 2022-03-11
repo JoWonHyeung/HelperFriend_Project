@@ -1,16 +1,21 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+class UniCourse(models.Model):
+    course_uniname = models.CharField(primary_key=True, max_length=150)
+    def __str__(self):
+        return f"course_uniname={self.course_uniname}"
+
 class Course(models.Model):
     course_name = models.CharField(max_length=45)
     def __str__(self):
         return f"id={self.id}, course_name={self.course_name}"
 
 class User_Info(models.Model):
-    user = models.OneToOneField(User,primary_key=True,on_delete=models.CASCADE)
+    user = models.OneToOneField(User, primary_key=True, on_delete=models.CASCADE)
     score = models.IntegerField(null=True)
     team_id = models.IntegerField(null=True)
-    course = models.ForeignKey(Course,on_delete=models.CASCADE)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
     email = models.CharField(max_length=150,null=True)
     habit = models.CharField(max_length=45,null=True)
     target = models.CharField(max_length=45,null=True)

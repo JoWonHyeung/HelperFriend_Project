@@ -1,71 +1,59 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>HelperFriend</title>
-    <link rel="stylesheet" href="/static/css/style.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.min.js" integrity="sha384-VHvPCCyXqtD5DqJeNxl2dtTyhF78xXNXdkwX1CZeRusQfRKp+tA7hAShOK/B/fQ2" crossorigin="anonymous"></script>
-    <style>
-        body {
-            background-color: #FEDE5E;
-            margin: 0px;
-            padding: 0px;
-        }
-        #a {
-            background-color: #ffffff;
-            border-radius: 20px;
-            margin: auto;
-            margin-top: 200px;
-            padding: 60px;
-            padding-top: 30px;
-            padding-bottom: 80px;
-        }
-        h2 {
-            color: #656565;
-            text-align: center;
-        }
-        label {
-            color: #656565;
-            font-weight: bold;
-        }
-        label.no {
-            font-weight: normal;
-        }
-        img.logo {
-            margin: 0px;
-            margin-bottom: 40px;
-            width: 250px;
-        }
-        form {
-            margin-bottom: 50px;
-        }
-        .textbottom {
-            text-align: center;
-        }
-        a.link {
-            font-weight: bold;
-            text-decoration: underline;
-            color: #656565;
-        }
-        span.loginbutton {
-            font-weight: bold;
-            color: #ffffff;
-        }
+{% extends 'base.html' %}
 
-        p {
-           color: #656565;
-        }
+{% block css %}
+body {
+    background-color: #FEDE5E;
+    margin: 0px;
+    padding: 0px;
+}
+#a {
+    background-color: #ffffff;
+    border-radius: 20px;
+    margin: auto;
+    margin-top: 200px;
+    padding: 60px;
+    padding-top: 30px;
+    padding-bottom: 80px;
+}
+h2 {
+    color: #656565;
+    text-align: center;
+}
+label {
+    color: #656565;
+    font-weight: bold;
+}
+label.no {
+    font-weight: normal;
+}
+img.logo {
+    margin: 0px;
+    margin-bottom: 40px;
+    width: 250px;
+}
+form {
+    margin-bottom: 50px;
+}
+.textbottom {
+    text-align: center;
+}
+a.link {
+    font-weight: bold;
+    text-decoration: underline;
+    color: #656565;
+}
+span.loginbutton {
+    font-weight: bold;
+    color: #ffffff;
+}
 
-    </style>
-</head>
-<body>
-    <div id="a" style="width: 600px;">
+p {
+   color: #656565;
+}
+{% endblock %}
+
+{% block content %}
+   <div id="a" style="width: 600px;">
         <div class="container">
             <div class="row mt-5">
                 <div class="col-12">
@@ -120,9 +108,6 @@
                     </div>
                     <label for="select">커리큘럼명</label>
                     <select class="form-control" name="course" id="select">
-                        <option>빅데이터 서비스 분석 개발 6회차</option>
-                        <option>AI 개발 6회차</option>
-                        <option>클라우드 서비스 개발 6회차</option>
                     </select>
                     <hr>
                     <div class="form-group my-3">
@@ -279,13 +264,56 @@
                         </button>
                     </form>
         </div>
+        <p>- '계정 만들기'를 클릭하면 <a data-toggle="modal" data-target=".bd-example-modal-lg" href="#agree">개인정보 처리방침</a>을 확인한 것으로 간주됩니다.</p>
+
+        <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content" style="padding: 20px;">
+                <h2>개인정보 수집 및 이용 동의</h2>
+                <br>
+                <p>Helperfriend는 아래의 목적으로 개인정보를 수집 및 이용하며, 회원의 개인정보를 안전하게 취급하는데 최선을 다합니다.</p>
+                <h5>개인정보 수집 및 이용에 대한 안내</h5>
+                <div style="background-color: rgb(250,250,250); border: 1px solid gray;">
+                    <ol>
+                        <li>목적 : 가입자 개인 식별, 이메일 식별</li>
+                        <li>항목 : 이메일주소, 비밀번호, 이름</li>
+                        <li>보유기간 : 회원 탈퇴 시까지 보유 (단, 1년간 보관 후 파기합니다.)</li>
+                    </ol>
+                </div>
+                <br>
+                <p>위 개인정보 수집에 대한 동의를 거부할 권리가 있으며, 동의 거부 시에는 가입자 등록이 제한될 수 있습니다.</p>
+            </div>
+          </div>
+        </div>
         <div class="textbottom">
             <span>이미 가입하셨다면?</span>&nbsp;
             <a class="link" href="{% url 'login' %}">로그인으로 가기</a>
         </div>
      </div>
-<script>
-    $('#radio1').on({
+{% endblock %}
+
+{% block js %}
+
+$.ajax({
+    url : '{% url 'joinJson' %}',
+    type : 'GET',
+    headers: {
+        'X-CSRFTOKEN' : '{{ csrf_token }}'
+    },
+    data : JSON.stringify(),
+    success:function(data){
+        context = "";
+        for(let i = 0;i < data['course'].length;i++){
+            context += "<option>" + data['course'][i] + "</option>"
+        }
+         $('[id="select"]').html(context);
+    },
+    error: function(){
+        alert('no success!!');
+    },
+});
+
+$('#radio1').on({
         click: function(){
             /*2-1~2-2 init*/
             $("input:radio[name='lesson']").prop("checked", false);
@@ -338,9 +366,34 @@
             $('#box3').css('display','block');
         }
     });
+{% endblock %}
 
 
 
-</script>
-</body>
-</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

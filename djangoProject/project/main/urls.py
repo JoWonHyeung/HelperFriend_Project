@@ -11,6 +11,7 @@ urlpatterns = [
     path('login/', authentication.loginView, name='login'),
     path('logout/', authentication.logoutView,name='logout'),
     path('join/', authentication.joinView, name='join'),
+    path('join/joinJson/', authentication.joinJson, name='joinJson'),
     path('edit/pwd', authentication.pwdeditView, name='pwdedit'),
     path('edit/id', authentication.ideditView, name='idedit'),
     path('edit/pwdEditJson', authentication.pwdEditJson, name='pwdEditJson'),

@@ -134,7 +134,9 @@
             </div>
             <div id="userInfo">
             </div>
+            {% if request.user.is_superuser %}
             <button class="btn btn-secondary btn-block btn-sm my-3" onclick="location.href='{% url 'team' %}'">팀 빌딩 하러가기</button>
+            {% endif %}
         </div>
           {% block mycontent %}
           {% endblock %}

@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
-from main.models import User_Info, UploadFile, Question, Course, Reply
+from main.models import User_Info, UploadFile, Question, Course, Reply, UniCourse
 from main.logic import scoreSum, emailSend, verificationMailSend, crawling, uploadListUpdate
 from django.contrib.auth.decorators import login_required
 from django.http import FileResponse
@@ -139,7 +139,7 @@ class authentication:
                 context = {'creditMsg': "인증번호가 일치하지 않습니다."}
         return JsonResponse(context)
 
-    def joinView(request):
+    def joinView(request): #회원가입
         context = {}
         if request.method == 'POST':
             username = request.POST.get('username')
@@ -160,26 +160,32 @@ class authentication:
                 context = {'error': '비밀번호가 다릅니다.'}
             else:
                 user = User.objects.create_user(username=username, first_name=name, password=password)
-                course = Course(course_name=course_name);
-                course.save();
+                course = Course(course_name=course_name)
+                course.save()
                 user_info = User_Info(user=user, score=score, course=course, habit=habit, major=major, mbti=mbti,
-                                      target=target, email=email);
-                user_info.save();
+                                      target=target, email=email)
+                user_info.save()
                 auth.login(request, user)
                 return redirect("login")
         return render(request, 'join.html', context)
+
+    def joinJson(request):
+        course = []
+        for i in UniCourse.objects.all():
+            course.append(i.course_uniname)
+        return JsonResponse({'course':course})
+
 
 class team:
     def teamView(request):
         return render(request, 'team.html', None)
 
     def teamJson(request):
-        # 과정명 가져오기
+        # 과정명 가져오기]
         course = json.loads(request.body).get('course')
         # 해당 과정 명에 해당 하는 모든 인원 뽑아오기
         students = list(Course.objects.filter(course_name=course))
         stu_list = []
-
         #동명이인 처리 => dict 중복 불가!
         for student in students:
             user_info = User_Info.objects.get(course_id=student.id)
