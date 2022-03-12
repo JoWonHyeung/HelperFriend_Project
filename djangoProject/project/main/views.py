@@ -14,7 +14,7 @@ import os.path
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 
-#crawling = crawling()
+crawling = crawling()
 
 class home:
     @login_required(login_url='/main/login/')
@@ -32,7 +32,7 @@ class home:
                                                                           i.habit, i.target, i.mbti, i.major, User.objects.get(id=i.user_id).username,
                                                                           course_name]
         context = {
-            #'crawling': crawling,
+            'crawling': crawling,
             'home_user': home_user,
         }
         return render(request, 'home.html', context)

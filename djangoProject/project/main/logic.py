@@ -141,7 +141,7 @@ def verificationMailSend(email, username, title):
 
 def crawling():
     # 1
-    query_txt = "AI"
+    query_txt = "데이터"
 
     status = []
     # 2
