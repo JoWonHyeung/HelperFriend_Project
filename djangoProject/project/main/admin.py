@@ -11,12 +11,8 @@ admin.site.register(UniCourse)
 
 
 class User_InfoAdmin(admin.ModelAdmin):
+    pass
 
-    actions = ['separateTeam']
-
-    @admin.action(description='팀분류')
-    def separateTeam(modeladmin, request, queryset):
-         pass
 
 
 admin.site.register(User_Info,User_InfoAdmin)

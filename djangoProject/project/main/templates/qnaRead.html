@@ -75,11 +75,10 @@ input {
             <div>
                 <div class="container">
                     <form method="post" class="form-inline" action="{% url 'qnaReadAndReply' data.pk %}">
-                         {% csrf_token %}
+                        {% csrf_token %}
                         <textarea class="form-control w-100" rows="5" id="comment" name="replyContent"></textarea>
                         <div class="container" style="margin-top: 10px;">
                             <button type="submit" class="btn btn-secondary btn-lg float-right" style="font-size: 14px;">등록</button>
-
                         </div>
                     </form>
                 </div>
@@ -87,7 +86,6 @@ input {
         </div>
     </div>
 </div>
-
 {% endblock %}
 
 {% block myjs %}
@@ -111,7 +109,7 @@ $.ajax({
             context += '</p>'
             if(data['username'][i] == "{{ user.username }}"){ <!-- 댓글 아이디 == 현재 로그인 아이디 -->
                 context += "<img src='/static/img/clear.png' width='25' height='25' class='rounded-circle float-right p-1' onclick='reply_delete(" + data['replyId'][i] + ")'>"
-                context += "<img src='/static/img/edit.png' width='25' height='23'>"
+                context += "<img src='/static/img/edit.png' width='25' height='28' class='rounded-circle float-right p-1' onclick='reply_edit(" + data['replyId'][i] + ")'>"
             }
             context += '</div>'
         }
@@ -129,14 +127,14 @@ function reply_delete(pk) {
 }
 
 function reply_edit(pk) {
-
+    let str = prompt("댓글 수정");
+    location.href = "{% url 'qnaReadAndReply' data.id %}?editreplypk="+pk + "&reply="+str;
 }
 
 function board_delete(pk){
     let result = confirm("게시물을 삭제하겠습니까?");
     if(result)
         location.href = "{% url 'qnaReadAndReply' data.id %}?boardpk="+pk;
-
 }
 
  {% endblock %}

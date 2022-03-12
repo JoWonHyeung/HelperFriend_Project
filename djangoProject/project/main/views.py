@@ -292,10 +292,17 @@ class qna:
         if request.method == "POST": #reply 저장
             content = request.POST.get('replyContent')
             Reply(question_id=qnaId, replyuser_id=request.user.id, comment=content).save()
-        elif request.GET.get('replypk'): #댓글 삭제
+        elif request.GET.get('replypk') : #댓글 삭제
             try:
                 Reply.objects.get(id=request.GET.get('replypk')).delete()
             except Reply.DoesNotExist:
+                pass
+        elif request.GET.get('editreplypk'): #댓글 수정
+            try:
+                reply = Reply.objects.get(id=request.GET.get('editreplypk'))
+                reply.comment = request.GET.get('reply')
+                reply.save()
+            except:
                 pass
         elif request.GET.get('boardpk'): #게시판 삭제
             try:
