@@ -14,11 +14,12 @@ import os.path
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 
-crawling = crawling()
+#crawling = crawling()
 
 class home:
     @login_required(login_url='/main/login/')
     def homeView(request):
+        crawling = {}
         context = None
         user_Info = User_Info.objects.get(user=request.user)
         home_user = {}; crawling_info = {}
@@ -31,6 +32,34 @@ class home:
                     home_user[User.objects.get(id=i.user_id).username] = [User.objects.get(id=i.user_id).first_name,
                                                                           i.habit, i.target, i.mbti, i.major, User.objects.get(id=i.user_id).username,
                                                                           course_name]
+
+        crawling = {
+            '0' : [
+            'https://thinkyou.co.kr//upload/consult/%ED%86%B5%EA%B3%84%EB%8D%B0%EC%9D%B4%ED%84%B0_%EC%9D%B8%EA%B3%B5%EC%A7%80%EB%8A%A5_%ED%99%9C%EC%9A%A9%EB%8C%80%ED%9A%8C_%ED%8F%AC%EC%8A%A4%ED%84%B0_%EC%BA%A1%EC%B3%90.png',
+            'https://thinkyou.co.kr/contest/23051/?page=1&pagesize=30&serstatus=&serdivision=&serfield=&sertarget=&serprizeMoney=&seritem=1&searchstr=%EB%8D%B0%EC%9D%B4%ED%84%B0',
+            '마감임박'],
+            '1' : [
+            'https://thinkyou.co.kr//upload/consult/%28%EC%A3%BC%29%EB%AA%A8%EB%91%90%EC%9D%98%EC%97%B0%EA%B5%AC%EC%86%8C_K-Digital_Credit_%EA%B3%BC%EC%A0%95_%ED%99%8D%EB%B3%B4%EC%9E%90%EB%A3%8C.png',
+            'https://thinkyou.co.kr/contest/22912/?page=1&pagesize=30&serstatus=&serdivision=&serfield=&sertarget=&serprizeMoney=&seritem=1&searchstr=%EB%8D%B0%EC%9D%B4%ED%84%B0',
+            '접수중'],
+            '2' : [
+            'https://thinkyou.co.kr//upload/consult/%EC%98%A8%EB%B3%B4%EB%94%A93%EA%B8%B0_%EB%AA%A8%EC%A7%91%ED%8F%AC%EC%8A%A4%ED%84%B0.jpg',
+            'https://thinkyou.co.kr/contest/22912/?page=1&pagesize=30&serstatus=&serdivision=&serfield=&sertarget=&serprizeMoney=&seritem=1&searchstr=%EB%8D%B0%EC%9D%B4%ED%84%B0',
+            '마감'],
+            '3' : [
+            'https://thinkyou.co.kr//upload/consult/%EA%B3%B5%EA%B0%9C%ED%95%B4_%EC%9B%B9%EA%B2%8C%EC%8B%9C%EA%B8%800.jpg',
+            'https://thinkyou.co.kr/contest/22450/?page=1&pagesize=30&serstatus=&serdivision=&serfield=&sertarget=&serprizeMoney=&seritem=1&searchstr=%EB%8D%B0%EC%9D%B4%ED%84%B0',
+            '마감'],
+            '4' : [
+            'https://thinkyou.co.kr//upload/consult/%EA%B3%B5%EA%B0%9C%ED%95%B4_%EC%9B%B9%EA%B2%8C%EC%8B%9C%EA%B8%80.jpg',
+            'https://thinkyou.co.kr/contest/22428/?page=1&pagesize=30&serstatus=&serdivision=&serfield=&sertarget=&serprizeMoney=&seritem=1&searchstr=%EB%8D%B0%EC%9D%B4%ED%84%B0',
+            '마감'],
+            '5' :[
+            'https://thinkyou.co.kr//upload/consult/2021%EB%85%84_4%EB%B6%84%EA%B8%B0_%ED%86%B5%EA%B3%84%EB%8D%B0%EC%9D%B4%ED%84%B0%EC%84%BC%ED%84%B0_%EC%9D%B4%EC%9A%A9_%ED%99%9C%EC%9A%A9_%EC%88%98%EA%B8%B0_%EA%B3%B5%EB%AA%A8%EC%A0%84_%ED%8F%AC%EC%8A%A4%ED%84%B0.jpg',
+            'https://thinkyou.co.kr/contest/22294/?page=1&pagesize=30&serstatus=&serdivision=&serfield=&sertarget=&serprizeMoney=&seritem=1&searchstr=%EB%8D%B0%EC%9D%B4%ED%84%B0',
+            '마감']
+        }
+
         context = {
             'crawling': crawling,
             'home_user': home_user,
@@ -175,6 +204,8 @@ class authentication:
             course.append(i.course_uniname)
         return JsonResponse({'course':course})
 
+import html
+from django.http import HttpResponse
 
 class team:
     def teamView(request):
@@ -186,7 +217,7 @@ class team:
         # 해당 과정 명에 해당 하는 모든 인원 뽑아오기
         students = list(Course.objects.filter(course_name=course))
         stu_list = []
-        #동명이인 처리 => dict 중복 불가!
+        # 동명이인 처리 => dict 중복 불가!
         for student in students:
             user_info = User_Info.objects.get(course_id=student.id)
             stu_list.append((user_info.user.first_name, user_info.score, user_info.user_id))

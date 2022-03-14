@@ -11,12 +11,9 @@
             <div class="container">
                 <form method="POST" action="">
                     {% csrf_token %}
-                    <div select="course" class="form-group">
-                      <label for="select">Team Select:</label>
-                      <select class="form-control" name="course" id="select">
-                        <option>빅데이터 서비스 분석 개발 6회차</option>
-                        <option>AI 개발 6회차</option>
-                        <option>클라우드 서비스 개발 6회차</option>
+                    <div class="form-group">
+                      <label for="team_select">Team Select:</label>
+                      <select class="form-control" name="course" id="team_select">
                       </select>
                     </div>
                     <button id="btn1" type="button" class="btn btn-primary float-right" data-toggle="collapse" data-target="#demo">인원 불러오기</button>
@@ -62,9 +59,24 @@
 {% endblock %}
 
 {% block myjs %}
-    /* localStorage를 이용하여 reload후 select value 값이 유지되도록 해주었다.*/
-s = "option:eq("+localStorage['x']+")";
-$("#select").find(s).prop("selected",true);
+$.ajax({
+    url : '{% url 'joinJson' %}',
+    type : 'GET',
+    headers: {
+        'X-CSRFTOKEN' : '{{ csrf_token }}'
+    },
+    data : JSON.stringify(),
+    success:function(data){
+        context = "";
+        for(let i = 0;i < data['course'].length;i++){
+            context += "<option>" + data['course'][i] + "</option>"
+        }
+         $('[id="team_select"]').html(context);
+    },
+    error: function(){
+        alert('no success!!');
+    },
+});
 
 let all = [];
 let team = [];
@@ -78,13 +90,12 @@ let myTeamId = 0;
 score.push(["항목","총 점수"]);
 minmax.push(["항목","max-min"]);
 
-/* 첫 번째 button 눌렀을때 */
 $('#btn1').click(function(){
     $('#block1').css('display','block');
 
     course = $("select[name=course]").val()
     let param = { 'course' : course };
-
+    console.log(course);
     $.ajax({
         url : '{% url 'teamJson' %}',
         type : 'POST',
