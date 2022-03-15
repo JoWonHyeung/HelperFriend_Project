@@ -137,7 +137,7 @@ mesh153@naver.com
 
 - 3/13
 
-  1. pythonanywhere에 서버 구축
+  1. pythonanywhere 서버 구축
 
 - 3/14
   
