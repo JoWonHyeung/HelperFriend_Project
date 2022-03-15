@@ -42,8 +42,6 @@ mesh153@naver.com
 
 - 질문 게시판 검색 기능
 
-- PPT 발표 
-
 ## Schedule
 - 2/10 ~ 2/22
   
