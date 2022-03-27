@@ -155,6 +155,10 @@ mesh153@naver.com
   
   1. 프로젝트 발표
 
+- 3/28
+
+  1. DBtable 재작성, model 수정 및 오류 
+
 ## Result
 
 - 기한내에 프로젝트를 수행하였다.
