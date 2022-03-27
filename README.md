@@ -157,7 +157,9 @@ mesh153@naver.com
 
 - 3/28
 
-  1. DBtable 재작성, model 수정 및 오류 
+  1. DBtable 재작성, model 수정 및 오류작업
+  
+ 
 
 ## Result
 
